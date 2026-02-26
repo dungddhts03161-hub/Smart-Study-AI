@@ -1,4 +1,3 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 // ============================================================
 // DEMO ACCOUNT (built-in, không lưu localStorage)
@@ -670,9 +669,28 @@ function handleChat(msg,t){
 // ============================================================
 // PROFILE
 // ============================================================
+function handleAvatarUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>2*1024*1024){alert('⚠️ Ảnh quá lớn! Tối đa 2MB.');return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const data=ev.target.result;
+    if(!CU)return;
+    CU.avatar=data;
+    if(!CU.isDemo)saveStore();
+    document.getElementById('avatar-img').src=data;
+    document.getElementById('pm-avatar').src=data;
+    document.getElementById('pm-avatar-preview').src=data;
+    renderAvatarPicker();
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+
 function openProfile(){
   if(!CU)return;const d=CU.data;
   document.getElementById('pm-avatar').src=CU.avatar;
+  document.getElementById('pm-avatar-preview').src=CU.avatar;
   document.getElementById('pm-name').textContent=CU.fullname;
   document.getElementById('pm-email').textContent=CU.email;
   document.getElementById('pm-streak').textContent=d.streak.cur;

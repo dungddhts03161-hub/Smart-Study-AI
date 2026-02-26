@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Test AI</h2>
+  <input id="input" placeholder="Nhập câu hỏi..." />
+  <button onclick="ask()">Hỏi</button>
+  <p id="result"></p>
+
+  <script>
+async function ask() {
+  const message = document.getElementById("input").value;
+
+  const res = await fetch("http://localhost:3000/ask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await res.json();
+
+  console.log("DATA FROM SERVER:", data);
+
+  document.getElementById("result").innerText =
+    data.reply ? data.reply : JSON.stringify(data);
+}
+</script>
+</body>
+</html>
