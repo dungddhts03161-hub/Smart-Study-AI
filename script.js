@@ -70,15 +70,246 @@ function emptyData(){
 // ============================================================
 // AVATARS
 // ============================================================
+// Cute animal avatars as SVG
+function makeAnimalSVG(type, bg, accent, extra=''){
+  const animals = {
+    cat: (c,a)=>`
+      <!-- ears -->
+      <polygon points="28,32 20,12 38,26" fill="${c}"/>
+      <polygon points="72,32 80,12 62,26" fill="${c}"/>
+      <polygon points="29,30 23,16 37,27" fill="#ffccd5"/>
+      <polygon points="71,30 77,16 63,27" fill="#ffccd5"/>
+      <!-- face -->
+      <circle cx="50" cy="52" r="26" fill="${c}"/>
+      <!-- inner face -->
+      <ellipse cx="50" cy="56" rx="16" ry="13" fill="#fff5f5"/>
+      <!-- eyes -->
+      <ellipse cx="40" cy="48" rx="5" ry="6" fill="#222"/>
+      <ellipse cx="60" cy="48" rx="5" ry="6" fill="#222"/>
+      <circle cx="41.5" cy="46.5" r="2" fill="white"/>
+      <circle cx="61.5" cy="46.5" r="2" fill="white"/>
+      <circle cx="40" cy="49" r="1.2" fill="${a}" opacity=".7"/>
+      <circle cx="60" cy="49" r="1.2" fill="${a}" opacity=".7"/>
+      <!-- blush -->
+      <ellipse cx="34" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <ellipse cx="66" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="56" rx="3" ry="2" fill="#ff9eb5"/>
+      <!-- whiskers -->
+      <line x1="20" y1="55" x2="44" y2="57" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="20" y1="59" x2="44" y2="59" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="56" y1="57" x2="80" y2="55" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="56" y1="59" x2="80" y2="59" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path d="M46 60 Q50 65 54 60" stroke="#ff9eb5" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    bunny: (c,a)=>`
+      <!-- long ears -->
+      <ellipse cx="34" cy="22" rx="9" ry="22" fill="${c}" transform="rotate(-10,34,22)"/>
+      <ellipse cx="66" cy="22" rx="9" ry="22" fill="${c}" transform="rotate(10,66,22)"/>
+      <ellipse cx="34" cy="22" rx="5" ry="17" fill="#ffccd5" transform="rotate(-10,34,22)"/>
+      <ellipse cx="66" cy="22" rx="5" ry="17" fill="#ffccd5" transform="rotate(10,66,22)"/>
+      <!-- face -->
+      <circle cx="50" cy="57" r="26" fill="${c}"/>
+      <ellipse cx="50" cy="61" rx="14" ry="11" fill="#fff5f5"/>
+      <!-- eyes -->
+      <circle cx="40" cy="52" r="6" fill="#222"/>
+      <circle cx="60" cy="52" r="6" fill="#222"/>
+      <circle cx="41.5" cy="50.5" r="2.2" fill="white"/>
+      <circle cx="61.5" cy="50.5" r="2.2" fill="white"/>
+      <circle cx="40" cy="53" r="1.4" fill="${a}" opacity=".8"/>
+      <circle cx="60" cy="53" r="1.4" fill="${a}" opacity=".8"/>
+      <!-- blush -->
+      <ellipse cx="33" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
+      <ellipse cx="67" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="61" rx="3.5" ry="2.5" fill="#ff9eb5"/>
+      <!-- mouth -->
+      <path d="M46 65 Q50 70 54 65" stroke="#ff9eb5" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    bear: (c,a)=>`
+      <!-- ears -->
+      <circle cx="28" cy="30" r="13" fill="${c}"/>
+      <circle cx="72" cy="30" r="13" fill="${c}"/>
+      <circle cx="28" cy="30" r="8" fill="#d4956a"/>
+      <circle cx="72" cy="30" r="8" fill="#d4956a"/>
+      <!-- face -->
+      <circle cx="50" cy="54" r="27" fill="${c}"/>
+      <ellipse cx="50" cy="60" rx="15" ry="12" fill="#d4956a"/>
+      <!-- eyes -->
+      <circle cx="40" cy="50" r="6" fill="#222"/>
+      <circle cx="60" cy="50" r="6" fill="#222"/>
+      <circle cx="41.5" cy="48.5" r="2.2" fill="white"/>
+      <circle cx="61.5" cy="48.5" r="2.2" fill="white"/>
+      <circle cx="40" cy="51" r="1.3" fill="${a}" opacity=".7"/>
+      <circle cx="60" cy="51" r="1.3" fill="${a}" opacity=".7"/>
+      <!-- blush -->
+      <ellipse cx="33" cy="58" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <ellipse cx="67" cy="58" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="60" rx="5" ry="3.5" fill="#222"/>
+      <ellipse cx="50" cy="59" rx="3" ry="2" fill="#555"/>
+      <!-- mouth -->
+      <path d="M45 64 Q50 70 55 64" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    fox: (c,a)=>`
+      <!-- ears -->
+      <polygon points="30,38 18,12 44,30" fill="${c}"/>
+      <polygon points="70,38 82,12 56,30" fill="${c}"/>
+      <polygon points="31,36 22,18 42,31" fill="#fff0e0"/>
+      <polygon points="69,36 78,18 58,31" fill="#fff0e0"/>
+      <!-- face -->
+      <circle cx="50" cy="54" r="26" fill="${c}"/>
+      <!-- white muzzle -->
+      <ellipse cx="50" cy="60" rx="17" ry="14" fill="#fff0e0"/>
+      <!-- mask -->
+      <path d="M24 48 Q35 40 42 50 Q50 44 58 50 Q65 40 76 48 Q70 58 50 56 Q30 58 24 48Z" fill="${c}" opacity=".4"/>
+      <!-- eyes -->
+      <ellipse cx="40" cy="49" rx="5.5" ry="6" fill="#222"/>
+      <ellipse cx="60" cy="49" rx="5.5" ry="6" fill="#222"/>
+      <circle cx="41.5" cy="47.5" r="2" fill="white"/>
+      <circle cx="61.5" cy="47.5" r="2" fill="white"/>
+      <circle cx="40" cy="50" r="1.3" fill="${a}" opacity=".8"/>
+      <circle cx="60" cy="50" r="1.3" fill="${a}" opacity=".8"/>
+      <!-- blush -->
+      <ellipse cx="33" cy="57" rx="6" ry="4" fill="#ffb3c6" opacity=".5"/>
+      <ellipse cx="67" cy="57" rx="6" ry="4" fill="#ffb3c6" opacity=".5"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="59" rx="4" ry="3" fill="#222"/>
+      <!-- mouth -->
+      <path d="M45 63 Q50 69 55 63" stroke="#555" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    panda: (c,a)=>`
+      <!-- ears -->
+      <circle cx="27" cy="28" r="14" fill="#222"/>
+      <circle cx="73" cy="28" r="14" fill="#222"/>
+      <!-- face -->
+      <circle cx="50" cy="54" r="27" fill="#f8f8f8"/>
+      <!-- eye patches -->
+      <ellipse cx="39" cy="50" rx="10" ry="9" fill="#222"/>
+      <ellipse cx="61" cy="50" rx="10" ry="9" fill="#222"/>
+      <!-- eyes -->
+      <circle cx="39" cy="50" r="6" fill="white"/>
+      <circle cx="61" cy="50" r="6" fill="white"/>
+      <circle cx="39" cy="51" r="3.5" fill="#222"/>
+      <circle cx="61" cy="51" r="3.5" fill="#222"/>
+      <circle cx="40.2" cy="49.5" r="1.5" fill="white"/>
+      <circle cx="62.2" cy="49.5" r="1.5" fill="white"/>
+      <circle cx="39" cy="51.5" r="1" fill="${a}" opacity=".7"/>
+      <circle cx="61" cy="51.5" r="1" fill="${a}" opacity=".7"/>
+      <!-- blush -->
+      <ellipse cx="31" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
+      <ellipse cx="69" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="61" rx="4" ry="3" fill="#222"/>
+      <!-- mouth -->
+      <path d="M45 66 Q50 72 55 66" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    dog: (c,a)=>`
+      <!-- floppy ears -->
+      <ellipse cx="24" cy="50" rx="11" ry="20" fill="${c}" transform="rotate(-15,24,50)"/>
+      <ellipse cx="76" cy="50" rx="11" ry="20" fill="${c}" transform="rotate(15,76,50)"/>
+      <!-- face -->
+      <circle cx="50" cy="50" r="27" fill="${c}"/>
+      <ellipse cx="50" cy="58" rx="16" ry="13" fill="#f5d9b0"/>
+      <!-- eyes -->
+      <circle cx="39" cy="46" r="7" fill="#222"/>
+      <circle cx="61" cy="46" r="7" fill="#222"/>
+      <circle cx="40.5" cy="44.5" r="2.5" fill="white"/>
+      <circle cx="62.5" cy="44.5" r="2.5" fill="white"/>
+      <circle cx="39" cy="47" r="1.5" fill="${a}" opacity=".7"/>
+      <circle cx="61" cy="47" r="1.5" fill="${a}" opacity=".7"/>
+      <!-- blush -->
+      <ellipse cx="31" cy="55" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <ellipse cx="69" cy="55" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
+      <!-- nose -->
+      <ellipse cx="50" cy="58" rx="6" ry="4.5" fill="#222"/>
+      <ellipse cx="50" cy="57" rx="3.5" ry="2.5" fill="#555"/>
+      <!-- mouth -->
+      <path d="M43 63 Q50 70 57 63" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+
+    chick: (c,a)=>`
+      <!-- head tuft -->
+      <ellipse cx="44" cy="20" rx="5" ry="9" fill="${c}" transform="rotate(-15,44,20)"/>
+      <ellipse cx="50" cy="18" rx="5" ry="10" fill="${c}"/>
+      <ellipse cx="56" cy="20" rx="5" ry="9" fill="${c}" transform="rotate(15,56,20)"/>
+      <!-- face -->
+      <circle cx="50" cy="54" r="28" fill="${c}"/>
+      <!-- eyes big -->
+      <circle cx="38" cy="50" r="8" fill="white"/>
+      <circle cx="62" cy="50" r="8" fill="white"/>
+      <circle cx="38" cy="50" r="5.5" fill="#222"/>
+      <circle cx="62" cy="50" r="5.5" fill="#222"/>
+      <circle cx="39.5" cy="48.5" r="2.2" fill="white"/>
+      <circle cx="63.5" cy="48.5" r="2.2" fill="white"/>
+      <circle cx="38" cy="51" r="1.3" fill="${a}" opacity=".8"/>
+      <circle cx="62" cy="51" r="1.3" fill="${a}" opacity=".8"/>
+      <!-- blush -->
+      <ellipse cx="29" cy="58" rx="7" ry="5" fill="#ffb3c6" opacity=".55"/>
+      <ellipse cx="71" cy="58" rx="7" ry="5" fill="#ffb3c6" opacity=".55"/>
+      <!-- beak -->
+      <polygon points="46,60 54,60 50,67" fill="#ff9800"/>
+      ${extra}`,
+
+    frog: (c,a)=>`
+      <!-- eye bumps on top -->
+      <circle cx="33" cy="33" r="13" fill="${c}"/>
+      <circle cx="67" cy="33" r="13" fill="${c}"/>
+      <!-- face -->
+      <ellipse cx="50" cy="57" rx="28" ry="24" fill="${c}"/>
+      <!-- mouth area lighter -->
+      <ellipse cx="50" cy="65" rx="20" ry="13" fill="#a8e063" opacity=".6"/>
+      <!-- eyes on bumps -->
+      <circle cx="33" cy="33" r="8" fill="white"/>
+      <circle cx="67" cy="33" r="8" fill="white"/>
+      <circle cx="33" cy="34" r="5" fill="#222"/>
+      <circle cx="67" cy="34" r="5" fill="#222"/>
+      <circle cx="34.5" cy="32.5" r="2" fill="white"/>
+      <circle cx="68.5" cy="32.5" r="2" fill="white"/>
+      <circle cx="33" cy="34.5" r="1.2" fill="${a}" opacity=".8"/>
+      <circle cx="67" cy="34.5" r="1.2" fill="${a}" opacity=".8"/>
+      <!-- blush -->
+      <ellipse cx="31" cy="60" rx="7" ry="5" fill="#ffb3c6" opacity=".5"/>
+      <ellipse cx="69" cy="60" rx="7" ry="5" fill="#ffb3c6" opacity=".5"/>
+      <!-- nostrils -->
+      <circle cx="46" cy="57" r="2.5" fill="#5a9a2a" opacity=".5"/>
+      <circle cx="54" cy="57" r="2.5" fill="#5a9a2a" opacity=".5"/>
+      <!-- big smile -->
+      <path d="M32 65 Q50 78 68 65" stroke="#3a7a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      ${extra}`,
+  };
+
+  const body = animals[type] ? animals[type](bg, accent) : '';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="g${type}" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="black" stop-opacity=".08"/>
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="${accent}" opacity=".18"/>
+  <circle cx="50" cy="50" r="50" fill="url(#g${type})"/>
+  ${body}
+  <text x="72" y="18" font-size="11" opacity=".7">✨</text>
+</svg>`);
+}
+
 const AVATARS = [
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23667eea"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23FFDBAC"/%3E%3Cpath d="M35 32 Q35 22 50 22 Q65 22 65 32 L65 40 Q65 46 50 46 Q35 46 35 40Z" fill="%233B241F"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M43 47 Q50 51 57 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%234285F4"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23FFDBAC"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23FFDBAC"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23FF90BC"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23FFDBAC"/%3E%3Cellipse cx="50" cy="28" rx="22" ry="18" fill="%236A4C2E"/%3E%3Ccircle cx="72" cy="33" r="8" fill="%236A4C2E"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M43 47 Q50 51 57 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%23FFE4E1"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23FFDBAC"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23FFDBAC"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%2334d399"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23D4A574"/%3E%3Cpath d="M35 32 Q35 24 50 24 Q65 24 65 32 L65 40 Q65 46 50 46 Q35 46 35 40Z" fill="%23000"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 50 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%23FF6B35"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23D4A574"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23D4A574"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23a78bfa"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23F5CBA7"/%3E%3Cpath d="M34 27 Q34 18 50 20 Q66 18 66 27 L66 38 Q62 46 50 46 Q38 46 34 38Z" fill="%23D4A017"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 51 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%23EC4899"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23F5CBA7"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23F5CBA7"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23f59e0b"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23F5D5B8"/%3E%3Cpath d="M37 30 Q40 24 50 25 Q60 24 63 30 L63 40 Q60 46 50 46 Q40 46 37 40Z" fill="%23FFA500"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 51 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%23DC2626"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23F5D5B8"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23F5D5B8"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%2306b6d4"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23C68642"/%3E%3Cpath d="M35 33 Q37 26 50 26 Q63 26 65 33 L64 41 Q62 46 50 46 Q38 46 36 41Z" fill="%23654321"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 50 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%2322c55e"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23C68642"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23C68642"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23fb7185"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23D4A574"/%3E%3Cpath d="M34 29 Q36 22 50 23 Q64 22 66 29 L65 41 Q62 46 50 46 Q38 46 35 41Z" fill="%23000"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 51 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%2322d3ee"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23D4A574"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23D4A574"/%3E%3C/svg%3E',
-  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%2310b981"/%3E%3Ccircle cx="50" cy="38" r="18" fill="%23F5D5B8"/%3E%3Cpath d="M36 31 Q37 23 50 24 Q63 23 64 31 L63 40 Q61 46 50 46 Q39 46 37 40Z" fill="%23FFB6C1"/%3E%3Ccircle cx="43" cy="38" r="2.5" fill="%23333"/%3E%3Ccircle cx="57" cy="38" r="2.5" fill="%23333"/%3E%3Cpath d="M44 47 Q50 51 56 47" stroke="%23333" stroke-width="1.5" fill="none"/%3E%3Crect x="35" y="58" width="30" height="28" rx="4" fill="%23667eea"/%3E%3Crect x="25" y="58" width="11" height="22" rx="5.5" fill="%23F5D5B8"/%3E%3Crect x="64" y="58" width="11" height="22" rx="5.5" fill="%23F5D5B8"/%3E%3C/svg%3E'
+  makeAnimalSVG('cat',   '#F4A460', '#FF6B9D'),  // sandy cat
+  makeAnimalSVG('bunny', '#E8D5C4', '#A78BFA'),  // cream bunny
+  makeAnimalSVG('bear',  '#C8956C', '#667EEA'),  // brown bear
+  makeAnimalSVG('fox',   '#E8874A', '#F59E0B'),  // orange fox
+  makeAnimalSVG('panda', '#f8f8f8', '#34D399'),  // panda
+  makeAnimalSVG('dog',   '#D4A96A', '#FB7185'),  // golden dog
+  makeAnimalSVG('chick', '#FFE066', '#F59E0B'),  // yellow chick
+  makeAnimalSVG('frog',  '#7BC67E', '#4ADE80'),  // green frog
 ];
 function defaultAvatar(g){ return g==='female'?AVATARS[1]:AVATARS[0]; }
 
