@@ -1349,46 +1349,9 @@ function handleChat(msg,t){
   typingDiv.className='msg-bubble-wrap bot';typingDiv.id=typingId;
   typingDiv.innerHTML='<div class="bubble" style="opacity:.6">🤖 <span style="letter-spacing:3px">···</span></div>';
   el.appendChild(typingDiv);el.scrollTop=el.scrollHeight;
-
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:200,
-      system:systemPrompt,
-      messages:[{role:'user',content:msg}]
-    })
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    const reply=data.content?.[0]?.text||'Xin lỗi, mình gặp lỗi rồi! Thử lại nhé 😅';
-    document.getElementById(typingId)?.remove();
-    botMsg(t,reply);
-    // Award XP for using AI chat
-    addXP(5,'chat');
-  })
-  .catch(()=>{
-    document.getElementById(typingId)?.remove();
-    // Fallback rule-based
-    const m=msg.toLowerCase();
-    if(/chào|hi|hello/.test(m)) botMsg(t,'Chào bạn! 👋 Mình là AI trợ lý học tập. Hỏi mình về lịch học, tiến độ, hay chiến lược ôn thi nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
-    else if(/lịch|hôm nay/.test(m)){
-      const dk=['sun','mon','tue','wed','thu','fri','sat'][new Date().getDay()];
-      let tasks=[];if(d)d.subjects.forEach(s=>{if(d.schedule[s.id]&&d.schedule[s.id][dk])tasks.push(`• ${s.name}: ${d.schedule[s.id][dk].time} ${d.schedule[s.id][dk].completed?'✅':'⏳'}`)});
-      botMsg(t,tasks.length?`📅 Hôm nay:\n${tasks.join('\n')}`:'Hôm nay không có lịch! 😊');
-    }
-    else if(/tiến độ|progress/.test(m)){
-      let total=0,done=0;if(d)d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;})});
-      botMsg(t,`📊 Tiến độ: ${done}/${total} buổi (${total?((done/total)*100).toFixed(0):0}%) · Chuỗi: ${d?d.streak.cur:0}🔥`);
-    }
-    else if(/yếu|kém/.test(m)){
-      const weak=d?d.subjects.filter(s=>s.score<5||s.selfRating<=25):[];
-      botMsg(t,weak.length?'📉 Môn cần ưu tiên:\n'+weak.map(s=>`• ${s.name} → Tăng cường học!`).join('\n'):'🎉 Không có môn yếu!');
-    }
-    else botMsg(t,'Mình đang gặp lỗi kết nối 😅 Thử hỏi lại nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
-  });
 }
+
+
 
 // ============================================================
 // PROFILE
