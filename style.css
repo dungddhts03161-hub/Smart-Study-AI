@@ -3676,7 +3676,7 @@ body.dark .info-val {
 
 
 
-#landing-css {
+#landing-css {}
 
 /* ══ LANDING OVERLAY ══ */
 #landing-layer {
@@ -5139,4 +5139,70 @@ footer {
     padding: 40px 24px
   }
 }
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Syne', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  color: white;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.header {
+  padding: 20px 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 600;
+}
+
+.hero {
+  padding: 120px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  margin-top: 20px;
+  background: white;
+  color: #4f46e5;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
 }
