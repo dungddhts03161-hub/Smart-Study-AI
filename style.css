@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap);
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
 
 * {
   margin: 0;
@@ -13,10 +13,10 @@ html {
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #04050f;
   min-height: 100vh;
   color: #333;
-  transition: background .3s, color .3s
+  transition: color .3s
 }
 
 body.dark {
@@ -820,8 +820,18 @@ body.dark .sec-danger-btn {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 3000;
+  z-index: 9500;
   overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.04);
+  transition: opacity 0.55s cubic-bezier(.4, 0, .2, 1), transform 0.55s cubic-bezier(.4, 0, .2, 1);
+}
+
+.auth-screen.visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1);
 }
 
 /* Nebula bg cho auth */
@@ -3676,7 +3686,11 @@ body.dark .info-val {
 
 
 
+
+
+
 #landing-css {}
+
 
 /* ══ LANDING OVERLAY ══ */
 #landing-layer {
@@ -3685,8 +3699,9 @@ body.dark .info-val {
   z-index: 9000;
   overflow-y: auto;
   overflow-x: hidden;
+  background: #04050f;
   opacity: 1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.55s cubic-bezier(.4, 0, .2, 1), transform 0.55s cubic-bezier(.4, 0, .2, 1);
 }
 
 #landing-layer.hidden {
@@ -3979,7 +3994,7 @@ body.dark .info-val {
   animation: nebulaDrift 20s ease-in-out infinite alternate;
 }
 
-@keyframes nebulaDrift {
+ @keyframes nebulaDrift {
   0% {
     filter: blur(40px) brightness(1) hue-rotate(0deg)
   }
@@ -4035,7 +4050,7 @@ body.dark .info-val {
     opacity: 0
   }
 
- 
+
 }
 
 /* ── NOISE ── */
@@ -4173,10 +4188,10 @@ nav {
   pointer-events: none;
 }
 
-@keyframes orbPulse {
+ @keyframes orbPulse {
 
-  landing-layer 0%,
-  landing-layer 100% {
+  0%,
+  100% {
     transform: translate(-50%, -55%) scale(1);
     opacity: .8
   }
@@ -4186,7 +4201,7 @@ nav {
     opacity: 1
   }
 
-
+  
 }
 
 .hero-ring {
@@ -4215,12 +4230,12 @@ nav {
   transform: translateX(-50%);
 }
 
-@keyframes ringRotate {
+ @keyframes ringRotate {
   to {
     transform: translate(-50%, -55%) rotate(360deg)
   }
 
- 
+  
 }
 
 .hero-badge {
@@ -4259,7 +4274,7 @@ nav {
     opacity: .2
   }
 
-
+ 
 }
 
 .hero-title {
@@ -4386,7 +4401,7 @@ nav {
   animation: scrollPulse 2s ease-in-out infinite;
 }
 
-@keyframes scrollPulse {
+ @keyframes scrollPulse {
 
   0%,
   100% {
@@ -4406,7 +4421,7 @@ nav {
     transform: translateY(26px)
   }
 
-  landing-layer {
+  landing-layer  {
     opacity: 1;
     transform: translateY(0)
   }
@@ -5138,71 +5153,4 @@ footer {
   #landing-layer .cta-box {
     padding: 40px 24px
   }
-}
-
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Syne', sans-serif;
-}
-
-body {
-  background: linear-gradient(135deg, #4f46e5, #9333ea);
-  color: white;
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.header {
-  padding: 20px 0;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 20px;
-  font-weight: 600;
-}
-
-.hero {
-  padding: 120px 0;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.hero p {
-  font-size: 20px;
-  opacity: 0.9;
-}
-
-.btn {
-  display: inline-block;
-  padding: 12px 25px;
-  margin-top: 20px;
-  background: white;
-  color: #4f46e5;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  transform: scale(1.05);
 }

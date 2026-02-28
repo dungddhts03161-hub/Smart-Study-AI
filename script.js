@@ -151,20 +151,33 @@ function loadTheme(){
 // AUTH
 // ============================================================
 function showLogin(){
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('reg-screen').style.display='none';
-  document.getElementById('forgot-screen').style.display='none';
+  _authFadeIn('login-screen');
+  _authFadeOut('reg-screen');
+  _authFadeOut('forgot-screen');
 }
 function showReg(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('reg-screen').style.display='flex';
+  _authFadeOut('login-screen');
+  _authFadeIn('reg-screen');
 }
 function showForgot(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('forgot-screen').style.display='flex';
+  _authFadeOut('login-screen');
+  _authFadeIn('forgot-screen');
   document.getElementById('fp-1').style.display='block';
   document.getElementById('fp-2').style.display='none';
   document.getElementById('fp-3').style.display='none';
+}
+function _authFadeIn(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.style.display='flex';
+  // Double rAF ensures browser has painted before transition starts
+  requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('visible'))));
+}
+function _authFadeOut(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove('visible');
+  setTimeout(()=>{if(!el.classList.contains('visible'))el.style.display='none';},450);
 }
 
 function togglePw(id,icon){
@@ -269,25 +282,38 @@ function resetPw(){
 // ENTER APP
 // ============================================================
 function enterApp(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('reg-screen').style.display='none';
-  document.getElementById('forgot-screen').style.display='none';
+  // Fade out all auth screens
+  ['login-screen','reg-screen','forgot-screen'].forEach(id=>_authFadeOut(id));
   var _lay=document.getElementById('landing-layer');
   var _fix=document.getElementById('landing-fixed');
   if(_lay){_lay.style.display='none';}
   if(_fix){_fix.style.display='none';}
-  document.getElementById('app').style.display='flex';
-  document.getElementById('topbar').style.display='flex';
-  const toggleBtn=document.getElementById('sidebar-toggle');
-  if(toggleBtn)toggleBtn.style.display='flex';
-  setTimeout(syncToggleBtn,30);
-  document.getElementById('avatar-img').src=CU.avatar;
-  document.getElementById('avatar-name').textContent=CU.fullname;
-  renderSubjects();renderSchedule();renderExams();loadSlots();
-  updateStreak();renderCalendar();renderAchievements();renderMessages();
-  if(!document.getElementById('chat-msgs-main').children.length)initChat('main');
-  checkDailyStatus();
-  updateXPBar();
+
+  // Fade in app after auth fades out
+  setTimeout(function(){
+    const app=document.getElementById('app');
+    const topbar=document.getElementById('topbar');
+    app.style.opacity='0';
+    app.style.display='flex';
+    topbar.style.opacity='0';
+    topbar.style.display='flex';
+    app.style.transition='opacity 0.4s ease';
+    topbar.style.transition='opacity 0.4s ease';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      app.style.opacity='1';
+      topbar.style.opacity='1';
+    }));
+    const toggleBtn=document.getElementById('sidebar-toggle');
+    if(toggleBtn){toggleBtn.style.display='none';}
+    setTimeout(syncToggleBtn,30);
+    document.getElementById('avatar-img').src=CU.avatar;
+    document.getElementById('avatar-name').textContent=CU.fullname;
+    renderSubjects();renderSchedule();renderExams();loadSlots();
+    updateStreak();renderCalendar();renderAchievements();renderMessages();
+    if(!document.getElementById('chat-msgs-main').children.length)initChat('main');
+    checkDailyStatus();
+    updateXPBar();
+  }, 350);
 }
 
 // ============================================================
@@ -1106,7 +1132,6 @@ function handleChat(msg,t){
   el.appendChild(typingDiv);el.scrollTop=el.scrollHeight;
 }
   
- 
 
 // ============================================================
 // PROFILE
@@ -1253,19 +1278,13 @@ window.clearMessages=clearMessages;
 function toggleSidebar(){
   const sb=document.getElementById('sidebar');
   const overlay=document.getElementById('sidebar-overlay');
-  const btn=document.getElementById('sidebar-toggle');
-  const icon=document.getElementById('sidebar-toggle-icon');
   const isMobile=window.innerWidth<=768;
   const isCollapsed=sb.classList.contains('collapsed');
   sb.classList.toggle('collapsed');
   if(isMobile){
     overlay.classList.toggle('show',isCollapsed);
   }
-  const nowCollapsed=sb.classList.contains('collapsed');
-  if(icon) icon.textContent=nowCollapsed?'▶':'◀';
-  if(btn){
-    btn.style.left=nowCollapsed?'0px':'260px';
-  }
+  syncToggleBtn();
 }
 
 // Update toggle button position on init and resize
@@ -1273,8 +1292,10 @@ function syncToggleBtn(){
   const sb=document.getElementById('sidebar');
   const btn=document.getElementById('sidebar-toggle');
   if(!sb||!btn)return;
+  if(window.innerWidth<=768){btn.style.display='none';return;}
+  btn.style.display='flex';
   const nowCollapsed=sb.classList.contains('collapsed');
-  btn.style.left=nowCollapsed?'0px':'260px';
+  btn.style.left=nowCollapsed?'11px':'260px';
   const icon=document.getElementById('sidebar-toggle-icon');
   if(icon) icon.textContent=nowCollapsed?'▶':'◀';
 }
@@ -1782,6 +1803,8 @@ window.toggleTheme=toggleTheme;
 window.showLogin=showLogin;
 window.showReg=showReg;
 window.showForgot=showForgot;
+window._authFadeIn=_authFadeIn;
+window._authFadeOut=_authFadeOut;
 window.togglePw=togglePw;
 window.loginDemo=loginDemo;
 window.doLogin=doLogin;
@@ -1819,11 +1842,14 @@ window.resetTimer=resetTimer;
 
 
 
+
 // ══ BRIDGE ══
 function showLanding(){
   ['app','topbar','login-screen','reg-screen','forgot-screen'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.style.display='none';
   });
+  var toggleBtn=document.getElementById('sidebar-toggle');
+  if(toggleBtn) toggleBtn.style.display='none';
   var lay=document.getElementById('landing-layer');
   var fix=document.getElementById('landing-fixed');
   if(!lay) return;
@@ -1837,14 +1863,25 @@ function showAppLogin(){
   var lay=document.getElementById('landing-layer');
   var fix=document.getElementById('landing-fixed');
   if(!lay) return;
+
+  // Bắt đầu fade out landing
+  lay.style.transition='opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1)';
+  lay.style.transform='scale(0.97)';
   lay.style.opacity='0';
+
+  // Hiện login screen ĐỒNG THỜI (overlap 150ms) để không có khoảng đen
   setTimeout(function(){
-    lay.style.display='none';
-    if(fix){ fix.style.display='none'; fix.classList.add('hidden'); }
     var ws=document.getElementById('welcome-screen');
     if(ws) ws.style.display='none';
-    document.getElementById('login-screen').style.display='flex';
-  }, 450);
+    _authFadeIn('login-screen');
+  }, 150);
+
+  // Ẩn landing sau khi transition xong
+  setTimeout(function(){
+    lay.style.display='none';
+    lay.style.transform='';
+    if(fix){ fix.style.display='none'; fix.classList.add('hidden'); }
+  }, 560);
 }
 
 window.scrollToSection = function(href){
@@ -1855,7 +1892,6 @@ window.scrollToSection = function(href){
   var layerRect=layer.getBoundingClientRect();
   layer.scrollTo({top: layer.scrollTop+rect.top-layerRect.top-80, behavior:'smooth'});
 };
-
 
 
 
@@ -1971,7 +2007,6 @@ createBubbles();
     reveals.forEach(function(el){el.classList.add('visible');});
   }
 })();
-
 
 
 (function(){

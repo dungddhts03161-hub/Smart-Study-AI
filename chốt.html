@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Study AI</title>
+
+</head>
+<body>
+
+<!-- ══ LANDING FIXED (nav, bg, cursor) ══ -->
+<div id="landing-fixed" style="display:none">
+<!-- Custom cursor -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- Star canvas -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- Nebula bg -->
+<div class="nebula"></div>
+
+<!-- Floating bubbles -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- NAV -->
+<nav id="navbar" class="above">
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">🤖</div>
+    <span class="logo-txt">Smart Study <span>AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="javascript:void(0)" onclick="scrollToSection('#why')">Vấn đề</a>
+    <a href="javascript:void(0)" onclick="scrollToSection('#features')">Tính năng</a>
+    <a href="javascript:void(0)" onclick="scrollToSection('#how')">Cách dùng</a>
+    <a href="javascript:void(0)" onclick="scrollToSection('#team')">Nhóm</a>
+  </div>
+  <a href="javascript:void(0)" onclick="scrollToSection('#cta')" class="nav-cta">Dùng thử ngay</a>
+</nav>
+
+
+</div>
+<!-- ══ LANDING SCROLL CONTENT ══ -->
+<div id="landing-layer">
+<!-- ── HERO ── -->
+<section id="hero" class="above">
+  <div class="hero-orb"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-badge">
+    <div class="blink-dot"></div>
+    AI Young Guru · GOLDEN CODERS · Vòng 1
+  </div>
+
+  <h1 class="hero-title">
+    <span class="line1">Smart Study AI</span>
+    <span class="line2">Học thông minh hơn</span>
+  </h1>
+
+  <div class="hero-quote">
+    "<span>Học thông minh hơn</span> — Không cần học nhiều hơn."
+  </div>
+
+  <p class="hero-sub">
+    Ứng dụng AI tự động tạo lịch học cá nhân hóa, giúp học sinh THCS–THPT
+    quản lý thời gian hiệu quả, giảm stress mùa thi và nâng cao kết quả học tập.
+  </p>
+
+  <div class="hero-actions">
+    <a href="javascript:void(0)" onclick="showAppLogin()" class="btn-primary">
+      🚀 Trải nghiệm ngay
+    </a>
+    <a href="#why" class="btn-secondary">Tìm hiểu thêm ↓</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    CUỘN XUỐNG
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker above">
+  <div class="ticker-track">
+    <div class="tick-item"><span class="tick-star">✦</span> Tự động tạo lịch học</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Cá nhân hóa theo từng người</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Giảm stress mùa thi</div>
+    <div class="tick-item"><span class="tick-star">✦</span> AI Priority Scheduling</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Nhắc nhở deadline</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Cân bằng môn khó – dễ</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Theo dõi tiến độ</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Học sinh THCS – THPT</div>
+    <div class="tick-item"><span class="tick-star">✦</span> GOLDEN CODERS 2026</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Tự động tạo lịch học</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Cá nhân hóa theo từng người</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Giảm stress mùa thi</div>
+    <div class="tick-item"><span class="tick-star">✦</span> AI Priority Scheduling</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Nhắc nhở deadline</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Cân bằng môn khó – dễ</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Theo dõi tiến độ</div>
+    <div class="tick-item"><span class="tick-star">✦</span> Học sinh THCS – THPT</div>
+    <div class="tick-item"><span class="tick-star">✦</span> GOLDEN CODERS 2026</div>
+  </div>
+</div>
+
+<!-- WHY -->
+<section style="padding:110px 60px" class="above">
+  <div id="why">
+    <div class="why-left reveal">
+      <div class="section-label">VẤN ĐỀ CẦN GIẢI QUYẾT</div>
+      <h2 class="why-title">Học sinh đang<br><em>bị quá tải</em></h2>
+      <p class="why-desc">
+        Học sinh THCS và THPT phải học nhiều môn cùng lúc, đặc biệt trong giai đoạn
+        ôn thi. Thiếu kỹ năng quản lý thời gian dẫn đến học dồn, căng thẳng và
+        học lệch môn — ảnh hưởng trực tiếp đến kết quả và sức khỏe tinh thần.
+      </p>
+    </div>
+    <div class="why-cards">
+      <div class="why-card reveal d1">
+        <div class="why-card-num">01</div>
+        <div class="why-card-icon">😰</div>
+        <div class="why-card-title">Học dồn trước kỳ thi</div>
+        <div class="why-card-desc">Phần lớn học sinh bắt đầu ôn thi quá muộn, dẫn đến áp lực cực độ và hiệu quả thấp.</div>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="why-card-num">02</div>
+        <div class="why-card-icon">⏰</div>
+        <div class="why-card-title">Không biết phân bổ thời gian</div>
+        <div class="why-card-desc">Khó biết nên dành bao nhiêu thời gian cho từng môn theo mức độ quan trọng và khó.</div>
+      </div>
+      <div class="why-card reveal d3">
+        <div class="why-card-num">03</div>
+        <div class="why-card-icon">🎯</div>
+        <div class="why-card-title">Smart Study AI giải quyết</div>
+        <div class="why-card-desc">Tự động phân tích, lập lịch thông minh — cân bằng giữa môn khó và dễ, tránh học dồn.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="above" style="padding:0 60px 110px">
+  <div class="section-label reveal">TÍNH NĂNG NỔI BẬT</div>
+  <h2 class="feat-title reveal">Mọi thứ bạn cần<br><em>trong một ứng dụng</em></h2>
+  <p class="feat-sub reveal">Được xây dựng bằng thuật toán AI Priority Scheduling — phân tích và tối ưu lịch học theo từng cá nhân.</p>
+  <div class="feat-grid">
+    <div class="feat-card c1 reveal d1">
+      <div class="feat-icon p">📅</div>
+      <div class="feat-card-title">Tự động tạo lịch học</div>
+      <div class="feat-card-desc">Nhập môn học và thời gian rảnh — AI tạo lịch tối ưu ngay lập tức, không cần tự sắp xếp.</div>
+    </div>
+    <div class="feat-card c2 reveal d2">
+      <div class="feat-icon c">⚡</div>
+      <div class="feat-card-title">Ưu tiên thông minh</div>
+      <div class="feat-card-desc">Thuật toán phân tích mức độ ưu tiên, cân bằng môn khó–dễ, tránh học dồn 1 môn liên tục.</div>
+    </div>
+    <div class="feat-card c3 reveal d3">
+      <div class="feat-icon k">🎯</div>
+      <div class="feat-card-title">Theo dõi tiến độ</div>
+      <div class="feat-card-desc">Cập nhật tiến độ từng môn theo thời gian thực, biết ngay mình đang ở đâu trong kế hoạch.</div>
+    </div>
+    <div class="feat-card c4 reveal d1">
+      <div class="feat-icon b">🔔</div>
+      <div class="feat-card-title">Nhắc nhở deadline</div>
+      <div class="feat-card-desc">Không bao giờ bỏ sót deadline quan trọng với hệ thống nhắc nhở thông minh, đúng lúc.</div>
+    </div>
+    <div class="feat-card c5 reveal d2">
+      <div class="feat-icon v">👤</div>
+      <div class="feat-card-title">Cá nhân hóa hoàn toàn</div>
+      <div class="feat-card-desc">Mỗi học sinh có lịch riêng phù hợp với thời gian rảnh, môn học và mức độ ưu tiên của bản thân.</div>
+    </div>
+    <div class="feat-card c6 reveal d3">
+      <div class="feat-icon g">🧠</div>
+      <div class="feat-card-title">AI nâng cấp liên tục</div>
+      <div class="feat-card-desc">Phiên bản tương lai: Machine Learning học thói quen người dùng, nhắc nhở theo hành vi thật.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="padding:0 60px 110px" class="above">
+  <div id="how" class="reveal">
+    <div class="section-label">CÁCH SỬ DỤNG</div>
+    <h2 class="how-title">Đơn giản,<br><em>hiệu quả ngay</em></h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Đăng nhập hệ thống</div>
+          <div class="step-desc">Truy cập Smart Study AI và đăng nhập. Tài khoản dùng thử: <strong style="color:var(--cyan)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="573f3836393033362338343538676e17303a363e3b7934383a">[email&#160;protected]</a></strong> / mật khẩu: <strong style="color:var(--cyan)">123456</strong></div>
+        </div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Nhập môn học & thời gian rảnh</div>
+          <div class="step-desc">Thêm các môn học, thiết lập deadline và chọn mức độ ưu tiên cho từng môn theo tầm quan trọng của bạn.</div>
+        </div>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Nhấn "Tạo lịch" — AI làm phần còn lại</div>
+          <div class="step-desc">Hệ thống phân tích dữ liệu và tạo lịch học tối ưu hiển thị theo từng ngày. Cân bằng môn khó–dễ tự động.</div>
+        </div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">Học theo lịch & cập nhật tiến độ</div>
+          <div class="step-desc">Thực hiện kế hoạch, cập nhật tiến độ liên tục. Smart Study AI nhắc nhở và điều chỉnh theo thực tế của bạn.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="above" style="padding:0 60px 110px">
+  <div class="section-label reveal">ĐỘI NGŨ PHÁT TRIỂN</div>
+  <h2 class="team-title reveal">Nhóm<br><em>Golden Coders</em></h2>
+  <p class="team-sub reveal">FPT PolySchool HCM · AI Young Guru 2026</p>
+  <div class="team-grid">
+    <div class="member-card reveal d1">
+      <div class="member-avatar">👩‍💻</div>
+      <div class="member-name">Dương Đoàn Hoàng Dung</div>
+      <div class="member-role">Đại diện nhóm · Lead Developer</div>
+    </div>
+    <div class="member-card reveal d2">
+      <div class="member-avatar">👩‍🎨</div>
+      <div class="member-name">Trần Ngọc Diễm Huyền</div>
+      <div class="member-role">UI/UX Designer · Content</div>
+    </div>
+    <div class="member-card reveal d3">
+      <div class="member-avatar">👨‍💻</div>
+      <div class="member-name">Lê Nguyễn Hoàng Đạt</div>
+      <div class="member-role">AI Algorithm · Backend Logic</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="above">
+  <div class="cta-box reveal">
+    <div class="cta-badge">🚀 Thử ngay miễn phí</div>
+    <h2 class="cta-title">Bắt đầu học<br><em>thông minh hơn</em></h2>
+    <p class="cta-sub">Miễn phí<span>·</span>Không cần cài đặt<span>·</span>Dùng ngay trên web</p>
+    <a href="javascript:void(0)" onclick="showAppLogin()" class="btn-primary" style="font-size:16px;padding:16px 38px">
+      🤖 Trải nghiệm Smart Study AI
+    </a>
+    <div class="cta-info">
+      <div class="cta-info-item">📧 <a href="/cdn-cgi/l/email-protection#563223383132323e2225666567606716313b373f3a7835393b"><span class="__cf_email__" data-cfemail="ddb9a8b3bab9b9b5a9aeedeeecebec9dbab0bcb4b1f3beb2b0">[email&#160;protected]</span></a></div>
+      <div class="cta-info-item">📞 <a href="tel:0981427438">0981427438</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="f-brand-logo">
+      <div class="f-logo-icon">🤖</div>
+      <span class="f-logo-txt">Smart Study <span>AI</span></span>
+    </div>
+    <p class="f-desc">Trợ lý học tập thông minh — tự động lên lịch, cá nhân hóa và đồng hành cùng học sinh trên hành trình chinh phục kỳ thi.</p>
+  </div>
+  <div>
+    <div class="f-col-title">TÍNH NĂNG</div>
+    <div class="f-links">
+      <a href="#">Tạo lịch học AI</a>
+      <a href="#">Quản lý deadline</a>
+      <a href="#">Theo dõi tiến độ</a>
+      <a href="#">Nhắc nhở thông minh</a>
+    </div>
+  </div>
+  <div>
+    <div class="f-col-title">THÔNG TIN</div>
+    <div class="f-links">
+      <a href="#">Về Golden Coders</a>
+      <a href="#">AI Young Guru 2026</a>
+      <a href="/cdn-cgi/l/email-protection#fb9f8e959c9f9f938f88cbc8cacdcabb9c969a9297d5989496">Email liên hệ</a>
+      <a href="tel:0981427438">0981427438</a>
+    </div>
+  </div>
+</footer>
+<div class="f-bottom above">
+  <span>© 2026 Smart Study AI · Golden Coders · FPT PolySchool HCM</span>
+  <span>Xây dựng cho <a href="#">AI Young Guru</a></span>
+</div>
+</div>
+
+
+<!-- ===== TOPBAR ===== -->
+<div id="topbar">
+  <button id="theme-btn" title="Chuyển sáng/tối">🌙</button>
+  <div id="avatar-wrap">
+    <img id="avatar-img" src="" alt="Avatar">
+    <span id="avatar-name"></span>
+    <div id="avatar-menu">
+      <div class="menu-item" onclick="openProfile()">👤 Hồ sơ</div>
+      <div class="menu-item" onclick="openSecurity()">🔒 Bảo mật</div>
+      <div class="menu-item menu-item-logout" onclick="doLogout()">🚪 Đăng xuất</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILE MODAL ===== -->
+<div class="modal-bg" id="profile-modal" onclick="if(event.target===this)closeProfile()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProfile()">✕</button>
+      <img class="modal-avatar" id="pm-avatar" src="" alt="">
+      <div class="modal-name" id="pm-name"></div>
+      <div class="modal-email" id="pm-email"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">📊 Thống kê</div>
+      <div class="stat-grid-2">
+        <div class="stat-card-sm"><div class="s-icon">🔥</div><div class="s-val" id="pm-streak">0</div><div class="s-lbl">Chuỗi ngày</div></div>
+        <div class="stat-card-sm"><div class="s-icon">📚</div><div class="s-val" id="pm-days">0</div><div class="s-lbl">Tổng ngày học</div></div>
+        <div class="stat-card-sm"><div class="s-icon">⏱️</div><div class="s-val" id="pm-hours">0</div><div class="s-lbl">Giờ học</div></div>
+        <div class="stat-card-sm"><div class="s-icon">🏆</div><div class="s-val" id="pm-longest">0</div><div class="s-lbl">Chuỗi dài nhất</div></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">🎨 Đổi Avatar</div>
+      <div class="avatar-grid" id="pm-avatar-grid"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ℹ️ Tài khoản</div>
+      <div class="info-row"><span class="info-lbl">Môn học</span><span class="info-val" id="pm-subjects">0</span></div>
+      <div class="info-row"><span class="info-lbl">Giới tính</span><span class="info-val" id="pm-gender">-</span></div>
+      <div class="info-row"><span class="info-lbl">Ngày tạo</span><span class="info-val" id="pm-created">-</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECURITY MODAL ===== -->
+<div class="modal-bg" id="security-modal" onclick="if(event.target===this)closeSecurity()">
+  <div class="modal-box">
+    <div class="modal-head" id="sec-modal-head">
+      <button class="modal-close" onclick="closeSecurity()">✕</button>
+      <div style="font-size:42px;margin-bottom:10px">🔒</div>
+      <div class="modal-name">Bảo mật tài khoản</div>
+      <div class="modal-email">Quản lý mật khẩu & thiết bị</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="sec-modal-tabs">
+      <div class="sec-modal-tab active" onclick="switchSecModal('pw',this)">🔑 Đổi mật khẩu</div>
+      <div class="sec-modal-tab" onclick="switchSecModal('device',this)">📱 Thiết bị</div>
+    </div>
+
+    <!-- Panel: Đổi mật khẩu -->
+    <div class="sec-modal-panel active" id="sec-panel-pw">
+      <div style="display:flex;align-items:center;gap:10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:#1e40af">
+        <span style="font-size:20px">💡</span>
+        <span>Mật khẩu mạnh giúp bảo vệ tài khoản. Không chia sẻ với ai nhé!</span>
+      </div>
+
+      <div class="sec-field">
+        <label>Mật khẩu hiện tại</label>
+        <div class="sec-field-input">
+          <input type="password" id="sm-cur" placeholder="Nhập mật khẩu hiện tại...">
+          <span class="sec-toggle-pw" onclick="smToggle('sm-cur',this)">👁️</span>
+        </div>
+        <div class="sec-field-err" id="sm-cur-err"></div>
+      </div>
+
+      <div class="sec-field">
+        <label>Mật khẩu mới</label>
+        <div class="sec-field-input">
+          <input type="password" id="sm-new" placeholder="Nhập mật khẩu mới..." oninput="smStrength(this.value)">
+          <span class="sec-toggle-pw" onclick="smToggle('sm-new',this)">👁️</span>
+        </div>
+        <div class="pw-strength-track"><div class="pw-strength-fill" id="sm-str-fill"></div></div>
+        <div class="pw-strength-label" id="sm-str-label"></div>
+      </div>
+
+      <div class="pw-checklist">
+        <div class="pw-check-item" id="sm-r1"><span class="pw-check-icon">✓</span>Ít nhất 6 ký tự</div>
+        <div class="pw-check-item" id="sm-r2"><span class="pw-check-icon">✓</span>Có chữ hoa (A-Z)</div>
+        <div class="pw-check-item" id="sm-r3"><span class="pw-check-icon">✓</span>Có chữ số (0-9)</div>
+      </div>
+
+      <div class="sec-field">
+        <label>Xác nhận mật khẩu mới</label>
+        <div class="sec-field-input">
+          <input type="password" id="sm-conf" placeholder="Nhập lại mật khẩu mới...">
+          <span class="sec-toggle-pw" onclick="smToggle('sm-conf',this)">👁️</span>
+        </div>
+        <div class="sec-field-err" id="sm-conf-err"></div>
+      </div>
+
+      <button class="sec-submit-btn" id="sm-btn" onclick="smSubmit()">🔐 Cập nhật mật khẩu</button>
+
+      <div class="sec-toast" id="sm-toast">
+        <span class="sec-toast-icon">✅</span>
+        <div class="sec-toast-text">
+          <strong>Đổi mật khẩu thành công!</strong>
+          <span>Mật khẩu của bạn đã được cập nhật an toàn.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Thiết bị -->
+    <div class="sec-modal-panel" id="sec-panel-device">
+      <div class="device-card current">
+        <div class="device-icon">💻</div>
+        <div class="device-info">
+          <div class="device-name">Thiết bị hiện tại</div>
+          <div class="device-meta" id="sm-device-info">Đang tải...</div>
+          <div class="device-meta" id="sm-login-time"></div>
+        </div>
+        <span class="badge-active">● Đang dùng</span>
+      </div>
+      <div style="font-size:12px;color:#999;text-align:center;padding:8px 0 14px">Chỉ có 1 thiết bị đang đăng nhập</div>
+      <button class="sec-danger-btn" onclick="smLogoutAll()">🚪 Đăng xuất tất cả thiết bị</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<canvas id="auth-stars" style="position:fixed;inset:0;z-index:9499;pointer-events:none;display:none"></canvas>
+<div id="login-screen" class="auth-screen" style="display:none">
+  <div class="login-box">
+    <div class="login-header">
+      <h1>🤖 SMART STUDY AI</h1>
+      <p>Đăng nhập để tiếp tục</p>
+    </div>
+
+    <!-- Demo account card -->
+    <div class="demo-card" onclick="loginDemo()" title="Nhấn để đăng nhập ngay!">
+      <div class="demo-badge">✨ Demo</div>
+      <div class="demo-card-title">🎯 Tài khoản dùng thử</div>
+      <div class="demo-info">
+        <div class="demo-row">
+          <span class="demo-label">📧 Email</span>
+          <span class="demo-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3e3f37351a292e2f3e233b33742c34">[email&#160;protected]</a></span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-label">🔑 Mật khẩu</span>
+          <span class="demo-value">demo123</span>
+        </div>
+      </div>
+      <div class="demo-click-hint">👆 Nhấn vào đây để đăng nhập tự động!</div>
+    </div>
+
+    <div class="divider">hoặc đăng nhập tài khoản của bạn</div>
+
+    <div class="form-group"><label>Email</label><input type="email" id="l-email" placeholder="example@gmail.com"><div class="err-msg" id="l-email-err"></div></div>
+    <div class="form-group"><label>Mật khẩu</label>
+      <div class="pw-wrap"><input type="password" id="l-pw" placeholder="Nhập mật khẩu">
+        <span class="pw-eye" onclick="togglePw('l-pw',this)"><svg viewBox="0 0 24 24"><path class="eo" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/><path class="ec" style="display:none" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg></span>
+      </div>
+      <div class="err-msg" id="l-pw-err"></div>
+    </div>
+    <p style="text-align:right;margin-bottom:12px"><a href="#" onclick="showForgot();return false" style="color:#22d3ee;font-size:13px">Quên mật khẩu?</a></p>
+    <button class="btn btn-primary" onclick="doLogin()" style="width:100%;padding:13px">Đăng nhập</button>
+    <p style="text-align:center;margin-top:13px;font-size:13px;color:#8892b0">Chưa có tài khoản? <a href="#" onclick="showReg();return false" style="color:#22d3ee;font-weight:600">Đăng ký</a></p>
+  </div>
+  <a class="btn-back-landing" onclick="showLanding()">← Quay về trang giới thiệu</a>
+</div>
+
+<!-- ===== REGISTER ===== -->
+<div id="reg-screen" class="auth-screen" style="display:none">
+  <div class="login-box">
+    <div class="login-header"><h1>🤖 SMART STUDY AI</h1><p>Tạo tài khoản mới</p></div>
+    <div class="form-group"><label>Họ và tên</label><input type="text" id="r-name" placeholder="Nguyễn Văn A"><div class="err-msg" id="r-name-err"></div></div>
+    <div class="form-group"><label>Email</label><input type="email" id="r-email" placeholder="example@gmail.com"><div class="err-msg" id="r-email-err"></div></div>
+    <div class="form-group"><label>Giới tính</label><select id="r-gender"><option value="">Chọn giới tính</option><option value="male">Nam</option><option value="female">Nữ</option></select><div class="err-msg" id="r-gender-err"></div></div>
+    <div class="form-group"><label>Mật khẩu</label>
+      <div class="pw-wrap"><input type="password" id="r-pw" placeholder="Ít nhất 6 ký tự">
+        <span class="pw-eye" onclick="togglePw('r-pw',this)"><svg viewBox="0 0 24 24"><path class="eo" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/><path class="ec" style="display:none" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg></span>
+      </div>
+      <div class="err-msg" id="r-pw-err"></div>
+    </div>
+    <div class="form-group"><label>Xác nhận mật khẩu</label>
+      <div class="pw-wrap"><input type="password" id="r-cpw" placeholder="Nhập lại mật khẩu">
+        <span class="pw-eye" onclick="togglePw('r-cpw',this)"><svg viewBox="0 0 24 24"><path class="eo" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/><path class="ec" style="display:none" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg></span>
+      </div>
+      <div class="err-msg" id="r-cpw-err"></div>
+    </div>
+    <button class="btn btn-primary" onclick="doRegister()" style="width:100%;padding:13px;margin-top:8px">Đăng ký</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:#8892b0">Đã có tài khoản? <a href="#" onclick="showLogin();return false" style="color:#22d3ee;font-weight:600">Đăng nhập</a></p>
+  </div>
+  <a class="btn-back-landing" onclick="showLanding()">← Quay về trang giới thiệu</a>
+</div>
+
+<!-- ===== FORGOT PASSWORD ===== -->
+<div id="forgot-screen" class="auth-screen" style="display:none">
+  <div class="login-box">
+    <div class="login-header"><h1>🔑 Quên Mật Khẩu</h1></div>
+    <div id="fp-1">
+      <div class="form-group"><label>Email đã đăng ký</label><input type="email" id="fp-email" placeholder="example@gmail.com"><div class="err-msg" id="fp-email-err"></div></div>
+      <button class="btn btn-primary" onclick="sendOTP()" style="width:100%;padding:13px">Gửi mã OTP</button>
+      <p style="text-align:center;margin-top:12px;font-size:13px"><a href="#" onclick="showLogin();return false" style="color:#22d3ee">← Quay lại</a></p>
+    </div>
+    <div id="fp-2" style="display:none">
+      <div class="otp-display"><p style="color:#8892b0;font-size:12px;margin:0">Mã OTP:</p><div class="otp-code" id="otp-show"></div></div>
+      <div class="otp-inputs">
+        <input class="otp-input" maxlength="1" id="o1" oninput="moveNext(this,'o2')" onkeydown="movePrev(event,this,null)">
+        <input class="otp-input" maxlength="1" id="o2" oninput="moveNext(this,'o3')" onkeydown="movePrev(event,this,'o1')">
+        <input class="otp-input" maxlength="1" id="o3" oninput="moveNext(this,'o4')" onkeydown="movePrev(event,this,'o2')">
+        <input class="otp-input" maxlength="1" id="o4" oninput="moveNext(this,'o5')" onkeydown="movePrev(event,this,'o3')">
+        <input class="otp-input" maxlength="1" id="o5" oninput="moveNext(this,'o6')" onkeydown="movePrev(event,this,'o4')">
+        <input class="otp-input" maxlength="1" id="o6" oninput="moveNext(this,null)" onkeydown="movePrev(event,this,'o5')">
+      </div>
+      <div class="err-msg" id="otp-err" style="text-align:center"></div>
+      <button class="btn btn-primary" onclick="verifyOTP()" style="width:100%;padding:13px">Xác nhận</button>
+    </div>
+    <div id="fp-3" style="display:none">
+      <div class="form-group"><label>Mật khẩu mới</label><div class="pw-wrap"><input type="password" id="fp-npw"><span class="pw-eye" onclick="togglePw('fp-npw',this)"><svg viewBox="0 0 24 24"><path class="eo" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/><path class="ec" style="display:none" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg></span></div><div class="err-msg" id="fp-npw-err"></div></div>
+      <div class="form-group"><label>Xác nhận</label><div class="pw-wrap"><input type="password" id="fp-cpw"><span class="pw-eye" onclick="togglePw('fp-cpw',this)"><svg viewBox="0 0 24 24"><path class="eo" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/><path class="ec" style="display:none" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg></span></div><div class="err-msg" id="fp-cpw-err"></div></div>
+      <button class="btn btn-primary" onclick="resetPw()" style="width:100%;padding:13px">Đặt lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<!-- Mobile overlay -->
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<!-- Mobile hamburger -->
+<button id="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+<!-- Desktop sidebar toggle (outside sidebar so it's always visible) -->
+<button id="sidebar-toggle" onclick="toggleSidebar()" title="Thu/mở sidebar">
+  <span id="sidebar-toggle-icon">◀</span>
+</button>
+
+<div class="container" id="app" style="display:none">
+  <div class="sidebar" id="sidebar">
+    <h1>🤖 SMART STUDY AI</h1>
+    <!-- XP Level Bar -->
+    <div id="sidebar-xp" style="margin:-8px 0 16px;background:rgba(255,255,255,.1);border-radius:12px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span id="xp-level-badge" style="font-size:12px;font-weight:700;color:#ffd700">⭐ Level 1 – Newbie</span>
+        <span id="xp-val" style="font-size:11px;color:rgba(255,255,255,.7)">0 XP</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden">
+        <div id="xp-bar" style="height:100%;background:linear-gradient(90deg,#ffd700,#ff8c00);border-radius:3px;width:0%;transition:width .5s"></div>
+      </div>
+    </div>
+    <div class="sidebar-item" onclick="gotoSection('setup',this)"><span>⚙️</span>Thiết lập AI</div>
+    <div class="sidebar-item active" onclick="gotoSection('schedule',this)"><span>📅</span>Lịch học</div>
+    <div class="sidebar-item" onclick="gotoSection('exam',this)"><span>📝</span>Ngày thi</div>
+    <div class="sidebar-item" onclick="gotoSection('messages',this)"><span>📬</span>Thư</div>
+    <div class="sidebar-item" onclick="gotoSection('timer',this)"><span>⏱️</span>Pomodoro</div>
+    <div class="sidebar-item" onclick="gotoSection('streak',this)"><span>🔥</span>Chuỗi ngày</div>
+    <div class="sidebar-item" onclick="gotoSection('analytics',this)"><span>📊</span>Phân tích</div>
+    <div class="sidebar-item" onclick="gotoSection('chat-sec',this)"><span>💬</span>Trợ lý AI</div>
+  </div>
+  <div class="main-content">
+    <div id="setup-section" style="display:none">
+      <div class="header"><h2>⚙️ Thiết Lập AI</h2></div>
+
+      <!-- AI Personalization Card -->
+      <div class="card" style="border:2px solid #667eea;background:linear-gradient(135deg,rgba(102,126,234,.06),rgba(118,75,162,.06))">
+        <h3 style="color:#667eea">🧠 Cá Nhân Hóa AI</h3>
+        <p style="font-size:13px;color:#888;margin-bottom:16px">Thông tin này giúp AI hiểu thói quen của bạn để tạo lịch thông minh hơn.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>⏰ Giờ tập trung tốt nhất</label>
+            <select id="s-peak" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid #d1d5db;font-size:14px;color:#222;background:#f4f5f8;outline:none">
+              <option value="06">🌅 6:00 – 8:00 (Sáng sớm)</option>
+              <option value="09">☀️ 9:00 – 11:00 (Buổi sáng)</option>
+              <option value="14">🌤️ 14:00 – 16:00 (Chiều)</option>
+              <option value="18" selected>🌆 18:00 – 20:00 (Chiều tối)</option>
+              <option value="20">🌙 20:00 – 22:00 (Tối)</option>
+              <option value="22">🦉 22:00+ (Khuya)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>📖 Phong cách học</label>
+            <select id="s-style" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid #d1d5db;font-size:14px;color:#222;background:#f4f5f8;outline:none">
+              <option value="intensive">⚡ Tập trung cao độ (ít buổi, dài)</option>
+              <option value="balanced" selected>⚖️ Cân bằng (trung bình)</option>
+              <option value="spread">🌊 Dàn trải (nhiều buổi, ngắn)</option>
+            </select>
+          </div>
+        </div>
+        <div id="ai-profile-badge" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(102,126,234,.1);border-radius:10px;font-size:13px;color:#667eea;font-weight:600"></div>
+      </div>
+
+      <div class="card"><h3>📚 Quản Lý Môn Học</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Tên môn học</label><input type="text" id="s-name" placeholder="Toán, Văn, Anh..."></div>
+          <div class="form-group"><label>Điểm hiện tại (0-10)</label><input type="number" id="s-score" min="0" max="10" step="0.5" placeholder="7.5"></div>
+        </div>
+        <div class="form-row" style="margin-top:8px">
+          <div class="form-group">
+            <label>🎯 Tự đánh giá trình độ</label>
+            <select id="s-selfrating" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid #d1d5db;font-size:14px;color:#222;background:#f4f5f8;outline:none">
+              <option value="25">😰 Yếu – Cần học nhiều (25%)</option>
+              <option value="50" selected>😐 Trung bình (50%)</option>
+              <option value="75">😊 Khá – Cần ôn lại (75%)</option>
+              <option value="90">💪 Giỏi – Chỉ cần duy trì (90%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>⏱️ Thời gian học 1 chương (phút)</label>
+            <input type="number" id="s-chaptime" min="15" max="120" step="5" placeholder="45" value="45">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addSubject()" style="width:100%;margin-top:12px">➕ Thêm môn</button>
+        <div style="margin-top:20px;padding-top:16px;border-top:2px solid #e0e0e0"><h4 style="margin-bottom:12px;color:#667eea;font-size:14px">Danh sách:</h4><div id="subj-list"></div></div>
+      </div>
+      <div class="card"><h3>🕐 Thời Gian Rảnh</h3>
+        <p style="color:#666;font-size:13px;margin-bottom:12px">Nhập khung giờ (18:00-21:00)</p>
+        <div class="slot-grid" id="slot-grid"></div>
+        <button class="btn btn-primary" onclick="saveSlots()" style="width:100%;margin-top:16px">💾 Lưu</button>
+      </div>
+      <button class="btn btn-primary" onclick="generateSchedule()" style="width:100%;padding:14px;font-size:15px">🤖 Tạo Lịch Học Tự Động với AI</button>
+    </div>
+    <div id="schedule-section">
+      <div class="header">
+        <h2>📖 Lịch Học</h2>
+      </div>
+
+      <!-- DAY VIEW -->
+      <div id="sch-day-view">
+        <!-- Stats bar + tabs on same row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+          <div class="day-stats-bar" id="day-stats-bar" style="margin-bottom:0"></div>
+          <div class="sch-view-tabs">
+            <button class="sch-view-btn active" id="btn-view-day" onclick="switchSchView('day')">Ngày</button>
+            <button class="sch-view-btn" id="btn-view-week" onclick="switchSchView('week')">Tuần</button>
+          </div>
+        </div>
+        <!-- Timeline -->
+        <div class="day-timeline" id="day-timeline"></div>
+      </div>
+
+      <!-- WEEK VIEW -->
+      <div id="sch-week-view" style="display:none">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <div class="sch-view-tabs">
+            <button class="sch-view-btn" id="btn-view-day2" onclick="switchSchView('day')">Ngày</button>
+            <button class="sch-view-btn active" id="btn-view-week2" onclick="switchSchView('week')">Tuần</button>
+          </div>
+        </div>
+        <div class="card sch-wrap"><table id="sch-table"><thead><tr><th>Buổi</th><th>Thứ 2</th><th>Thứ 3</th><th>Thứ 4</th><th>Thứ 5</th><th>Thứ 6</th><th>Thứ 7</th><th>CN</th></tr></thead><tbody id="sch-body"></tbody></table></div>
+      </div>
+    </div>
+    <div id="exam-section" style="display:none">
+      <div class="header"><h2>📝 Ngày Thi</h2></div>
+      <div class="card"><h3>Thêm kỳ thi</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Tên kỳ thi</label><input type="text" id="e-name" placeholder="Thi vào 10..."></div>
+          <div class="form-group"><label>Ngày thi</label><input type="date" id="e-date"></div>
+        </div>
+        <button class="btn btn-primary" onclick="addExam()" style="width:100%;margin-top:12px">➕ Thêm</button>
+        <div style="margin-top:20px;padding-top:16px;border-top:2px solid #e0e0e0"><h4 style="margin-bottom:12px;color:#667eea;font-size:14px">Danh sách:</h4><div id="exam-list"></div></div>
+      </div>
+    </div>
+    <div id="messages-section" style="display:none">
+      <div class="header" style="flex-wrap:wrap;gap:12px;padding-right:220px">
+        <h2>📬 Thông Báo</h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div class="msg-filter-tabs" id="msg-filter-tabs">
+            <button class="msg-ftab active" onclick="filterMsgs('all',this)">Tất cả</button>
+            <button class="msg-ftab" onclick="filterMsgs('subject',this)">Theo môn</button>
+            <button class="msg-ftab" onclick="filterMsgs('warning',this)">⚠️ Cảnh báo</button>
+            <button class="msg-ftab" onclick="filterMsgs('success',this)">✅ Đạt</button>
+            <button class="msg-ftab" onclick="filterMsgs('fail',this)">❌ Chưa đạt</button>
+          </div>
+          <button onclick="clearMessages()" style="padding:6px 14px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;color:#888;font-size:12px;cursor:pointer;font-weight:600;transition:.2s;white-space:nowrap" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='#e5e7eb';this.style.color='#888'">🗑️ Xóa hết</button>
+        </div>
+      </div>
+      <!-- Subject overview cards -->
+      <div id="msg-subject-overview"></div>
+      <!-- Message list -->
+      <div id="msg-list"></div>
+    </div>
+    <div id="timer-section" style="display:none">
+      <div class="header"><h2>⏱️ Pomodoro</h2></div>
+      <div class="timer-box">
+        <h3>⏰ Đồng hồ học tập</h3>
+        <div class="timer-clock" id="timer-disp">45:00</div>
+        <div id="timer-status">Sẵn sàng</div>
+        <div class="timer-ctrl">
+          <button class="btn btn-primary" onclick="startTimer()">▶️ Bắt đầu</button>
+          <button class="btn btn-secondary" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+          <button class="btn btn-secondary" onclick="resetTimer()">🔄 Đặt lại</button>
+        </div>
+        <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="setTimer(45)">45p học</button>
+          <button class="btn btn-secondary" onclick="setTimer(5)">5p nghỉ</button>
+          <button class="btn btn-secondary" onclick="setTimer(10)">10p nghỉ</button>
+        </div>
+      </div>
+
+      <!-- ===== MUSIC PLAYER ===== -->
+      <div class="music-player" id="music-player">
+        <div class="mp-header">
+          <span class="mp-header-icon">🎵</span>
+          <span class="mp-header-title">Nhạc Học Tập</span>
+          <span class="mp-header-badge">LO-FI CHILL</span>
+        </div>
+        <div class="mp-now-playing">
+          <div class="mp-cover" id="mp-cover" style="background:linear-gradient(135deg,#667eea,#764ba2)">
+            <span class="mp-cover-inner" id="mp-cover-emoji">☕</span>
+            <div class="mp-cover-ring"></div>
+          </div>
+          <div class="mp-info">
+            <div class="mp-track-name" id="mp-track-name">Chọn bài để bắt đầu</div>
+            <div class="mp-track-artist" id="mp-track-artist">Smart Study AI</div>
+            <div class="mp-track-mood" id="mp-track-mood">🌙 Chill &amp; Focus</div>
+          </div>
+          <div class="mp-visualizer" id="mp-visualizer">
+            <div class="mp-bar" style="height:14px;--dur:.5s"></div>
+            <div class="mp-bar" style="height:22px;--dur:.7s"></div>
+            <div class="mp-bar" style="height:18px;--dur:.4s"></div>
+            <div class="mp-bar" style="height:26px;--dur:.6s"></div>
+            <div class="mp-bar" style="height:16px;--dur:.8s"></div>
+          </div>
+        </div>
+        <div class="mp-progress-area">
+          <div class="mp-progress-track" id="mp-prog-track" onclick="mpSeek(event)">
+            <div class="mp-progress-fill" id="mp-prog-fill" style="width:0%"></div>
+          </div>
+          <div class="mp-time">
+            <span id="mp-cur-time">0:00</span>
+            <span id="mp-dur-time">∞</span>
+          </div>
+        </div>
+        <div class="mp-controls">
+          <button class="mp-btn" onclick="mpPrev()" title="Bài trước">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button class="mp-btn mp-btn-play" id="mp-play-btn" onclick="mpToggle()">
+            <svg id="mp-play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="mp-btn" onclick="mpNext()" title="Bài tiếp">
+            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 3.89V8.11z"/><path d="M16 6h2v12h-2z"/></svg>
+          </button>
+          <button class="mp-btn" id="mp-loop-btn" onclick="mpToggleLoop()" title="Lặp lại" style="margin-left:8px">
+            <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+          </button>
+        </div>
+        <div class="mp-volume">
+          <span class="mp-vol-icon" id="mp-vol-icon" onclick="mpToggleMute()">🔊</span>
+          <div class="mp-vol-track">
+            <div class="mp-vol-fill" id="mp-vol-fill"></div>
+            <input type="range" class="mp-vol-input" id="mp-vol-range" min="0" max="100" value="70" oninput="mpSetVolume(this.value)">
+          </div>
+        </div>
+        <div class="mp-playlist">
+          <div class="mp-playlist-title">🎧 Danh sách phát</div>
+          <div id="mp-track-list"></div>
+        </div>
+      </div>
+    </div>
+    <div id="streak-section" style="display:none">
+      <div class="header"><h2>🔥 Chuỗi Ngày</h2></div>
+      <div class="streak-hero"><div class="flame">🔥</div><div class="streak-num" id="streak-cur">0</div><div style="font-size:16px;font-weight:600;letter-spacing:2px">NGÀY CHUỖI</div><div style="margin-top:14px;font-size:14px;opacity:.95" id="streak-msg">Hoàn thành ít nhất 1 buổi hôm nay!</div></div>
+      <div class="streak-stats">
+        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="streak-total">0</div><div class="stat-lbl">Tổng ngày</div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="streak-longest">0</div><div class="stat-lbl">Chuỗi dài nhất</div></div>
+        <div class="stat-card"><div class="stat-icon">❄️</div><div class="stat-val" id="streak-freeze">0</div><div class="stat-lbl">Đóng băng</div></div>
+      </div>
+      <div class="card">
+        <div class="cal-title-row">
+          <div class="cal-title-text">📅 Lịch sử</div>
+          <div class="cal-nav" style="margin-left:auto;margin-bottom:0">
+            <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+            <div class="cal-month-label" id="cal-title"></div>
+            <button class="cal-nav-btn" onclick="calNext()">›</button>
+          </div>
+        </div>
+        <div class="cal-header-row" id="cal-dow-row"></div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-legend">
+          <div class="legend-item"><div class="legend-dot done"></div><span>Đã điểm danh</span></div>
+          <div class="legend-item"><div class="legend-dot freeze"></div><span>Đóng băng chuỗi</span></div>
+          <div class="legend-item"><div class="legend-dot miss"></div><span>Nghỉ</span></div>
+          <div class="legend-item"><div class="legend-dot today"></div><span>Hôm nay</span></div>
+        </div>
+      </div>
+      <div class="card"><h3>🛒 Cửa Hàng</h3>
+        <div class="shop-item"><div class="item-icon">❄️</div><div class="item-info"><div class="item-name">Đóng băng chuỗi</div><div class="item-desc">Giữ chuỗi khi bỏ 1 ngày</div></div><button class="btn btn-primary" onclick="buyFreeze()">10🔥</button></div>
+        <div class="shop-item"><div class="item-icon">🎁</div><div class="item-info"><div class="item-name">Phần thưởng bí ẩn</div><div class="item-desc">Nhận thông điệp đặc biệt</div></div><button class="btn btn-primary" onclick="buyReward()">15🔥</button></div>
+        <div class="shop-item"><div class="item-icon">🏅</div><div class="item-info"><div class="item-name">Huy hiệu danh dự</div><div class="item-desc">Mở khóa huy hiệu</div></div><button class="btn btn-primary" onclick="buyBadge()">30🔥</button></div>
+      </div>
+      <div class="card"><h3>🏆 Thành Tựu</h3><div class="ach-grid" id="ach-grid"></div></div>
+    </div>
+    <div id="analytics-section" style="display:none">
+      <div class="header"><h2>📊 Phân Tích AI</h2></div>
+      
+      <!-- AI Prediction Card -->
+      <div class="card" style="border:2px solid #10b981;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(52,211,153,.04));margin-bottom:20px">
+        <h3 style="color:#10b981">🤖 Dự Đoán AI</h3>
+        <div id="ai-prediction" style="font-size:14px;color:#555;line-height:1.8">Đang phân tích dữ liệu...</div>
+      </div>
+
+      <!-- XP Level Card -->
+      <div class="card" style="border:2px solid #ffd700;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.05));margin-bottom:20px">
+        <h3 style="color:#f59e0b">⭐ Gamification – Cấp độ của bạn</h3>
+        <div id="analytics-xp" style="font-size:14px"></div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="ov-card"><div class="ov-icon">📚</div><div><div class="ov-lbl">Tổng buổi</div><div class="ov-val" id="an-total">0</div></div></div>
+        <div class="ov-card"><div class="ov-icon">✅</div><div><div class="ov-lbl">Hoàn thành</div><div class="ov-val" id="an-done">0</div></div></div>
+        <div class="ov-card"><div class="ov-icon">📈</div><div><div class="ov-lbl">Tỷ lệ</div><div class="ov-val" id="an-rate">0%</div></div></div>
+        <div class="ov-card"><div class="ov-icon">⏱️</div><div><div class="ov-lbl">Thời gian</div><div class="ov-val" id="an-time">0h</div></div></div>
+      </div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📈 Tiến Độ</h3><canvas id="chart-progress"></canvas></div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📊 Theo Môn</h3><canvas id="chart-subject"></canvas></div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📅 Hoạt Động Tuần</h3><canvas id="chart-weekly"></canvas></div>
+      <div class="card" style="overflow-x:auto"><h3 style="margin-bottom:16px">📋 Chi Tiết</h3><table class="det-table"><thead><tr><th>Môn</th><th>Điểm</th><th>Tự đánh giá</th><th>Buổi</th><th>Hoàn thành</th><th>Tỷ lệ</th></tr></thead><tbody id="an-tbody"></tbody></table></div>
+    </div>
+    <div id="chat-sec-section" style="display:none">
+      <div class="header"><h2>💬 Trợ Lý AI</h2></div>
+      <div class="chat-window open sidebar-chat">
+        <div class="chat-header"><div><h3 style="margin:0;font-size:15px">🤖 AI Trợ Lý</h3><small>Luôn sẵn sàng!</small></div></div>
+        <div class="chat-msgs" id="chat-msgs-main"></div>
+        <div class="chat-input-row"><input type="text" id="chat-in-main" placeholder="Nhắn gì đó..." onkeypress="if(event.key==='Enter')sendChat('main')"><button onclick="sendChat('main')">Gửi</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Chat -->
+<div class="chat-fab">
+  <button class="chat-fab-btn" id="fab-btn" onclick="toggleFab()">💬</button>
+  <div class="chat-window" id="fab-win">
+    <div class="chat-header"><div><h3 style="margin:0;font-size:15px">🤖 Hỗ trợ nhanh</h3></div><button onclick="toggleFab()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer">✕</button></div>
+    <div class="chat-msgs" id="chat-msgs-fab"></div>
+    <div class="chat-input-row"><input type="text" id="chat-in-fab" placeholder="Nhắn gì đó..." onkeypress="if(event.key==='Enter')sendChat('fab')"><button onclick="sendChat('fab')">Gửi</button></div>
+  </div>
+</div>
+
+<!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script> -->
+
+
+
+
+
+
+
+
+
+</body>
+</html>
