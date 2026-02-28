@@ -1261,11 +1261,9 @@ body.dark .card .form-group select {
 /* ===== CONTAINER ===== */
 .container {
   display: flex;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
   min-height: 100vh;
   background: #fff;
-  box-shadow: 0 0 50px rgba(0, 0, 0, .3);
   position: relative
 }
 
@@ -3689,6 +3687,9 @@ body.dark .info-val {
 
 
 
+
+
+
 #landing-css {}
 
 
@@ -4007,7 +4008,7 @@ body.dark .info-val {
     filter: blur(40px) brightness(.95) hue-rotate(-10deg)
   }
 
-  
+ 
 }
 
 /* ── BUBBLES ── */
@@ -4031,7 +4032,7 @@ body.dark .info-val {
   animation: floatUp linear infinite;
 }
 
-@keyframes floatUp {
+ @keyframes floatUp {
   0% {
     transform: translateY(110vh) scale(.8);
     opacity: 0
@@ -4045,12 +4046,12 @@ body.dark .info-val {
     opacity: .6
   }
 
-  landing-layer 100% {
+  \landing-layer 100% {
     transform: translateY(-20vh) scale(1.1);
     opacity: 0
   }
 
-
+  
 }
 
 /* ── NOISE ── */
@@ -4201,7 +4202,7 @@ nav {
     opacity: 1
   }
 
-  
+
 }
 
 .hero-ring {
@@ -4235,7 +4236,6 @@ nav {
     transform: translate(-50%, -55%) rotate(360deg)
   }
 
-  
 }
 
 .hero-badge {
@@ -4274,7 +4274,6 @@ nav {
     opacity: .2
   }
 
- 
 }
 
 .hero-title {
@@ -4412,7 +4411,7 @@ nav {
     opacity: 1
   }
 
-  
+
 }
 
 @keyframes fadeUp {
@@ -4421,12 +4420,12 @@ nav {
     transform: translateY(26px)
   }
 
-  landing-layer  {
+  landing-layer {
     opacity: 1;
     transform: translateY(0)
   }
 
-  
+
 }
 
 /* ── TICKER ── */
@@ -5154,3 +5153,4 @@ footer {
     padding: 40px 24px
   }
 }
+
