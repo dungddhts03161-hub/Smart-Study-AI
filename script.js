@@ -181,7 +181,6 @@ function loginDemo(){
   localStorage.setItem(KEY_SESSION,'demo');
   enterApp();
 }
-window.loginDemo=loginDemo;
 
 function doLogin(){
   clearErr('l-email-err');clearErr('l-pw-err');
@@ -225,8 +224,8 @@ function doLogout(){
   CU=null; clearSession();
   document.getElementById('app').style.display='none';
   document.getElementById('topbar').style.display='none';
-  [pChart,sChart,wChart,dChart].forEach(c=>{if(c)c.destroy();});
-  pChart=sChart=wChart=dChart=null;
+  [pChart,sChart,wChart].forEach(c=>{if(c)c.destroy();});
+  pChart=sChart=wChart=null;
   showLanding();
 }
 
@@ -300,7 +299,6 @@ function gotoSection(id,el){
   document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
   if(id==='analytics')setTimeout(updateAnalytics,80);
-  if(id==='setup')setTimeout(loadApiKeyStatus,80);
   if(id==='streak'){calYear=new Date().getFullYear();calMonth=new Date().getMonth();updateStreak();renderCalendar();renderAchievements();}
   if(id==='messages'){msgFilter='all';document.querySelectorAll('.msg-ftab').forEach((t,i)=>t.classList.toggle('active',i===0));renderMessages();}
   // Auto-close on mobile
@@ -972,7 +970,7 @@ function getMissedSev(n){
 // ============================================================
 // ANALYTICS
 // ============================================================
-let pChart=null,sChart=null,wChart=null,dChart=null;
+let pChart=null,sChart=null,wChart=null;
 function updateAnalytics(){
   const d=D();let total=0,done=0,mins=0;
   if(d){d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed){done++;mins+=d.schedule[s.id][k].duration||0;}});});}
@@ -982,21 +980,7 @@ function updateAnalytics(){
   document.getElementById('an-done').textContent=done;
   document.getElementById('an-rate').textContent=rate+'%';
   document.getElementById('an-time').textContent=h+'h'+(m?` ${m}m`:'');
-  if(document.getElementById('an-streak')&&d)document.getElementById('an-streak').textContent=d.streak.cur+'🔥';
-  if(document.getElementById('an-weak')&&d)document.getElementById('an-weak').textContent=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).length;
-
-  // Neglect card
-  if(d){
-    const neglected=d.subjects.filter(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);return keys.length>0&&(keys.filter(k=>sch[k].completed).length/keys.length)<0.3;});
-    const nc=document.getElementById('neglect-card');const nl=document.getElementById('neglect-list');
-    if(nc&&nl){
-      if(neglected.length){nc.style.display='block';nl.innerHTML=neglected.map(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);const doneC=keys.filter(k=>sch[k].completed).length;return`<div style="padding:6px 0;border-bottom:1px solid #fee2e2">⚠️ <strong>${s.name}</strong>: chỉ ${Math.round(doneC/keys.length*100)}% hoàn thành (${doneC}/${keys.length} buổi) – <span style="color:#ef4444">cần học bù ngay!</span></div>`;}).join('');}
-      else{nc.style.display='none';}
-    }
-  }
-
-  renderPC(done,total-done);renderSC();renderWC();renderDT();renderDeadlineChart();
-  checkRescheduleNeeded();
+  renderPC(done,total-done);renderSC();renderWC();renderDT();
   
   // AI Prediction
   const pred=document.getElementById('ai-prediction');
@@ -1012,14 +996,10 @@ function updateAnalytics(){
     if(upcoming.length){
       const days=Math.ceil((new Date(upcoming[0].date)-new Date())/864e5);
       const needed=Math.ceil(total*(1-done/total));
-      if(days>0){
-        const canFinish=days*2>=needed;
-        predictions.push(`📅 <b>${upcoming[0].name}</b> còn ${days} ngày · ${canFinish?'🟢 Khả năng hoàn thành: Cao':'🔴 Khả năng hoàn thành: Thấp – cần tăng tốc!'}`);
-      }
+      if(days>0) predictions.push(`📅 <b>${upcoming[0].name}</b> còn ${days} ngày – cần hoàn thành ~${needed} buổi còn lại.`);
     }
     if(streakOk) predictions.push(`🔥 <b>Chuỗi ${d.streak.cur} ngày</b> – Thói quen học tốt, tiếp tục duy trì!`);
-    predictions.push(`⏱️ <b>Tổng thời gian đã học:</b> ${h}h ${m}m – ${h>=10?'🏆 Xuất sắc!':h>=5?'👍 Tốt!':'💪 Cố lên!'}`);
-    pred.innerHTML=predictions.map(p=>`<div style="margin-bottom:8px;padding:8px 12px;background:#f8faff;border-radius:8px">• ${p}</div>`).join('')||'Thêm môn học và hoàn thành buổi học để AI phân tích!';
+    pred.innerHTML=predictions.map(p=>`<div style="margin-bottom:8px">• ${p}</div>`).join('')||'Thêm môn học và hoàn thành buổi học để AI phân tích!';
   }
 
   // XP Card
@@ -1040,7 +1020,7 @@ function updateAnalytics(){
       <div style="height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden">
         <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#ffd700,#ff8c00);border-radius:5px;transition:width .5s"></div>
       </div>
-      <div style="font-size:12px;color:#aaa;margin-top:8px">💡 +20 XP mỗi buổi học hoàn thành · +5 XP mỗi lần dùng AI chat · +30 XP dùng AI Tư Vấn</div>`;
+      <div style="font-size:12px;color:#aaa;margin-top:8px">💡 +20 XP mỗi buổi học hoàn thành · +5 XP mỗi lần dùng AI chat</div>`;
   }
 }
 function renderPC(done,undone){
@@ -1078,233 +1058,8 @@ function renderDT(){
 }
 
 // ============================================================
-// API KEY MANAGEMENT
+// CHATBOT
 // ============================================================
-function getApiKey(){ return localStorage.getItem('smartstudy_apikey')||''; }
-function saveApiKey(){
-  const val=document.getElementById('api-key-input').value.trim();
-  if(!val){showApiKeyStatus('❌ Vui lòng nhập API Key!','#ef4444');return;}
-  if(!val.startsWith('sk-ant-')){showApiKeyStatus('⚠️ Key không hợp lệ! Phải bắt đầu bằng sk-ant-','#f59e0b');return;}
-  localStorage.setItem('smartstudy_apikey',val);
-  showApiKeyStatus('✅ Đã lưu thành công! AI đã sẵn sàng.','#10b981');
-  document.getElementById('api-key-input').value='sk-ant-••••••••••••••••••••';
-}
-function clearApiKey(){
-  localStorage.removeItem('smartstudy_apikey');
-  document.getElementById('api-key-input').value='';
-  showApiKeyStatus('🗑️ Đã xóa API Key.','#888');
-}
-function toggleApiKeyVis(){
-  const inp=document.getElementById('api-key-input');
-  inp.type=inp.type==='password'?'text':'password';
-  document.getElementById('api-key-eye').textContent=inp.type==='password'?'👁️':'🙈';
-}
-function showApiKeyStatus(msg,color){
-  const el=document.getElementById('api-key-status');
-  el.style.display='block';el.style.color=color;el.textContent=msg;
-  setTimeout(()=>el.style.display='none',4000);
-}
-// Load saved key indicator on setup section open
-function loadApiKeyStatus(){
-  const k=getApiKey();
-  const inp=document.getElementById('api-key-input');
-  if(inp&&k){inp.value='sk-ant-••••••••••••••••••••';showApiKeyStatus('✅ API Key đã được cấu hình.','#10b981');}
-}
-
-// ============================================================
-// AI STRATEGY – Gọi Claude API phân tích chiến lược học
-// ============================================================
-async function getAIStrategy(){
-  const key=getApiKey();
-  const btn=document.getElementById('ai-strategy-btn');
-  const result=document.getElementById('ai-strategy-result');
-  if(!key){
-    result.style.display='block';
-    result.innerHTML='<div style="color:#f59e0b;font-weight:600">⚠️ Bạn chưa cấu hình API Key!<br><span style="font-weight:400;color:#888">Vào <b>Thiết lập AI → Kết nối Claude AI Thật</b> để nhập API Key.</span></div>';
-    return;
-  }
-  const d=D();
-  if(!d||!d.subjects.length){
-    result.style.display='block';
-    result.innerHTML='<div style="color:#888">📚 Chưa có dữ liệu môn học. Hãy thêm môn học trước nhé!</div>';
-    return;
-  }
-  btn.disabled=true;btn.textContent='⏳ Đang phân tích...';
-  result.style.display='block';
-  result.innerHTML='<div style="color:#888;text-align:center;padding:20px">🤖 Claude AI đang phân tích dữ liệu của bạn...<br><span style="font-size:20px;letter-spacing:4px">···</span></div>';
-
-  let total=0,done=0,mins=0;
-  d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed){done++;mins+=d.schedule[s.id][k].duration||0;}});});
-  const rate=total?((done/total)*100).toFixed(1):0;
-  const upcoming=d.exams.filter(e=>new Date(e.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const weak=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25);
-  const neglected=d.subjects.filter(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);if(!keys.length)return false;const doneCount=keys.filter(k=>sch[k].completed).length;return keys.length>0&&(doneCount/keys.length)<0.3;});
-
-  const ctx=`THÔNG TIN HỌC SINH:
-Tên: ${CU?.fullname||'Học sinh'}
-Môn học: ${d.subjects.map(s=>`${s.name} (điểm: ${s.score}/10, tự đánh giá: ${s.selfRating||50}%)`).join(', ')}
-Môn yếu (<5đ hoặc tự đánh giá thấp): ${weak.map(s=>s.name).join(', ')||'không có'}
-Môn bị bỏ bê (hoàn thành <30%): ${neglected.map(s=>s.name).join(', ')||'không có'}
-Tiến độ tổng: ${done}/${total} buổi (${rate}%)
-Tổng giờ đã học: ${Math.floor(mins/60)}h ${mins%60}m
-Chuỗi học hiện tại: ${d.streak.cur} ngày, dài nhất: ${d.streak.longest} ngày
-Phong cách học: ${d.studyStyle||'cân bằng'}
-Giờ tập trung tốt nhất: ${d.peakHour||18}:00
-Kỳ thi sắp tới: ${upcoming.slice(0,3).map(e=>`${e.name} còn ${Math.ceil((new Date(e.date)-new Date())/864e5)} ngày`).join(', ')||'chưa có'}`;
-
-  const prompt=`Bạn là chuyên gia tư vấn học tập cho học sinh THCS-THPT Việt Nam. Hãy phân tích dữ liệu và đưa ra tư vấn chiến lược học tập CỤ THỂ, THỰC TẾ.
-
-${ctx}
-
-Hãy trả lời theo đúng format này (dùng emoji, tiếng Việt, thân thiện):
-
-📊 **ĐÁNH GIÁ TỔNG QUAN**
-[2-3 câu nhận xét về tình trạng học tập hiện tại]
-
-🎯 **ƯU TIÊN NGAY TUẦN NÀY**
-[Liệt kê 3 việc cần làm ngay, cụ thể theo môn học của học sinh]
-
-⏰ **GỢI Ý LỊCH HỌC MỖI NGÀY**
-[Đề xuất phân bổ thời gian cụ thể dựa trên giờ tập trung tốt nhất và phong cách học]
-
-💪 **CHIẾN LƯỢC TỪNG MÔN YẾU**
-[Với mỗi môn yếu: phương pháp cụ thể để cải thiện]
-
-🔥 **LỜI KHUYÊN ĐỂ DUY TRÌ ĐỘNG LỰC**
-[1-2 lời khuyên thiết thực]
-
-Trả lời ngắn gọn, súc tích, không hơn 300 từ.`;
-
-  try {
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})
-    });
-    const data=await r.json();
-    if(data.error){throw new Error(data.error.message);}
-    const text=data.content?.[0]?.text||'';
-    // Format markdown-like to HTML
-    const html=text
-      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-      .replace(/^(📊|🎯|⏰|💪|🔥).+$/gm,s=>`<div style="margin-top:14px;margin-bottom:4px;font-weight:700;color:#667eea;font-size:14px">${s}</div>`)
-      .replace(/\n/g,'<br>');
-    result.innerHTML=`<div style="line-height:1.9">${html}</div><div style="margin-top:14px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:11px;color:#bbb">✨ Phân tích bởi Claude AI · ${new Date().toLocaleTimeString('vi-VN')}</div>`;
-    addXP(30,'ai-strategy');
-  } catch(e){
-    result.innerHTML=`<div style="color:#ef4444;font-weight:600">❌ Lỗi kết nối: ${e.message}<br><span style="font-weight:400;color:#888;font-size:12px">Kiểm tra lại API Key và kết nối internet.</span></div>`;
-  }
-  btn.disabled=false;btn.textContent='✨ Nhận Tư Vấn AI Ngay';
-}
-
-// ============================================================
-// AUTO-RESCHEDULE – Tự động điều chỉnh lịch khi bỏ lỡ buổi
-// ============================================================
-function checkRescheduleNeeded(){
-  const d=D();if(!d)return;
-  const dkMap=['sun','mon','tue','wed','thu','fri','sat'];
-  const todayIdx=new Date().getDay();
-  // Find missed sessions (past days this week, not completed)
-  let missedSubjects=[];
-  d.subjects.forEach(s=>{
-    const sch=d.schedule[s.id]||{};
-    let missedCount=0;
-    dkMap.forEach((dk,i)=>{
-      if(i<todayIdx&&sch[dk]&&!sch[dk].completed)missedCount++;
-    });
-    if(missedCount>0)missedSubjects.push({subject:s,missed:missedCount});
-  });
-  const card=document.getElementById('reschedule-card');
-  const desc=document.getElementById('reschedule-desc');
-  if(card&&missedSubjects.length>0){
-    card.style.display='block';
-    desc.textContent=`Phát hiện ${missedSubjects.length} môn có buổi học bị bỏ lỡ tuần này: ${missedSubjects.map(ms=>`${ms.subject.name} (${ms.missed} buổi)`).join(', ')}. AI có thể tự động tăng cường các buổi còn lại để bù đắp.`;
-  } else if(card){
-    card.style.display='none';
-  }
-}
-
-function autoReschedule(){
-  const d=D();if(!d)return;
-  const dkMap=['sun','mon','tue','wed','thu','fri','sat'];
-  const todayIdx=new Date().getDay();
-  const remainingDays=dkMap.filter((_,i)=>i>=todayIdx);
-  let adjusted=0;
-
-  d.subjects.forEach(s=>{
-    const sch=d.schedule[s.id]||{};
-    let missedCount=0;
-    dkMap.forEach((dk,i)=>{if(i<todayIdx&&sch[dk]&&!sch[dk].completed)missedCount++;});
-    if(missedCount>0&&remainingDays.length>0){
-      // Distribute missed sessions across remaining days by increasing duration
-      const extraPerDay=Math.ceil((missedCount*20)/remainingDays.length);
-      remainingDays.forEach(dk=>{
-        if(sch[dk]){
-          sch[dk].duration=(sch[dk].duration||45)+extraPerDay;
-          sch[dk].rescheduled=true;
-          adjusted++;
-        } else {
-          // Add session if slot available
-          const peakH=d.peakHour||18;
-          sch[dk]={time:`${peakH}:00`,duration:45+extraPerDay,completed:false,rescheduled:true};
-          adjusted++;
-        }
-      });
-      d.schedule[s.id]=sch;
-    }
-  });
-
-  if(adjusted>0){
-    d.messages.unshift({type:'info',icon:'🔄',title:`🔄 AI đã điều chỉnh lịch tự động`,content:`Đã tăng cường ${adjusted} buổi học còn lại trong tuần để bù đắp các buổi bị bỏ lỡ. Kiểm tra lịch học để xem chi tiết!`,date:new Date().toDateString()});
-    if(!CU.isDemo)saveStore();
-    document.getElementById('reschedule-card').style.display='none';
-    renderSchedule&&renderSchedule();
-    renderMessages();
-    alert(`✅ AI đã điều chỉnh ${adjusted} buổi học!\nThời gian các buổi học còn lại đã được tăng lên để bù đắp. Xem trong Lịch Học.`);
-  }
-}
-
-// ============================================================
-// DEADLINE PREDICTION CHART
-// ============================================================
-function renderDeadlineChart(){
-  const ctx=document.getElementById('chart-deadline');if(!ctx)return;
-  const d=D();if(!d||!d.subjects.length){if(dChart)dChart.destroy();return;}
-  const labels=[];const current=[];const needed=[];const colors=[];
-  d.subjects.forEach(s=>{
-    const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);
-    if(!keys.length)return;
-    const doneCount=keys.filter(k=>sch[k].completed).length;
-    const rate=keys.length?(doneCount/keys.length*100):0;
-    const target=100;
-    labels.push(s.name);
-    current.push(Math.round(rate));
-    needed.push(target);
-    colors.push(rate>=70?'rgba(34,197,94,.8)':rate>=40?'rgba(251,191,36,.8)':'rgba(239,68,68,.8)');
-  });
-  if(dChart)dChart.destroy();
-  dChart=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels,
-      datasets:[
-        {label:'Thực tế (%)',data:current,backgroundColor:colors,borderRadius:6,borderWidth:0},
-        {label:'Mục tiêu (100%)',data:needed.map(()=>100),backgroundColor:'rgba(200,200,200,.15)',borderRadius:6,borderWidth:1,borderColor:'rgba(200,200,200,.5)'}
-      ]
-    },
-    options:{
-      responsive:true,
-      scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
-      plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}}
-    }
-  });
-}
-window.getAIStrategy=getAIStrategy;
-window.saveApiKey=saveApiKey;
-window.clearApiKey=clearApiKey;
-window.toggleApiKeyVis=toggleApiKeyVis;
-window.autoReschedule=autoReschedule;
-window.loadApiKeyStatus=loadApiKeyStatus;
 let fabInited=false;
 function toggleFab(){
   const w=document.getElementById('fab-win');const isOpen=w.classList.toggle('open');
@@ -1349,9 +1104,46 @@ function handleChat(msg,t){
   typingDiv.className='msg-bubble-wrap bot';typingDiv.id=typingId;
   typingDiv.innerHTML='<div class="bubble" style="opacity:.6">🤖 <span style="letter-spacing:3px">···</span></div>';
   el.appendChild(typingDiv);el.scrollTop=el.scrollHeight;
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:200,
+      system:systemPrompt,
+      messages:[{role:'user',content:msg}]
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    const reply=data.content?.[0]?.text||'Xin lỗi, mình gặp lỗi rồi! Thử lại nhé 😅';
+    document.getElementById(typingId)?.remove();
+    botMsg(t,reply);
+    // Award XP for using AI chat
+    addXP(5,'chat');
+  })
+  .catch(()=>{
+    document.getElementById(typingId)?.remove();
+    // Fallback rule-based
+    const m=msg.toLowerCase();
+    if(/chào|hi|hello/.test(m)) botMsg(t,'Chào bạn! 👋 Mình là AI trợ lý học tập. Hỏi mình về lịch học, tiến độ, hay chiến lược ôn thi nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
+    else if(/lịch|hôm nay/.test(m)){
+      const dk=['sun','mon','tue','wed','thu','fri','sat'][new Date().getDay()];
+      let tasks=[];if(d)d.subjects.forEach(s=>{if(d.schedule[s.id]&&d.schedule[s.id][dk])tasks.push(`• ${s.name}: ${d.schedule[s.id][dk].time} ${d.schedule[s.id][dk].completed?'✅':'⏳'}`)});
+      botMsg(t,tasks.length?`📅 Hôm nay:\n${tasks.join('\n')}`:'Hôm nay không có lịch! 😊');
+    }
+    else if(/tiến độ|progress/.test(m)){
+      let total=0,done=0;if(d)d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;})});
+      botMsg(t,`📊 Tiến độ: ${done}/${total} buổi (${total?((done/total)*100).toFixed(0):0}%) · Chuỗi: ${d?d.streak.cur:0}🔥`);
+    }
+    else if(/yếu|kém/.test(m)){
+      const weak=d?d.subjects.filter(s=>s.score<5||s.selfRating<=25):[];
+      botMsg(t,weak.length?'📉 Môn cần ưu tiên:\n'+weak.map(s=>`• ${s.name} → Tăng cường học!`).join('\n'):'🎉 Không có môn yếu!');
+    }
+    else botMsg(t,'Mình đang gặp lỗi kết nối 😅 Thử hỏi lại nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
+  });
 }
-
-
 
 // ============================================================
 // PROFILE
@@ -2216,7 +2008,6 @@ createBubbles();
     reveals.forEach(function(el){el.classList.add('visible');});
   }
 })();
-
 
 
 

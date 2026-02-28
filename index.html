@@ -609,25 +609,7 @@
         <div class="slot-grid" id="slot-grid"></div>
         <button class="btn btn-primary" onclick="saveSlots()" style="width:100%;margin-top:16px">💾 Lưu</button>
       </div>
-      <!-- API Key Card -->
-      <div class="card" id="api-key-card" style="border:2px solid #764ba2;background:linear-gradient(135deg,rgba(118,75,162,.06),rgba(102,126,234,.04));margin-top:16px">
-        <h3 style="color:#764ba2">🔑 Kết Nối Claude AI Thật</h3>
-        <p style="font-size:13px;color:#888;margin-bottom:14px">Nhập Anthropic API Key để mở khoá <strong>AI tư vấn thật sự</strong> – phân tích chiến lược học cá nhân hóa, trả lời thông minh dựa trên dữ liệu của bạn.</p>
-        <div style="position:relative">
-          <input type="password" id="api-key-input" placeholder="sk-ant-..." style="width:100%;padding:11px 44px 11px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-size:13px;font-family:monospace;outline:none;background:#f9fafb;box-sizing:border-box">
-          <span onclick="toggleApiKeyVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;color:#bbb;user-select:none" id="api-key-eye">👁️</span>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button onclick="saveApiKey()" class="btn btn-primary" style="flex:1;padding:10px">💾 Lưu API Key</button>
-          <button onclick="clearApiKey()" style="padding:10px 16px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;color:#888;font-size:13px;cursor:pointer;font-weight:600">🗑️</button>
-        </div>
-        <div id="api-key-status" style="margin-top:10px;font-size:12px;font-weight:600;display:none"></div>
-        <div style="margin-top:10px;padding:10px 12px;background:rgba(102,126,234,.06);border-radius:8px;font-size:11.5px;color:#667eea">
-          💡 Lấy API Key miễn phí tại <a href="https://console.anthropic.com" target="_blank" style="color:#764ba2;font-weight:700">console.anthropic.com</a> · Key được lưu cục bộ trên máy bạn, không gửi đi đâu.
-        </div>
-      </div>
-
-      <button class="btn btn-primary" onclick="generateSchedule()" style="width:100%;padding:14px;font-size:15px;margin-top:16px">🤖 Tạo Lịch Học Tự Động với AI</button>
+      <button class="btn btn-primary" onclick="generateSchedule()" style="width:100%;padding:14px;font-size:15px">🤖 Tạo Lịch Học Tự Động với AI</button>
     </div>
     <div id="schedule-section">
       <div class="header">
@@ -804,18 +786,9 @@
     <div id="analytics-section" style="display:none">
       <div class="header"><h2>📊 Phân Tích AI</h2></div>
       
-      <!-- AI Strategy Button -->
-      <div class="card" style="border:2px dashed #764ba2;background:linear-gradient(135deg,rgba(118,75,162,.06),rgba(102,126,234,.04));margin-bottom:20px;text-align:center">
-        <div style="font-size:32px;margin-bottom:8px">🤖</div>
-        <h3 style="color:#764ba2;margin-bottom:6px">AI Tư Vấn Chiến Lược Học</h3>
-        <p style="font-size:13px;color:#888;margin-bottom:14px">Claude AI sẽ phân tích toàn bộ dữ liệu của bạn và đưa ra lời khuyên cá nhân hóa cụ thể.</p>
-        <button onclick="getAIStrategy()" id="ai-strategy-btn" class="btn btn-primary" style="padding:12px 32px;font-size:14px">✨ Nhận Tư Vấn AI Ngay</button>
-        <div id="ai-strategy-result" style="display:none;margin-top:16px;text-align:left;background:#fff;border-radius:12px;padding:16px;border:1.5px solid #e5e7eb;font-size:13px;line-height:1.8;color:#333"></div>
-      </div>
-
       <!-- AI Prediction Card -->
       <div class="card" style="border:2px solid #10b981;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(52,211,153,.04));margin-bottom:20px">
-        <h3 style="color:#10b981">🔮 Dự Đoán & Cảnh Báo</h3>
+        <h3 style="color:#10b981">🤖 Dự Đoán AI</h3>
         <div id="ai-prediction" style="font-size:14px;color:#555;line-height:1.8">Đang phân tích dữ liệu...</div>
       </div>
 
@@ -825,34 +798,16 @@
         <div id="analytics-xp" style="font-size:14px"></div>
       </div>
 
-      <!-- Stats Grid - enhanced -->
       <div class="overview-grid">
         <div class="ov-card"><div class="ov-icon">📚</div><div><div class="ov-lbl">Tổng buổi</div><div class="ov-val" id="an-total">0</div></div></div>
         <div class="ov-card"><div class="ov-icon">✅</div><div><div class="ov-lbl">Hoàn thành</div><div class="ov-val" id="an-done">0</div></div></div>
         <div class="ov-card"><div class="ov-icon">📈</div><div><div class="ov-lbl">Tỷ lệ</div><div class="ov-val" id="an-rate">0%</div></div></div>
         <div class="ov-card"><div class="ov-icon">⏱️</div><div><div class="ov-lbl">Thời gian</div><div class="ov-val" id="an-time">0h</div></div></div>
-        <div class="ov-card"><div class="ov-icon">🔥</div><div><div class="ov-lbl">Streak</div><div class="ov-val" id="an-streak">0</div></div></div>
-        <div class="ov-card" style="cursor:pointer" onclick="gotoSection('setup',document.querySelector('[onclick*=setup]'))"><div class="ov-icon">📉</div><div><div class="ov-lbl">Môn yếu</div><div class="ov-val" id="an-weak" style="color:#ef4444">0</div></div></div>
       </div>
-
-      <!-- Neglect Warning Card -->
-      <div id="neglect-card" style="display:none" class="card" style="border:2px solid #ef4444;background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(251,113,133,.04));margin-bottom:20px">
-        <h3 style="color:#ef4444">😴 Môn Đang Bị Bỏ Bê</h3>
-        <div id="neglect-list" style="font-size:13px;line-height:1.8"></div>
-      </div>
-
-      <!-- Auto-reschedule Card -->
-      <div id="reschedule-card" style="display:none" class="card" style="border:2px solid #f59e0b;background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(252,211,77,.04));margin-bottom:20px">
-        <h3 style="color:#f59e0b">🔄 Điều Chỉnh Lịch Tự Động</h3>
-        <p id="reschedule-desc" style="font-size:13px;color:#888;margin-bottom:12px"></p>
-        <button onclick="autoReschedule()" class="btn btn-primary" style="background:linear-gradient(135deg,#f59e0b,#d97706)">⚡ Điều Chỉnh Ngay</button>
-      </div>
-
-      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📈 Tiến Độ Tổng Quan</h3><canvas id="chart-progress"></canvas></div>
-      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📊 Hoàn Thành Theo Môn</h3><canvas id="chart-subject"></canvas></div>
-      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📅 Hoạt Động 7 Ngày</h3><canvas id="chart-weekly"></canvas></div>
-      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">⏳ Dự Báo Hoàn Thành</h3><canvas id="chart-deadline"></canvas></div>
-      <div class="card" style="overflow-x:auto"><h3 style="margin-bottom:16px">📋 Chi Tiết Từng Môn</h3><table class="det-table"><thead><tr><th>Môn</th><th>Điểm</th><th>Tự đánh giá</th><th>Buổi</th><th>Hoàn thành</th><th>Tỷ lệ</th></tr></thead><tbody id="an-tbody"></tbody></table></div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📈 Tiến Độ</h3><canvas id="chart-progress"></canvas></div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📊 Theo Môn</h3><canvas id="chart-subject"></canvas></div>
+      <div class="chart-box"><h3 style="margin-bottom:16px;color:#667eea">📅 Hoạt Động Tuần</h3><canvas id="chart-weekly"></canvas></div>
+      <div class="card" style="overflow-x:auto"><h3 style="margin-bottom:16px">📋 Chi Tiết</h3><table class="det-table"><thead><tr><th>Môn</th><th>Điểm</th><th>Tự đánh giá</th><th>Buổi</th><th>Hoàn thành</th><th>Tỷ lệ</th></tr></thead><tbody id="an-tbody"></tbody></table></div>
     </div>
     <div id="chat-sec-section" style="display:none">
       <div class="header"><h2>💬 Trợ Lý AI</h2></div>
@@ -877,6 +832,13 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
+
+
+
+
+
+
 <script src="script.js"></script>
+
 </body>
 </html>
