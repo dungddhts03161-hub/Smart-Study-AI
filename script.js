@@ -64,252 +64,21 @@ function saveSession(){ if(CU) localStorage.setItem(KEY_SESSION, CU.id+''); }
 function clearSession(){ localStorage.removeItem(KEY_SESSION); }
 function D(){ return CU ? CU.data : null; }
 function emptyData(){
-  return{subjects:[],schedule:{},exams:[],timeSlots:{},streak:{cur:0,longest:0,total:0,lastDate:null,dates:[],freezes:0,achievements:[]},messages:[],missedDays:0,lastCheck:null};
+  return{subjects:[],schedule:{},exams:[],timeSlots:{},streak:{cur:0,longest:0,total:0,lastDate:null,dates:[],freezes:0,achievements:[]},messages:[],missedDays:0,lastCheck:null,xp:0,level:1,peakHour:'18',studyStyle:'balanced',selfRatings:{}};
 }
 
 // ============================================================
 // AVATARS
 // ============================================================
-// Cute animal avatars as SVG
-function makeAnimalSVG(type, bg, accent, extra=''){
-  const animals = {
-    cat: (c,a)=>`
-      <!-- ears -->
-      <polygon points="28,32 20,12 38,26" fill="${c}"/>
-      <polygon points="72,32 80,12 62,26" fill="${c}"/>
-      <polygon points="29,30 23,16 37,27" fill="#ffccd5"/>
-      <polygon points="71,30 77,16 63,27" fill="#ffccd5"/>
-      <!-- face -->
-      <circle cx="50" cy="52" r="26" fill="${c}"/>
-      <!-- inner face -->
-      <ellipse cx="50" cy="56" rx="16" ry="13" fill="#fff5f5"/>
-      <!-- eyes -->
-      <ellipse cx="40" cy="48" rx="5" ry="6" fill="#222"/>
-      <ellipse cx="60" cy="48" rx="5" ry="6" fill="#222"/>
-      <circle cx="41.5" cy="46.5" r="2" fill="white"/>
-      <circle cx="61.5" cy="46.5" r="2" fill="white"/>
-      <circle cx="40" cy="49" r="1.2" fill="${a}" opacity=".7"/>
-      <circle cx="60" cy="49" r="1.2" fill="${a}" opacity=".7"/>
-      <!-- blush -->
-      <ellipse cx="34" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <ellipse cx="66" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="56" rx="3" ry="2" fill="#ff9eb5"/>
-      <!-- whiskers -->
-      <line x1="20" y1="55" x2="44" y2="57" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
-      <line x1="20" y1="59" x2="44" y2="59" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
-      <line x1="56" y1="57" x2="80" y2="55" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
-      <line x1="56" y1="59" x2="80" y2="59" stroke="#bbb" stroke-width="1.2" stroke-linecap="round"/>
-      <!-- mouth -->
-      <path d="M46 60 Q50 65 54 60" stroke="#ff9eb5" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    bunny: (c,a)=>`
-      <!-- long ears -->
-      <ellipse cx="34" cy="22" rx="9" ry="22" fill="${c}" transform="rotate(-10,34,22)"/>
-      <ellipse cx="66" cy="22" rx="9" ry="22" fill="${c}" transform="rotate(10,66,22)"/>
-      <ellipse cx="34" cy="22" rx="5" ry="17" fill="#ffccd5" transform="rotate(-10,34,22)"/>
-      <ellipse cx="66" cy="22" rx="5" ry="17" fill="#ffccd5" transform="rotate(10,66,22)"/>
-      <!-- face -->
-      <circle cx="50" cy="57" r="26" fill="${c}"/>
-      <ellipse cx="50" cy="61" rx="14" ry="11" fill="#fff5f5"/>
-      <!-- eyes -->
-      <circle cx="40" cy="52" r="6" fill="#222"/>
-      <circle cx="60" cy="52" r="6" fill="#222"/>
-      <circle cx="41.5" cy="50.5" r="2.2" fill="white"/>
-      <circle cx="61.5" cy="50.5" r="2.2" fill="white"/>
-      <circle cx="40" cy="53" r="1.4" fill="${a}" opacity=".8"/>
-      <circle cx="60" cy="53" r="1.4" fill="${a}" opacity=".8"/>
-      <!-- blush -->
-      <ellipse cx="33" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
-      <ellipse cx="67" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="61" rx="3.5" ry="2.5" fill="#ff9eb5"/>
-      <!-- mouth -->
-      <path d="M46 65 Q50 70 54 65" stroke="#ff9eb5" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    bear: (c,a)=>`
-      <!-- ears -->
-      <circle cx="28" cy="30" r="13" fill="${c}"/>
-      <circle cx="72" cy="30" r="13" fill="${c}"/>
-      <circle cx="28" cy="30" r="8" fill="#d4956a"/>
-      <circle cx="72" cy="30" r="8" fill="#d4956a"/>
-      <!-- face -->
-      <circle cx="50" cy="54" r="27" fill="${c}"/>
-      <ellipse cx="50" cy="60" rx="15" ry="12" fill="#d4956a"/>
-      <!-- eyes -->
-      <circle cx="40" cy="50" r="6" fill="#222"/>
-      <circle cx="60" cy="50" r="6" fill="#222"/>
-      <circle cx="41.5" cy="48.5" r="2.2" fill="white"/>
-      <circle cx="61.5" cy="48.5" r="2.2" fill="white"/>
-      <circle cx="40" cy="51" r="1.3" fill="${a}" opacity=".7"/>
-      <circle cx="60" cy="51" r="1.3" fill="${a}" opacity=".7"/>
-      <!-- blush -->
-      <ellipse cx="33" cy="58" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <ellipse cx="67" cy="58" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="60" rx="5" ry="3.5" fill="#222"/>
-      <ellipse cx="50" cy="59" rx="3" ry="2" fill="#555"/>
-      <!-- mouth -->
-      <path d="M45 64 Q50 70 55 64" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    fox: (c,a)=>`
-      <!-- ears -->
-      <polygon points="30,38 18,12 44,30" fill="${c}"/>
-      <polygon points="70,38 82,12 56,30" fill="${c}"/>
-      <polygon points="31,36 22,18 42,31" fill="#fff0e0"/>
-      <polygon points="69,36 78,18 58,31" fill="#fff0e0"/>
-      <!-- face -->
-      <circle cx="50" cy="54" r="26" fill="${c}"/>
-      <!-- white muzzle -->
-      <ellipse cx="50" cy="60" rx="17" ry="14" fill="#fff0e0"/>
-      <!-- mask -->
-      <path d="M24 48 Q35 40 42 50 Q50 44 58 50 Q65 40 76 48 Q70 58 50 56 Q30 58 24 48Z" fill="${c}" opacity=".4"/>
-      <!-- eyes -->
-      <ellipse cx="40" cy="49" rx="5.5" ry="6" fill="#222"/>
-      <ellipse cx="60" cy="49" rx="5.5" ry="6" fill="#222"/>
-      <circle cx="41.5" cy="47.5" r="2" fill="white"/>
-      <circle cx="61.5" cy="47.5" r="2" fill="white"/>
-      <circle cx="40" cy="50" r="1.3" fill="${a}" opacity=".8"/>
-      <circle cx="60" cy="50" r="1.3" fill="${a}" opacity=".8"/>
-      <!-- blush -->
-      <ellipse cx="33" cy="57" rx="6" ry="4" fill="#ffb3c6" opacity=".5"/>
-      <ellipse cx="67" cy="57" rx="6" ry="4" fill="#ffb3c6" opacity=".5"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="59" rx="4" ry="3" fill="#222"/>
-      <!-- mouth -->
-      <path d="M45 63 Q50 69 55 63" stroke="#555" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    panda: (c,a)=>`
-      <!-- ears -->
-      <circle cx="27" cy="28" r="14" fill="#222"/>
-      <circle cx="73" cy="28" r="14" fill="#222"/>
-      <!-- face -->
-      <circle cx="50" cy="54" r="27" fill="#f8f8f8"/>
-      <!-- eye patches -->
-      <ellipse cx="39" cy="50" rx="10" ry="9" fill="#222"/>
-      <ellipse cx="61" cy="50" rx="10" ry="9" fill="#222"/>
-      <!-- eyes -->
-      <circle cx="39" cy="50" r="6" fill="white"/>
-      <circle cx="61" cy="50" r="6" fill="white"/>
-      <circle cx="39" cy="51" r="3.5" fill="#222"/>
-      <circle cx="61" cy="51" r="3.5" fill="#222"/>
-      <circle cx="40.2" cy="49.5" r="1.5" fill="white"/>
-      <circle cx="62.2" cy="49.5" r="1.5" fill="white"/>
-      <circle cx="39" cy="51.5" r="1" fill="${a}" opacity=".7"/>
-      <circle cx="61" cy="51.5" r="1" fill="${a}" opacity=".7"/>
-      <!-- blush -->
-      <ellipse cx="31" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
-      <ellipse cx="69" cy="60" rx="6" ry="4" fill="#ffb3c6" opacity=".6"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="61" rx="4" ry="3" fill="#222"/>
-      <!-- mouth -->
-      <path d="M45 66 Q50 72 55 66" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    dog: (c,a)=>`
-      <!-- floppy ears -->
-      <ellipse cx="24" cy="50" rx="11" ry="20" fill="${c}" transform="rotate(-15,24,50)"/>
-      <ellipse cx="76" cy="50" rx="11" ry="20" fill="${c}" transform="rotate(15,76,50)"/>
-      <!-- face -->
-      <circle cx="50" cy="50" r="27" fill="${c}"/>
-      <ellipse cx="50" cy="58" rx="16" ry="13" fill="#f5d9b0"/>
-      <!-- eyes -->
-      <circle cx="39" cy="46" r="7" fill="#222"/>
-      <circle cx="61" cy="46" r="7" fill="#222"/>
-      <circle cx="40.5" cy="44.5" r="2.5" fill="white"/>
-      <circle cx="62.5" cy="44.5" r="2.5" fill="white"/>
-      <circle cx="39" cy="47" r="1.5" fill="${a}" opacity=".7"/>
-      <circle cx="61" cy="47" r="1.5" fill="${a}" opacity=".7"/>
-      <!-- blush -->
-      <ellipse cx="31" cy="55" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <ellipse cx="69" cy="55" rx="6" ry="4" fill="#ffb3c6" opacity=".55"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="58" rx="6" ry="4.5" fill="#222"/>
-      <ellipse cx="50" cy="57" rx="3.5" ry="2.5" fill="#555"/>
-      <!-- mouth -->
-      <path d="M43 63 Q50 70 57 63" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-
-    chick: (c,a)=>`
-      <!-- head tuft -->
-      <ellipse cx="44" cy="20" rx="5" ry="9" fill="${c}" transform="rotate(-15,44,20)"/>
-      <ellipse cx="50" cy="18" rx="5" ry="10" fill="${c}"/>
-      <ellipse cx="56" cy="20" rx="5" ry="9" fill="${c}" transform="rotate(15,56,20)"/>
-      <!-- face -->
-      <circle cx="50" cy="54" r="28" fill="${c}"/>
-      <!-- eyes big -->
-      <circle cx="38" cy="50" r="8" fill="white"/>
-      <circle cx="62" cy="50" r="8" fill="white"/>
-      <circle cx="38" cy="50" r="5.5" fill="#222"/>
-      <circle cx="62" cy="50" r="5.5" fill="#222"/>
-      <circle cx="39.5" cy="48.5" r="2.2" fill="white"/>
-      <circle cx="63.5" cy="48.5" r="2.2" fill="white"/>
-      <circle cx="38" cy="51" r="1.3" fill="${a}" opacity=".8"/>
-      <circle cx="62" cy="51" r="1.3" fill="${a}" opacity=".8"/>
-      <!-- blush -->
-      <ellipse cx="29" cy="58" rx="7" ry="5" fill="#ffb3c6" opacity=".55"/>
-      <ellipse cx="71" cy="58" rx="7" ry="5" fill="#ffb3c6" opacity=".55"/>
-      <!-- beak -->
-      <polygon points="46,60 54,60 50,67" fill="#ff9800"/>
-      ${extra}`,
-
-    frog: (c,a)=>`
-      <!-- eye bumps on top -->
-      <circle cx="33" cy="33" r="13" fill="${c}"/>
-      <circle cx="67" cy="33" r="13" fill="${c}"/>
-      <!-- face -->
-      <ellipse cx="50" cy="57" rx="28" ry="24" fill="${c}"/>
-      <!-- mouth area lighter -->
-      <ellipse cx="50" cy="65" rx="20" ry="13" fill="#a8e063" opacity=".6"/>
-      <!-- eyes on bumps -->
-      <circle cx="33" cy="33" r="8" fill="white"/>
-      <circle cx="67" cy="33" r="8" fill="white"/>
-      <circle cx="33" cy="34" r="5" fill="#222"/>
-      <circle cx="67" cy="34" r="5" fill="#222"/>
-      <circle cx="34.5" cy="32.5" r="2" fill="white"/>
-      <circle cx="68.5" cy="32.5" r="2" fill="white"/>
-      <circle cx="33" cy="34.5" r="1.2" fill="${a}" opacity=".8"/>
-      <circle cx="67" cy="34.5" r="1.2" fill="${a}" opacity=".8"/>
-      <!-- blush -->
-      <ellipse cx="31" cy="60" rx="7" ry="5" fill="#ffb3c6" opacity=".5"/>
-      <ellipse cx="69" cy="60" rx="7" ry="5" fill="#ffb3c6" opacity=".5"/>
-      <!-- nostrils -->
-      <circle cx="46" cy="57" r="2.5" fill="#5a9a2a" opacity=".5"/>
-      <circle cx="54" cy="57" r="2.5" fill="#5a9a2a" opacity=".5"/>
-      <!-- big smile -->
-      <path d="M32 65 Q50 78 68 65" stroke="#3a7a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      ${extra}`,
-  };
-
-  const body = animals[type] ? animals[type](bg, accent) : '';
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-  <defs>
-    <radialGradient id="g${type}" cx="40%" cy="35%" r="65%">
-      <stop offset="0%" stop-color="white" stop-opacity=".25"/>
-      <stop offset="100%" stop-color="black" stop-opacity=".08"/>
-    </radialGradient>
-  </defs>
-  <circle cx="50" cy="50" r="50" fill="${accent}" opacity=".18"/>
-  <circle cx="50" cy="50" r="50" fill="url(#g${type})"/>
-  ${body}
-  <text x="72" y="18" font-size="11" opacity=".7">✨</text>
-</svg>`);
-}
-
 const AVATARS = [
-  makeAnimalSVG('cat',   '#F4A460', '#FF6B9D'),  // sandy cat
-  makeAnimalSVG('bunny', '#E8D5C4', '#A78BFA'),  // cream bunny
-  makeAnimalSVG('bear',  '#C8956C', '#667EEA'),  // brown bear
-  makeAnimalSVG('fox',   '#E8874A', '#F59E0B'),  // orange fox
-  makeAnimalSVG('panda', '#f8f8f8', '#34D399'),  // panda
-  makeAnimalSVG('dog',   '#D4A96A', '#FB7185'),  // golden dog
-  makeAnimalSVG('chick', '#FFE066', '#F59E0B'),  // yellow chick
-  makeAnimalSVG('frog',  '#7BC67E', '#4ADE80'),  // green frog
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23e8f4f8%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2228%22%20r%3D%2214%22%20fill%3D%22%23222%22%2F%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%2228%22%20r%3D%2214%22%20fill%3D%22%23222%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2228%22%20r%3D%228%22%20fill%3D%22%23333%22%2F%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%2228%22%20r%3D%228%22%20fill%3D%22%23333%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2254%22%20r%3D%2230%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2248%22%20rx%3D%229%22%20ry%3D%228%22%20fill%3D%22%23222%22%2F%3E%3Cellipse%20cx%3D%2262%22%20cy%3D%2248%22%20rx%3D%229%22%20ry%3D%228%22%20fill%3D%22%23222%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2249%22%20r%3D%224%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2249%22%20r%3D%224%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2250%22%20r%3D%222.5%22%20fill%3D%22%23111%22%2F%3E%3Ccircle%20cx%3D%2263%22%20cy%3D%2250%22%20r%3D%222.5%22%20fill%3D%22%23111%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2249%22%20r%3D%221%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2264%22%20cy%3D%2249%22%20r%3D%221%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2260%22%20rx%3D%225%22%20ry%3D%223.5%22%20fill%3D%22%23222%22%2F%3E%3Cpath%20d%3D%22M44%2065%20Q50%2070%2056%2065%22%20stroke%3D%22%23222%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2234%22%20cy%3D%2265%22%20r%3D%226%22%20fill%3D%22%23ffb3c1%22%20opacity%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2266%22%20cy%3D%2265%22%20r%3D%226%22%20fill%3D%22%23ffb3c1%22%20opacity%3D%220.6%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23fff3e0%22%2F%3E%3Cpolygon%20points%3D%2222%2C42%2015%2C12%2040%2C32%22%20fill%3D%22%23e65100%22%2F%3E%3Cpolygon%20points%3D%2225%2C40%2020%2C18%2038%2C33%22%20fill%3D%22%23ff8a65%22%2F%3E%3Cpolygon%20points%3D%2278%2C42%2085%2C12%2060%2C32%22%20fill%3D%22%23e65100%22%2F%3E%3Cpolygon%20points%3D%2275%2C40%2080%2C18%2062%2C33%22%20fill%3D%22%23ff8a65%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2258%22%20rx%3D%2232%22%20ry%3D%2228%22%20fill%3D%22%23ef6c00%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2265%22%20rx%3D%2220%22%20ry%3D%2218%22%20fill%3D%22%23fff8f0%22%2F%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2252%22%20rx%3D%225%22%20ry%3D%225.5%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2262%22%20cy%3D%2252%22%20rx%3D%225%22%20ry%3D%225.5%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2253%22%20r%3D%223%22%20fill%3D%22%232d1b00%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2253%22%20r%3D%223%22%20fill%3D%22%232d1b00%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2252%22%20r%3D%221%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2263%22%20cy%3D%2252%22%20r%3D%221%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2263%22%20rx%3D%224%22%20ry%3D%223%22%20fill%3D%22%23bf360c%22%2F%3E%3Cpath%20d%3D%22M44%2068%20Q50%2073%2056%2068%22%20stroke%3D%22%23bf360c%22%20stroke-width%3D%221.8%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2234%22%20cy%3D%2265%22%20r%3D%226%22%20fill%3D%22%23ff8a65%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2266%22%20cy%3D%2265%22%20r%3D%226%22%20fill%3D%22%23ff8a65%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23fce4ec%22%2F%3E%3Cellipse%20cx%3D%2234%22%20cy%3D%2222%22%20rx%3D%229%22%20ry%3D%2220%22%20fill%3D%22%23f8bbd0%22%2F%3E%3Cellipse%20cx%3D%2266%22%20cy%3D%2222%22%20rx%3D%229%22%20ry%3D%2220%22%20fill%3D%22%23f8bbd0%22%2F%3E%3Cellipse%20cx%3D%2234%22%20cy%3D%2222%22%20rx%3D%225%22%20ry%3D%2215%22%20fill%3D%22%23f48fb1%22%2F%3E%3Cellipse%20cx%3D%2266%22%20cy%3D%2222%22%20rx%3D%225%22%20ry%3D%2215%22%20fill%3D%22%23f48fb1%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2260%22%20r%3D%2230%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2255%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2261%22%20cy%3D%2255%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2256%22%20r%3D%223.5%22%20fill%3D%22%23e91e63%22%2F%3E%3Ccircle%20cx%3D%2261%22%20cy%3D%2256%22%20r%3D%223.5%22%20fill%3D%22%23e91e63%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2255%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2255%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2265%22%20rx%3D%223.5%22%20ry%3D%222.5%22%20fill%3D%22%23f48fb1%22%2F%3E%3Cpath%20d%3D%22M46%2068%20Q50%2072%2054%2068%22%20stroke%3D%22%23e91e63%22%20stroke-width%3D%221.8%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2230%22%20y1%3D%2263%22%20x2%3D%2244%22%20y2%3D%2265%22%20stroke%3D%22%23ddd%22%20stroke-width%3D%221%22%2F%3E%3Cline%20x1%3D%2230%22%20y1%3D%2267%22%20x2%3D%2244%22%20y2%3D%2267%22%20stroke%3D%22%23ddd%22%20stroke-width%3D%221%22%2F%3E%3Cline%20x1%3D%2256%22%20y1%3D%2265%22%20x2%3D%2270%22%20y2%3D%2263%22%20stroke%3D%22%23ddd%22%20stroke-width%3D%221%22%2F%3E%3Cline%20x1%3D%2256%22%20y1%3D%2267%22%20x2%3D%2270%22%20y2%3D%2267%22%20stroke%3D%22%23ddd%22%20stroke-width%3D%221%22%2F%3E%3Ccircle%20cx%3D%2233%22%20cy%3D%2266%22%20r%3D%226%22%20fill%3D%22%23f48fb1%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2267%22%20cy%3D%2266%22%20r%3D%226%22%20fill%3D%22%23f48fb1%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23efebe9%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2230%22%20r%3D%2214%22%20fill%3D%22%238d6e63%22%2F%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2230%22%20r%3D%2214%22%20fill%3D%22%238d6e63%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2230%22%20r%3D%228%22%20fill%3D%22%23a1887f%22%2F%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2230%22%20r%3D%228%22%20fill%3D%22%23a1887f%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2258%22%20r%3D%2230%22%20fill%3D%22%23a1887f%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2268%22%20rx%3D%2214%22%20ry%3D%2210%22%20fill%3D%22%23bcaaa4%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2252%22%20r%3D%225.5%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2261%22%20cy%3D%2252%22%20r%3D%225.5%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2253%22%20r%3D%223%22%20fill%3D%22%23212121%22%2F%3E%3Ccircle%20cx%3D%2261%22%20cy%3D%2253%22%20r%3D%223%22%20fill%3D%22%23212121%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2252%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2252%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2263%22%20rx%3D%224.5%22%20ry%3D%223%22%20fill%3D%22%234e342e%22%2F%3E%3Cpath%20d%3D%22M44%2068%20Q50%2073%2056%2068%22%20stroke%3D%22%234e342e%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2233%22%20cy%3D%2266%22%20r%3D%227%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2267%22%20cy%3D%2266%22%20r%3D%227%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23e8eaf6%22%2F%3E%3Cpolygon%20points%3D%2225%2C48%2018%2C18%2044%2C38%22%20fill%3D%22%239c8bb0%22%2F%3E%3Cpolygon%20points%3D%2228%2C46%2023%2C22%2042%2C37%22%20fill%3D%22%23ce93d8%22%2F%3E%3Cpolygon%20points%3D%2275%2C48%2082%2C18%2056%2C38%22%20fill%3D%22%239c8bb0%22%2F%3E%3Cpolygon%20points%3D%2272%2C46%2077%2C22%2058%2C37%22%20fill%3D%22%23ce93d8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2258%22%20r%3D%2230%22%20fill%3D%22%23b39ddb%22%2F%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2253%22%20rx%3D%227%22%20ry%3D%227%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2262%22%20cy%3D%2253%22%20rx%3D%227%22%20ry%3D%227%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2254%22%20rx%3D%223%22%20ry%3D%225%22%20fill%3D%22%232e7d32%22%2F%3E%3Cellipse%20cx%3D%2262%22%20cy%3D%2254%22%20rx%3D%223%22%20ry%3D%225%22%20fill%3D%22%232e7d32%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2252%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2252%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Cpolygon%20points%3D%2250%2C63%2047%2C67%2053%2C67%22%20fill%3D%22%23d81b60%22%2F%3E%3Cpath%20d%3D%22M44%2068%20Q50%2072%2056%2068%22%20stroke%3D%22%237b1fa2%22%20stroke-width%3D%221.8%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2228%22%20y1%3D%2263%22%20x2%3D%2244%22%20y2%3D%2265%22%20stroke%3D%22%239e7cc1%22%20stroke-width%3D%221.2%22%20opacity%3D%220.7%22%2F%3E%3Cline%20x1%3D%2228%22%20y1%3D%2268%22%20x2%3D%2244%22%20y2%3D%2267%22%20stroke%3D%22%239e7cc1%22%20stroke-width%3D%221.2%22%20opacity%3D%220.7%22%2F%3E%3Cline%20x1%3D%2256%22%20y1%3D%2265%22%20x2%3D%2272%22%20y2%3D%2263%22%20stroke%3D%22%239e7cc1%22%20stroke-width%3D%221.2%22%20opacity%3D%220.7%22%2F%3E%3Cline%20x1%3D%2256%22%20y1%3D%2267%22%20x2%3D%2272%22%20y2%3D%2268%22%20stroke%3D%22%239e7cc1%22%20stroke-width%3D%221.2%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2266%22%20r%3D%226%22%20fill%3D%22%23f48fb1%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2266%22%20r%3D%226%22%20fill%3D%22%23f48fb1%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23e3f2fd%22%2F%3E%3Cellipse%20cx%3D%2222%22%20cy%3D%2252%22%20rx%3D%2216%22%20ry%3D%2222%22%20fill%3D%22%2390caf9%22%2F%3E%3Cellipse%20cx%3D%2278%22%20cy%3D%2252%22%20rx%3D%2216%22%20ry%3D%2222%22%20fill%3D%22%2390caf9%22%2F%3E%3Cellipse%20cx%3D%2222%22%20cy%3D%2252%22%20rx%3D%2210%22%20ry%3D%2215%22%20fill%3D%22%23bbdefb%22%2F%3E%3Cellipse%20cx%3D%2278%22%20cy%3D%2252%22%20rx%3D%2210%22%20ry%3D%2215%22%20fill%3D%22%23bbdefb%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2252%22%20r%3D%2228%22%20fill%3D%22%2390caf9%22%2F%3E%3Cpath%20d%3D%22M42%2072%20Q38%2082%2044%2088%20Q50%2092%2050%2088%22%20stroke%3D%22%2364b5f6%22%20stroke-width%3D%228%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2247%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2247%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2248%22%20r%3D%223.5%22%20fill%3D%22%231a237e%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2248%22%20r%3D%223.5%22%20fill%3D%22%231a237e%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2247%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2263%22%20cy%3D%2247%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2260%22%20r%3D%227%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2260%22%20r%3D%227%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23fff8e1%22%2F%3E%3Cellipse%20cx%3D%2227%22%20cy%3D%2242%22%20rx%3D%2214%22%20ry%3D%2218%22%20fill%3D%22%23d4a96a%22%20transform%3D%22rotate%28-15%2027%2042%29%22%2F%3E%3Cellipse%20cx%3D%2273%22%20cy%3D%2242%22%20rx%3D%2214%22%20ry%3D%2218%22%20fill%3D%22%23d4a96a%22%20transform%3D%22rotate%2815%2073%2042%29%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2256%22%20r%3D%2230%22%20fill%3D%22%23f5c97a%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2268%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23fbe9a0%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2251%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2251%22%20r%3D%226%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2252%22%20r%3D%223.5%22%20fill%3D%22%234e2600%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2252%22%20r%3D%223.5%22%20fill%3D%22%234e2600%22%2F%3E%3Ccircle%20cx%3D%2239%22%20cy%3D%2251%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2263%22%20cy%3D%2251%22%20r%3D%221.2%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2262%22%20rx%3D%225%22%20ry%3D%224%22%20fill%3D%22%234e2600%22%2F%3E%3Cpath%20d%3D%22M43%2068%20Q50%2074%2057%2068%22%20stroke%3D%22%238d4e00%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2265%22%20r%3D%227%22%20fill%3D%22%23ff8a65%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2265%22%20r%3D%227%22%20fill%3D%22%23ff8a65%22%20opacity%3D%220.45%22%2F%3E%3C%2Fsvg%3E',
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%23e0f7fa%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2245%22%20r%3D%2228%22%20fill%3D%22%23212121%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2252%22%20rx%3D%2218%22%20ry%3D%2220%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2243%22%20r%3D%227%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2243%22%20r%3D%227%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2244%22%20r%3D%224%22%20fill%3D%22%231a1a1a%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2244%22%20r%3D%224%22%20fill%3D%22%231a1a1a%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2242%22%20r%3D%221.5%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2258%22%20cy%3D%2242%22%20r%3D%221.5%22%20fill%3D%22%23fff%22%2F%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2256%22%20rx%3D%225%22%20ry%3D%223.5%22%20fill%3D%22%23ff8f00%22%2F%3E%3Ccircle%20cx%3D%2233%22%20cy%3D%2256%22%20r%3D%226%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2267%22%20cy%3D%2256%22%20r%3D%226%22%20fill%3D%22%23ef9a9a%22%20opacity%3D%220.6%22%2F%3E%3Cpolygon%20points%3D%2242%2C68%2050%2C72%2042%2C76%22%20fill%3D%22%23e53935%22%2F%3E%3Cpolygon%20points%3D%2258%2C68%2050%2C72%2058%2C76%22%20fill%3D%22%23e53935%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2272%22%20r%3D%223%22%20fill%3D%22%23c62828%22%2F%3E%3C%2Fsvg%3E'
 ];
 function defaultAvatar(g){ return g==='female'?AVATARS[1]:AVATARS[0]; }
 
@@ -317,7 +86,7 @@ function defaultAvatar(g){ return g==='female'?AVATARS[1]:AVATARS[0]; }
 // WELCOME + STARS
 // ============================================================
 function spawnStars(){
-  const c=document.getElementById('stars');
+  const c=document.getElementById('stars'); if(!c)return;
   const emojis=['⭐','✨','🌟','💫','⚡'];
   for(let i=0;i<18;i++){
     const s=document.createElement('div');
@@ -332,14 +101,7 @@ function spawnStars(){
 }
 
 function enterLogin(){
-  const ws=document.getElementById('welcome-screen');
-  ws.style.transition='opacity .6s ease, transform .6s ease';
-  ws.style.opacity='0';
-  ws.style.transform='scale(1.05)';
-  setTimeout(()=>{
-    ws.style.display='none';
-    document.getElementById('login-screen').style.display='flex';
-  },600);
+  document.getElementById('login-screen').style.display='flex';
 }
 
 // ============================================================
@@ -365,8 +127,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(sid==='demo'){ CU=DEMO; enterApp(); return; }
   if(sid){ const u=users.find(u=>u.id==sid); if(u){CU=u;enterApp();return;} }
 
-  // Show welcome
-  document.getElementById('welcome-screen').style.display='flex';
+  // Landing shown by default - explicitly init landing-fixed
+  showLanding();
 });
 
 // ============================================================
@@ -419,6 +181,7 @@ function loginDemo(){
   localStorage.setItem(KEY_SESSION,'demo');
   enterApp();
 }
+window.loginDemo=loginDemo;
 
 function doLogin(){
   clearErr('l-email-err');clearErr('l-pw-err');
@@ -462,15 +225,9 @@ function doLogout(){
   CU=null; clearSession();
   document.getElementById('app').style.display='none';
   document.getElementById('topbar').style.display='none';
-  [pChart,sChart,wChart].forEach(c=>{if(c)c.destroy();});
-  pChart=sChart=wChart=null;
-  // Back to welcome
-  const ws=document.getElementById('welcome-screen');
-  ws.style.display='flex';
-  ws.style.opacity='0';
-  ws.style.transform='scale(.95)';
-  setTimeout(()=>{ws.style.transition='opacity .5s,transform .5s';ws.style.opacity='1';ws.style.transform='scale(1)';},50);
-  document.getElementById('login-screen').style.display='none';
+  [pChart,sChart,wChart,dChart].forEach(c=>{if(c)c.destroy();});
+  pChart=sChart=wChart=dChart=null;
+  showLanding();
 }
 
 // OTP
@@ -516,15 +273,22 @@ function enterApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('reg-screen').style.display='none';
   document.getElementById('forgot-screen').style.display='none';
-  document.getElementById('welcome-screen').style.display='none';
+  var _lay=document.getElementById('landing-layer');
+  var _fix=document.getElementById('landing-fixed');
+  if(_lay){_lay.style.display='none';}
+  if(_fix){_fix.style.display='none';}
   document.getElementById('app').style.display='flex';
   document.getElementById('topbar').style.display='flex';
+  const toggleBtn=document.getElementById('sidebar-toggle');
+  if(toggleBtn)toggleBtn.style.display='flex';
+  setTimeout(syncToggleBtn,30);
   document.getElementById('avatar-img').src=CU.avatar;
   document.getElementById('avatar-name').textContent=CU.fullname;
   renderSubjects();renderSchedule();renderExams();loadSlots();
   updateStreak();renderCalendar();renderAchievements();renderMessages();
   if(!document.getElementById('chat-msgs-main').children.length)initChat('main');
   checkDailyStatus();
+  updateXPBar();
 }
 
 // ============================================================
@@ -536,6 +300,14 @@ function gotoSection(id,el){
   document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
   if(id==='analytics')setTimeout(updateAnalytics,80);
+  if(id==='setup')setTimeout(loadApiKeyStatus,80);
+  if(id==='streak'){calYear=new Date().getFullYear();calMonth=new Date().getMonth();updateStreak();renderCalendar();renderAchievements();}
+  if(id==='messages'){msgFilter='all';document.querySelectorAll('.msg-ftab').forEach((t,i)=>t.classList.toggle('active',i===0));renderMessages();}
+  // Auto-close on mobile
+  if(window.innerWidth<=768){
+    const sb=document.getElementById('sidebar');
+    if(sb&&!sb.classList.contains('collapsed')){toggleSidebar();}
+  }
 }
 
 // ============================================================
@@ -569,12 +341,17 @@ function addSubject(){
   const d=D();if(!d)return;
   const name=document.getElementById('s-name').value.trim();
   const score=parseFloat(document.getElementById('s-score').value);
+  const selfRating=parseInt(document.getElementById('s-selfrating').value)||50;
+  const chapTime=parseInt(document.getElementById('s-chaptime').value)||45;
   if(!name){alert('Nhập tên môn!');return;}
   if(isNaN(score)||score<0||score>10){alert('Điểm 0-10!');return;}
   if(d.subjects.find(s=>s.name.toLowerCase()===name.toLowerCase())){alert('Môn đã tồn tại!');return;}
-  d.subjects.push({id:Date.now(),name,score});
+  d.subjects.push({id:Date.now(),name,score,selfRating,chapTime});
+  if(!d.selfRatings) d.selfRatings={};
+  d.selfRatings[name]=selfRating;
   if(!CU.isDemo)saveStore();
   renderSubjects();
+  updateAIProfileBadge();
   document.getElementById('s-name').value='';document.getElementById('s-score').value='';
 }
 function deleteSubject(id){
@@ -588,13 +365,25 @@ function renderSubjects(){
   if(!d||!d.subjects.length){el.innerHTML='<p style="color:#999;text-align:center;padding:16px;font-size:13px">Chưa có môn học</p>';return;}
   el.innerHTML='';
   d.subjects.forEach(s=>{
+    const selfR=s.selfRating||50;
+    const ratingLabel=selfR<=25?'😰 Yếu':selfR<=50?'😐 TB':selfR<=75?'😊 Khá':'💪 Giỏi';
+    const ratingColor=selfR<=25?'#ef4444':selfR<=50?'#f59e0b':selfR<=75?'#10b981':'#667eea';
     const div=document.createElement('div');
     div.className='subj-item'+(s.score<5?' low':'');
-    div.innerHTML=`<div><strong>${s.name}</strong><br><small style="color:#666">${s.score.toFixed(1)}/10</small></div>
+    div.innerHTML=`<div><strong>${s.name}</strong><br><small style="color:#8892b0">${s.score.toFixed(1)}/10 · <span style="color:${ratingColor}">${ratingLabel}</span> · ${s.chapTime||45}p/chương</small></div>
       <div style="display:flex;align-items:center;gap:8px"><span class="score-badge">${s.score.toFixed(1)}</span><button class="del-btn">🗑️</button></div>`;
     div.querySelector('.del-btn').onclick=()=>deleteSubject(s.id);
     el.appendChild(div);
   });
+}
+function updateAIProfileBadge(){
+  const d=D();const badge=document.getElementById('ai-profile-badge');if(!badge||!d)return;
+  if(!d.subjects.length){badge.style.display='none';return;}
+  const weak=d.subjects.filter(s=>s.score<5||s.selfRating<=25);
+  const peak=document.getElementById('s-peak');
+  const peakLabel=peak?peak.options[peak.selectedIndex].text:'18:00';
+  badge.style.display='block';
+  badge.innerHTML=`🤖 AI đã phân tích: <strong>${d.subjects.length} môn</strong> · ${weak.length} môn cần ưu tiên · Học hiệu quả nhất lúc <strong>${peakLabel.split('(')[1]?.replace(')','')}</strong>`;
 }
 
 // ============================================================
@@ -606,40 +395,171 @@ function generateSchedule(){
   const d=D();if(!d)return;
   if(!d.subjects.length){alert('Thêm môn học trước!');return;}
   if(!Object.keys(d.timeSlots).length){alert('Nhập thời gian rảnh trước!');return;}
-  const sorted=[...d.subjects].sort((a,b)=>a.score-b.score);
+
+  // ── AI LOGIC: collect personalization params ──
+  const peakHourEl=document.getElementById('s-peak');
+  const styleEl=document.getElementById('s-style');
+  const peakHour=peakHourEl?parseInt(peakHourEl.value):18;
+  const studyStyle=styleEl?styleEl.value:'balanced';
+  if(d) { d.peakHour=peakHour; d.studyStyle=studyStyle; }
+
+  // ── AI Priority Score: combines score + selfRating + urgency ──
+  const upcoming=d.exams.filter(e=>new Date(e.date)>=new Date())
+    .sort((a,b)=>new Date(a.date)-new Date(b.date));
+  
+  const aiScore=s=>{
+    const invScore=(10-s.score)/10; // lower score = higher priority
+    const invSelf=(100-(s.selfRating||50))/100; // lower self-rating = higher priority
+    const urgency=upcoming.find(e=>e.name.toLowerCase().includes(s.name.toLowerCase()))?0.3:0;
+    return invScore*0.5 + invSelf*0.35 + urgency*0.15;
+  };
+
+  // ── AI Duration: based on selfRating + studyStyle ──
+  const aiDuration=s=>{
+    const selfR=s.selfRating||50;
+    const chapT=s.chapTime||45;
+    let base=chapT;
+    if(studyStyle==='intensive') base=Math.max(base,75);
+    else if(studyStyle==='spread') base=Math.min(base,40);
+    if(selfR<=25) base=Math.round(base*1.5); // weak: longer
+    else if(selfR>=90) base=Math.round(base*0.7); // strong: shorter
+    return Math.min(Math.max(base,25),120);
+  };
+
+  // ── AI Sessions per week ──
+  const aiSessions=s=>{
+    const selfR=s.selfRating||50;
+    if(studyStyle==='intensive') return selfR<=25?4:selfR<=50?3:2;
+    if(studyStyle==='spread') return selfR<=25?6:selfR<=50?5:3;
+    return selfR<=25?5:selfR<=50?4:3; // balanced
+  };
+
+  const sorted=[...d.subjects].sort((a,b)=>aiScore(b)-aiScore(a));
   d.schedule={};
   const daySlots={};
   DAYS_INFO.forEach(([k])=>{if(d.timeSlots[k])daySlots[k]=[];});
-  const dur=s=>s.score<5?90:s.score<7?60:45;
-  const sessions=s=>s.score<5?5:s.score<7?4:3;
+
+  // ── AI Peak Hour Preference: sort days to prefer peak hour matches ──
+  const dayKeys=Object.keys(daySlots);
+
   sorted.forEach(s=>{
-    let n=sessions(s),dt=dur(s);
-    for(let pass=0;pass<3&&n>0;pass++){
-      for(const k of Object.keys(daySlots)){
-        if(n<=0)break;if(daySlots[k].length>=3)continue;
+    let n=aiSessions(s),dt=aiDuration(s);
+    for(let pass=0;pass<4&&n>0;pass++){
+      const maxPerDay=studyStyle==='intensive'?2:studyStyle==='spread'?4:3;
+      for(const k of dayKeys){
+        if(n<=0)break;if(daySlots[k].length>=maxPerDay)continue;
         const[ss,es]=d.timeSlots[k].split('-');if(!ss||!es)continue;
-        const st=parseTime(ss.trim()),en=parseTime(es.trim());let cur=st;
-        while(cur+dt+10<=en){
+        const st=parseTime(ss.trim()),en=parseTime(es.trim());
+        // ── AI: prefer peak hour ──
+        const peakStart=peakHour*60;
+        let cur=Math.max(st, Math.min(peakStart, en-dt-10));
+        // If peak not available, fallback to start
+        if(cur<st) cur=st;
+        let tried=0;
+        while(cur+dt+10<=en && tried<20){
+          tried++;
           if(!daySlots[k].some(x=>!(cur+dt+10<=x.s||cur>=x.e))){
             if(!d.schedule[s.id])d.schedule[s.id]={};
             d.schedule[s.id][k]={time:fmt(cur),duration:dt,completed:false};
             daySlots[k].push({s:cur,e:cur+dt+10});n--;break;
           }
-          cur+=30;
+          cur+=15;
         }
       }
     }
   });
+
   if(!CU.isDemo)saveStore();
+  
+  // ── AI Summary Toast ──
+  showAIScheduleToast(sorted, studyStyle, peakHour);
+  
   renderSchedule();gotoSection('schedule',null);
-  document.querySelectorAll('.sidebar-item')[1].classList.add('active');
+  document.querySelectorAll('.sidebar-item')[2].classList.add('active');
+}
+
+function showAIScheduleToast(sorted, style, peak){
+  const weakSubjs=sorted.filter(s=>s.score<5||(s.selfRating||50)<=25).map(s=>s.name);
+  const styleLabel={intensive:'Tập trung cao độ',balanced:'Cân bằng',spread:'Dàn trải'}[style];
+  let msg=`🤖 AI đã tạo lịch cá nhân hóa!\n\n`;
+  msg+=`📊 Phong cách: ${styleLabel}\n`;
+  msg+=`⏰ Ưu tiên khung ${peak}:00-${peak+2}:00\n`;
+  if(weakSubjs.length) msg+=`⚠️ Ưu tiên cao: ${weakSubjs.join(', ')}\n`;
+  msg+=`\n✅ Lịch đã được tối ưu theo thói quen của bạn!`;
+  setTimeout(()=>alert(msg),100);
+}
+let schView='day';
+function switchSchView(v){
+  schView=v;
+  document.getElementById('btn-view-day').classList.toggle('active',v==='day');
+  document.getElementById('btn-view-week').classList.toggle('active',v==='week');
+  const d2=document.getElementById('btn-view-day2');const w2=document.getElementById('btn-view-week2');
+  if(d2)d2.classList.toggle('active',v==='day');if(w2)w2.classList.toggle('active',v==='week');
+  document.getElementById('sch-day-view').style.display=v==='day'?'block':'none';
+  document.getElementById('sch-week-view').style.display=v==='week'?'block':'none';
+  renderSchedule();
 }
 function renderSchedule(){
+  if(schView==='week')renderWeekView();
+  else renderDayView();
+}
+function renderDayView(){
+  const d=D();
+  const statsBar=document.getElementById('day-stats-bar');
+  const timeline=document.getElementById('day-timeline');
+  if(!statsBar||!timeline)return;
+  const now=new Date();
+  const dkMap=['sun','mon','tue','wed','thu','fri','sat'];
+  const todayKey=dkMap[now.getDay()];
+  let todayTasks=[];
+  if(d&&d.subjects.length){
+    d.subjects.forEach(s=>{
+      if(d.schedule[s.id]&&d.schedule[s.id][todayKey])
+        todayTasks.push({s,t:d.schedule[s.id][todayKey],key:todayKey});
+    });
+    todayTasks.sort((a,b)=>a.t.time.localeCompare(b.t.time));
+  }
+  const totalAll=d?Object.values(d.schedule).reduce((acc,sch)=>acc+Object.keys(sch).length,0):0;
+  const doneToday=todayTasks.filter(x=>x.t.completed).length;
+  statsBar.innerHTML=`
+    <div class="day-stat-chip chip-blue"><span class="chip-num">${todayTasks.length}</span><span>lịch hôm nay</span></div>
+    <div class="day-stat-chip chip-green"><span class="chip-num">${doneToday}</span><span>hoàn thành</span></div>
+    <div class="day-stat-chip chip-orange"><span class="chip-num">${totalAll}</span><span>tổng cộng</span></div>`;
+  if(!todayTasks.length){
+    timeline.innerHTML=`<div class="day-empty"><div class="day-empty-icon">📭</div><div class="day-empty-text">Hôm nay không có lịch học!<br><span style="font-weight:400;font-size:13px">Vào Thiết lập để tạo lịch tự động</span></div></div>`;
+    return;
+  }
+  timeline.innerHTML=todayTasks.map(({s,t,key})=>{
+    const isPriority=s.score<5,isDone=t.completed;
+    const [h,m]=t.time.split(':').map(Number);
+    const endMin=h*60+m+(t.duration||45);
+    const endH=String(Math.floor(endMin/60)).padStart(2,'0');
+    const endM=String(endMin%60).padStart(2,'0');
+    const accentCls=isDone?'done':isPriority?'priority':'';
+    return`<div class="tl-item${isDone?' tl-done':''}">
+      <div class="tl-accent ${accentCls}"></div>
+      <div class="tl-time-col">
+        <span class="tl-time-start">${t.time}</span>
+        <div class="tl-time-line"></div>
+        <span class="tl-time-end">${endH}:${endM}</span>
+      </div>
+      <div class="tl-body">
+        <div class="tl-subject${isDone?' done-text':''}">${s.name}${isPriority?' ⭐':''}</div>
+        <div class="tl-meta">⏱️ ${t.duration||45} phút${s.score<5?' · <span style="color:#ff6b6b;font-weight:700">Cần cải thiện</span>':''}</div>
+        <div><button class="tl-tag${isDone?' done-tag':''}" onclick="toggleTask(${s.id},'${key}')">${isDone?'✅ Đã hoàn thành':'📚 Học'}</button></div>
+      </div>
+      <div class="tl-check">
+        <div class="tl-check-btn${isDone?' checked':''}" onclick="toggleTask(${s.id},'${key}')">${isDone?'✓':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderWeekView(){
   const d=D();const body=document.getElementById('sch-body');
   const dk=['mon','tue','wed','thu','fri','sat','sun'];
   const slots=[{n:'🌅 Sáng',s:6,e:12},{n:'☀️ Chiều',s:12,e:18},{n:'🌙 Tối',s:18,e:24}];
   if(!d||!d.subjects.length||!Object.keys(d.schedule).length){
-    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:#999;font-size:13px">Vào "Thiết lập" để thêm môn và tạo lịch</td></tr>';return;
+    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:#999;font-size:13px">Vào &quot;Thiết lập&quot; để thêm môn và tạo lịch</td></tr>';return;
   }
   body.innerHTML=slots.map(slot=>`<tr>
     <td style="font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:13px">${slot.n}</td>
@@ -658,13 +578,54 @@ function renderSchedule(){
       return`<td class="task-cell">${html||'<small style="color:#bbb">—</small>'}</td>`;
     }).join('')}</tr>`).join('');
 }
+// ============================================================
+// XP & LEVEL SYSTEM
+// ============================================================
+const XP_LEVELS=[
+  {lvl:1,name:'Newbie 🌱',min:0,max:100},
+  {lvl:2,name:'Learner 📖',min:100,max:250},
+  {lvl:3,name:'Scholar 🎓',min:250,max:500},
+  {lvl:4,name:'Expert 🧠',min:500,max:900},
+  {lvl:5,name:'Master 🏆',min:900,max:99999}
+];
+function addXP(amount,reason){
+  const d=D();if(!d)return;
+  if(!d.xp) d.xp=0;
+  if(!d.level) d.level=1;
+  d.xp+=amount;
+  const prev=d.level;
+  const lv=XP_LEVELS.find(l=>d.xp>=l.min&&d.xp<l.max)||XP_LEVELS[XP_LEVELS.length-1];
+  d.level=lv.lvl;
+  if(!CU.isDemo)saveStore();
+  updateXPBar();
+  if(d.level>prev) showLevelUp(lv);
+}
+function updateXPBar(){
+  const d=D();if(!d)return;
+  const xp=d.xp||0;const lv=XP_LEVELS.find(l=>xp>=l.min&&xp<l.max)||XP_LEVELS[XP_LEVELS.length-1];
+  const next=XP_LEVELS.find(l=>l.lvl===lv.lvl+1);
+  const pct=next?Math.min(100,((xp-lv.min)/(lv.max-lv.min))*100):100;
+  const bar=document.getElementById('xp-bar');
+  const badge=document.getElementById('xp-level-badge');
+  const val=document.getElementById('xp-val');
+  if(bar) bar.style.width=pct+'%';
+  if(badge) badge.textContent=`⭐ Lv.${lv.lvl} – ${lv.name}`;
+  if(val) val.textContent=`${xp} XP`;
+}
+function showLevelUp(lv){
+  setTimeout(()=>alert(`🎉 LEVEL UP!\n\nBạn đã đạt Level ${lv.lvl}: ${lv.name}\n\nTiếp tục học để lên level tiếp! 🚀`),200);
+}
+
 function toggleTask(sid,day){
   const d=D();if(!d)return;
   if(d.schedule[sid]&&d.schedule[sid][day]){
     d.schedule[sid][day].completed=!d.schedule[sid][day].completed;
     if(!CU.isDemo)saveStore();
     renderSchedule();updateAnalytics();
-    if(d.schedule[sid][day].completed)checkAndUpdateStreak();
+    if(d.schedule[sid][day].completed){
+      checkAndUpdateStreak();
+      addXP(20,'task'); // +20 XP per completed session
+    }
   }
 }
 
@@ -693,7 +654,7 @@ function renderExams(){
   d.exams.forEach(e=>{
     const days=Math.ceil((new Date(e.date)-new Date())/864e5);
     const div=document.createElement('div');div.className='subj-item';
-    div.innerHTML=`<div><strong>${e.name}</strong><br><small style="color:#666">${new Date(e.date).toLocaleDateString('vi-VN')}</small>${days>=0?`<br><small style="color:#667eea;font-weight:600">⏰ Còn ${days} ngày</small>`:'<br><small style="color:#999">Đã qua</small>'}</div><button class="del-btn">🗑️</button>`;
+    div.innerHTML=`<div><strong>${e.name}</strong><br><small style="color:#8892b0">${new Date(e.date).toLocaleDateString('vi-VN')}</small>${days>=0?`<br><small style="color:#22d3ee;font-weight:600">⏰ Còn ${days} ngày</small>`:'<br><small style="color:#999">Đã qua</small>'}</div><button class="del-btn">🗑️</button>`;
     div.querySelector('.del-btn').onclick=()=>deleteExam(e.id);
     el.appendChild(div);
   });
@@ -733,22 +694,46 @@ function checkAndUpdateStreak(){
   if(!CU.isDemo)saveStore();
   updateStreak();renderCalendar();checkAchievements();
 }
-function renderCalendar(){
-  const d=D();const g=document.getElementById('cal-grid');const t=document.getElementById('cal-title');
+let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calNext(){
   const now=new Date();
+  if(calYear>now.getFullYear()||(calYear===now.getFullYear()&&calMonth>=now.getMonth()))return;
+  calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();
+}
+function renderCalendar(){
+  const d=D();
+  const g=document.getElementById('cal-grid');
+  const t=document.getElementById('cal-title');
+  const dowRow=document.getElementById('cal-dow-row');
   const mn=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
-  t.textContent=mn[now.getMonth()]+' '+now.getFullYear();
-  const days=[];for(let i=29;i>=0;i--){const dt=new Date();dt.setDate(now.getDate()-i);days.push(dt);}
-  const todayStr=now.toDateString();const doneSet=new Set(d?d.streak.dates:[]);
-  g.innerHTML=days.map(dt=>{
+  t.textContent='T'+(calMonth+1)+' '+calYear;
+  // Day of week headers: Mon-Sun
+  const dows=['T2','T3','T4','T5','T6','T7','CN'];
+  if(dowRow)dowRow.innerHTML=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  // Build days in month
+  const firstDay=new Date(calYear,calMonth,1);
+  // offset: Monday=0 ... Sunday=6
+  let offset=(firstDay.getDay()+6)%7;
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const todayStr=new Date().toDateString();
+  const doneSet=new Set(d?d.streak.dates:[]);
+  // freezeSet - mark freeze used days (we don't track specifically, so just use a placeholder)
+  let cells=[];
+  // empty cells before first day
+  for(let i=0;i<offset;i++) cells.push(`<div class="cal-day empty"></div>`);
+  for(let day=1;day<=daysInMonth;day++){
+    const dt=new Date(calYear,calMonth,day);
     const ds=dt.toDateString();
-    let cls='cal-day',emoji='';
-    if(ds===todayStr){cls+=' today';emoji='⭐';}
-    else if(dt>now){cls+=' future';}
-    else if(doneSet.has(ds)){cls+=' done';emoji='✓';}
-    else{cls+=' miss';emoji='✗';}
-    return`<div class="${cls}"><div style="font-size:13px">${dt.getDate()}</div><div style="font-size:10px">${emoji}</div></div>`;
-  }).join('');
+    const now=new Date(); now.setHours(23,59,59,999);
+    let cls='cal-day';
+    if(ds===todayStr) cls+=' today';
+    else if(dt>now) cls+=' future';
+    else if(doneSet.has(ds)) cls+=' done';
+    else cls+=' miss';
+    cells.push(`<div class="${cls}">${day}</div>`);
+  }
+  g.innerHTML=cells.join('');
 }
 function buyFreeze(){const d=D();if(!d)return;if(d.streak.cur<10){alert('Cần 10 ngày chuỗi!');return;}if(confirm('Đổi 10🔥 lấy 1 đóng băng?')){d.streak.cur-=10;d.streak.freezes++;if(!CU.isDemo)saveStore();updateStreak();}}
 function buyReward(){const d=D();if(!d)return;if(d.streak.cur<15){alert('Cần 15 ngày chuỗi!');return;}if(confirm('Đổi 15🔥 lấy phần thưởng?')){d.streak.cur-=15;if(!CU.isDemo)saveStore();updateStreak();const r=['🎉 Kiên trì của bạn sẽ được đền đáp!','⭐ Thành công không xa!','💪 Bạn đã chứng minh quyết tâm!'];alert('🎁 '+r[Math.floor(Math.random()*r.length)]);}}
@@ -772,34 +757,222 @@ function renderAchievements(){
 // ============================================================
 // MESSAGES
 // ============================================================
-function renderMessages(){
-  const d=D();const el=document.getElementById('msg-list');
-  if(!d||!d.messages.length){el.innerHTML='<div class="msg-card success"><h4>💪 Chào mừng!</h4><p>Mình sẽ gửi thông báo học tập cho bạn!</p></div>';return;}
-  el.innerHTML=d.messages.map(m=>`<div class="msg-card ${m.type}"><h4>${m.title}</h4><p>${m.content}</p><div class="msg-date">${new Date(m.date).toLocaleDateString('vi-VN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div></div>`).join('');
+let msgFilter = 'all';
+function filterMsgs(type, el) {
+  msgFilter = type;
+  document.querySelectorAll('.msg-ftab').forEach(t => t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderMessages();
 }
+function clearMessages() {
+  const d = D(); if(!d) return;
+  // Dùng custom confirm thay vì window.confirm (tránh bị block trên file://)
+  const btn = document.querySelector('[onclick="clearMessages()"]');
+  if(btn && btn.dataset.confirming !== '1') {
+    btn.dataset.confirming = '1';
+    const origText = btn.innerHTML;
+    btn.innerHTML = '❓ Chắc chắn?';
+    btn.style.borderColor = '#ef4444';
+    btn.style.color = '#ef4444';
+    const reset = () => {
+      btn.dataset.confirming = '0';
+      btn.innerHTML = origText;
+      btn.style.borderColor = '#e5e7eb';
+      btn.style.color = '#888';
+    };
+    setTimeout(reset, 3000);
+    return;
+  }
+  // Lần bấm thứ 2 → xóa thật
+  if(btn) { btn.dataset.confirming = '0'; btn.innerHTML = '🗑️ Xóa hết'; btn.style.borderColor='#e5e7eb'; btn.style.color='#888'; }
+  d.messages = [];
+  if(!CU.isDemo) saveStore();
+  renderMessages();
+}
+
+function renderSubjectOverview() {
+  const d = D();
+  const el = document.getElementById('msg-subject-overview');
+  if(!el) return;
+  if(!d || !d.subjects.length) { el.innerHTML = ''; return; }
+  const dkMap = ['sun','mon','tue','wed','thu','fri','sat'];
+  const todayKey = dkMap[new Date().getDay()];
+
+  const cards = d.subjects.map(s => {
+    const sch = d.schedule[s.id] || {};
+    const allDays = Object.keys(sch);
+    const totalSessions = allDays.length;
+    const doneSessions = allDays.filter(k => sch[k].completed).length;
+    const rate = totalSessions ? Math.round((doneSessions / totalSessions) * 100) : 0;
+    const todayTask = sch[todayKey];
+    const isTodayDone = todayTask?.completed;
+    const isTodayPending = todayTask && !isTodayDone;
+    const weekDone = ['mon','tue','wed','thu','fri','sat','sun'].filter(k => sch[k]?.completed).length;
+    const weekTotal = ['mon','tue','wed','thu','fri','sat','sun'].filter(k => sch[k]).length;
+
+    // Score color
+    const scoreCls = s.score >= 7 ? 'score-high' : s.score >= 5 ? 'score-mid' : 'score-low';
+
+    // Progress bar color
+    const fillColor = rate >= 70 ? '#22c55e' : rate >= 40 ? '#f59e0b' : '#ef4444';
+
+    // Tip
+    let tip = '', tipCls = 'tip-ok';
+    if (s.score < 5) {
+      tip = `⚡ Điểm thấp! Cần tăng cường ôn tập, đặt mục tiêu ${Math.min(totalSessions, weekTotal + 2)} buổi/tuần.`;
+      tipCls = 'tip-urgent';
+    } else if (rate < 40) {
+      tip = `📌 Tỷ lệ hoàn thành thấp. Cố gắng hoàn thành ít nhất ${Math.ceil(totalSessions * 0.5)} buổi.`;
+      tipCls = 'tip-warn';
+    } else if (isTodayPending) {
+      tip = `⏰ Hôm nay có lịch học lúc ${todayTask.time}. Đừng bỏ lỡ nhé!`;
+      tipCls = 'tip-warn';
+    } else if (isTodayDone) {
+      tip = `✅ Tuyệt vời! Đã hoàn thành buổi học hôm nay.`;
+      tipCls = 'tip-ok';
+    } else {
+      tip = `📚 Tiến độ tốt! Duy trì ${weekDone}/${weekTotal} buổi/tuần.`;
+      tipCls = 'tip-ok';
+    }
+
+    return `<div class="subj-ov-card">
+      <div class="subj-ov-top">
+        <div class="subj-ov-name">${s.name}</div>
+        <span class="subj-ov-score ${scoreCls}">${s.score.toFixed(1)}đ</span>
+      </div>
+      <div class="subj-ov-progress">
+        <div class="subj-ov-prog-label"><span>Tiến độ tuần</span><span style="color:${fillColor}">${rate}%</span></div>
+        <div class="subj-ov-prog-track"><div class="subj-ov-prog-fill" style="width:${rate}%;background:${fillColor}"></div></div>
+      </div>
+      <div class="subj-ov-stats">
+        <span class="subj-ov-stat">📅 ${doneSessions}/${totalSessions} buổi</span>
+        <span class="subj-ov-stat">🔥 ${weekDone}/${weekTotal} tuần này</span>
+        ${isTodayPending ? `<span class="subj-ov-stat" style="background:#fff3cd;color:#856404">⏰ Hôm nay ${todayTask.time}</span>` : ''}
+        ${isTodayDone ? `<span class="subj-ov-stat" style="background:#d1fae5;color:#065f46">✅ Xong hôm nay</span>` : ''}
+      </div>
+      <div class="subj-ov-tip ${tipCls}">${tip}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = (msgFilter === 'subject' || msgFilter === 'all')
+    ? `<div class="subj-overview-grid">${cards}</div>` : '';
+}
+
+function renderMessages() {
+  renderSubjectOverview();
+  const d = D();
+  const el = document.getElementById('msg-list');
+  if(!el) return;
+  let msgs = d ? [...d.messages] : [];
+  if(msgFilter === 'warning') msgs = msgs.filter(m => m.type === 'warning');
+  else if(msgFilter === 'success') msgs = msgs.filter(m => m.type === 'success');
+  else if(msgFilter === 'fail') msgs = msgs.filter(m => m.type === 'fail' || m.type === 'warning');
+  else if(msgFilter === 'subject') { el.innerHTML = ''; return; }
+
+  if(!msgs.length && msgFilter === 'all') {
+    el.innerHTML = `<div class="msg-card-new">
+      <div class="msg-card-accent" style="background:linear-gradient(90deg,#667eea,#764ba2)"></div>
+      <div class="msg-card-body">
+        <div class="msg-card-head"><span class="msg-card-icon">💪</span><span class="msg-card-title">Chào mừng bạn!</span></div>
+        <div class="msg-card-text">Hệ thống sẽ gửi thông báo nhắc nhở học tập chi tiết từng môn sau 20:00 mỗi ngày.</div>
+      </div>
+    </div>`; return;
+  }
+  if(!msgs.length) { el.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa;font-size:14px">Không có thông báo nào</div>`; return; }
+
+  const colors = { warning: '#ff6b6b', success: '#4ade80', subject: '#a78bfa', info: '#38bdf8' };
+  const badges = { warning: ['badge-warn','⚠️ Cảnh báo'], success: ['badge-ok','✅ Đạt'], subject: ['badge-info','📚 Môn học'], info: ['badge-info','ℹ️ Thông tin'] };
+
+  el.innerHTML = msgs.map(m => {
+    const color = colors[m.type] || '#667eea';
+    const [badgeCls, badgeTxt] = badges[m.type] || ['badge-info','📌'];
+    return `<div class="msg-card-new">
+      <div class="msg-card-accent" style="background:${color}"></div>
+      <div class="msg-card-body">
+        <div class="msg-card-head">
+          <span class="msg-card-icon">${m.icon || (m.type==='warning'?'⚠️':m.type==='success'?'🎉':'📬')}</span>
+          <span class="msg-card-title">${m.title}</span>
+          <span class="msg-card-badge ${badgeCls}">${badgeTxt}</span>
+        </div>
+        <div class="msg-card-text">${m.content}</div>
+        <div class="msg-card-meta">
+          <span class="msg-card-date">🕐 ${new Date(m.date).toLocaleDateString('vi-VN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</span>
+          ${m.subject ? `<span class="msg-card-subj-tag">📖 ${m.subject}</span>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function checkDailyStatus(){
   const d=D();if(!d)return;
   const now=new Date();if(now.getHours()<20)return;
   const today=now.toDateString();if(d.lastCheck===today)return;
   const dk=['sun','mon','tue','wed','thu','fri','sat'][now.getDay()];
+
+  // Per-subject notifications
+  d.subjects.forEach(s => {
+    const task = d.schedule[s.id]?.[dk];
+    if(!task) return;
+    if(task.completed) {
+      d.messages.unshift({
+        type:'success', icon:'✅',
+        title:`${s.name} — Hoàn thành!`,
+        content:`Bạn đã hoàn thành buổi học ${s.name} hôm nay. Tuyệt vời! 🌟 Tiếp tục duy trì nhé.`,
+        subject: s.name, date: today
+      });
+    } else {
+      const sv = getSubjectWarnMsg(s);
+      d.messages.unshift({
+        type:'warning', icon:'⚠️',
+        title:`${s.name} — Chưa học hôm nay`,
+        content: sv,
+        subject: s.name, date: today
+      });
+    }
+  });
+
+  // Overall summary
   let total=0,done=0;
-  d.subjects.forEach(s=>{if(d.schedule[s.id]&&d.schedule[s.id][dk]){total++;if(d.schedule[s.id][dk].completed)done++;}});
-  if(total>0&&done===0){d.missedDays=(d.missedDays||0)+1;const sv=getMissedSev(d.missedDays);d.messages.unshift({type:'warning',title:sv.title,content:sv.msg,date:today});}
-  else if(total>0&&done===total){d.missedDays=0;d.messages.unshift({type:'success',title:'🎉 Xuất sắc!',content:`Hoàn thành ${total} buổi học hôm nay! 🌟`,date:today});}
-  if(d.messages.length>30)d.messages=d.messages.slice(0,30);
+  d.subjects.forEach(s=>{if(d.schedule[s.id]?.[dk]){total++;if(d.schedule[s.id][dk].completed)done++;}});
+  if(total>0){
+    if(done===total){
+      d.missedDays=0;
+      d.messages.unshift({type:'success',icon:'🎉',title:'🎉 Xuất sắc! Hoàn thành tất cả',content:`Bạn đã hoàn thành cả ${total} môn hôm nay! Chuỗi ngày học đang tăng. 🔥 Tiếp tục phát huy!`,date:today});
+    } else if(done===0){
+      d.missedDays=(d.missedDays||0)+1;
+      const sv=getMissedSev(d.missedDays);
+      d.messages.unshift({type:'warning',icon:'😢',title:sv.title,content:sv.msg,date:today});
+    } else {
+      d.messages.unshift({type:'info',icon:'📊',title:`Hôm nay: ${done}/${total} môn hoàn thành`,content:`Còn ${total-done} môn chưa học hôm nay. Cố hoàn thành nốt trước khi đi ngủ nhé! 💪`,date:today});
+    }
+  }
+
+  if(d.messages.length>50)d.messages=d.messages.slice(0,50);
   d.lastCheck=today;if(!CU.isDemo)saveStore();renderMessages();
 }
+
+function getSubjectWarnMsg(s) {
+  const sch = s ? (D()?.schedule[s.id] || {}) : {};
+  const allDays = Object.keys(sch);
+  const doneDays = allDays.filter(k => sch[k].completed).length;
+  const rate = allDays.length ? Math.round((doneDays/allDays.length)*100) : 0;
+  if(s.score < 5) return `⚡ Môn ${s.name} đang ở mức điểm thấp (${s.score.toFixed(1)}đ). Cần học bù ngay hôm nay! Đặt mục tiêu ôn tập ít nhất 45 phút.`;
+  if(rate < 30) return `📉 Tỷ lệ hoàn thành ${s.name} chỉ ${rate}%. Hãy học bù buổi hôm nay để cải thiện tiến độ.`;
+  return `📌 Bạn chưa học ${s.name} hôm nay. Đừng để gián đoạn chuỗi học tập nhé!`;
+}
+
 function getMissedSev(n){
-  if(n===1)return{title:'😢 Hôm nay chưa học',msg:'Đừng lo, ngày mai cố lên! 💪'};
-  if(n===2)return{title:'⚠️ 2 ngày không học',msg:'Hãy quay lại ngay! 🔥'};
-  if(n===3)return{title:'🚨 3 ngày không học!',msg:'Bắt đầu lại ngay - dù 15 phút thôi! ⚡'};
-  return{title:`❌ ${n} ngày không học`,msg:'Mục tiêu đang xa dần. Hành động ngay! 🎯'};
+  if(n===1)return{title:'😢 Hôm nay chưa học môn nào',msg:'Đừng lo, ngày mai cố lên! Bắt đầu bằng 1 môn nhỏ thôi. 💪'};
+  if(n===2)return{title:'⚠️ 2 ngày không học',msg:'Hãy quay lại ngay! Mở app và hoàn thành ít nhất 1 buổi hôm nay. 🔥'};
+  if(n===3)return{title:'🚨 3 ngày không học!',msg:'Chuỗi ngày học sắp mất! Bắt đầu lại ngay - dù 15 phút thôi cũng được! ⚡'};
+  return{title:`❌ ${n} ngày không học`,msg:`Mục tiêu đang xa dần. Mỗi ngày trôi qua là 1 cơ hội bị lãng phí. Hành động ngay hôm nay! 🎯`};
 }
 
 // ============================================================
 // ANALYTICS
 // ============================================================
-let pChart=null,sChart=null,wChart=null;
+let pChart=null,sChart=null,wChart=null,dChart=null;
 function updateAnalytics(){
   const d=D();let total=0,done=0,mins=0;
   if(d){d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed){done++;mins+=d.schedule[s.id][k].duration||0;}});});}
@@ -809,7 +982,66 @@ function updateAnalytics(){
   document.getElementById('an-done').textContent=done;
   document.getElementById('an-rate').textContent=rate+'%';
   document.getElementById('an-time').textContent=h+'h'+(m?` ${m}m`:'');
-  renderPC(done,total-done);renderSC();renderWC();renderDT();
+  if(document.getElementById('an-streak')&&d)document.getElementById('an-streak').textContent=d.streak.cur+'🔥';
+  if(document.getElementById('an-weak')&&d)document.getElementById('an-weak').textContent=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).length;
+
+  // Neglect card
+  if(d){
+    const neglected=d.subjects.filter(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);return keys.length>0&&(keys.filter(k=>sch[k].completed).length/keys.length)<0.3;});
+    const nc=document.getElementById('neglect-card');const nl=document.getElementById('neglect-list');
+    if(nc&&nl){
+      if(neglected.length){nc.style.display='block';nl.innerHTML=neglected.map(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);const doneC=keys.filter(k=>sch[k].completed).length;return`<div style="padding:6px 0;border-bottom:1px solid #fee2e2">⚠️ <strong>${s.name}</strong>: chỉ ${Math.round(doneC/keys.length*100)}% hoàn thành (${doneC}/${keys.length} buổi) – <span style="color:#ef4444">cần học bù ngay!</span></div>`;}).join('');}
+      else{nc.style.display='none';}
+    }
+  }
+
+  renderPC(done,total-done);renderSC();renderWC();renderDT();renderDeadlineChart();
+  checkRescheduleNeeded();
+  
+  // AI Prediction
+  const pred=document.getElementById('ai-prediction');
+  if(pred&&d){
+    const weak=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25);
+    const upcoming=d.exams.filter(e=>new Date(e.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const streakOk=d.streak.cur>=3;
+    let predictions=[];
+    if(rate>=70) predictions.push('🟢 <b>Tiến độ tốt</b> – Khả năng hoàn thành kế hoạch cao!');
+    else if(rate>=40) predictions.push('🟡 <b>Tiến độ trung bình</b> – Cần tăng cường 20% để đạt mục tiêu.');
+    else predictions.push('🔴 <b>Tiến độ thấp</b> – AI khuyên học bù vào cuối tuần!');
+    if(weak.length) predictions.push(`⚠️ <b>Rủi ro</b>: ${weak.map(s=>s.name).join(', ')} có thể ảnh hưởng kết quả thi.`);
+    if(upcoming.length){
+      const days=Math.ceil((new Date(upcoming[0].date)-new Date())/864e5);
+      const needed=Math.ceil(total*(1-done/total));
+      if(days>0){
+        const canFinish=days*2>=needed;
+        predictions.push(`📅 <b>${upcoming[0].name}</b> còn ${days} ngày · ${canFinish?'🟢 Khả năng hoàn thành: Cao':'🔴 Khả năng hoàn thành: Thấp – cần tăng tốc!'}`);
+      }
+    }
+    if(streakOk) predictions.push(`🔥 <b>Chuỗi ${d.streak.cur} ngày</b> – Thói quen học tốt, tiếp tục duy trì!`);
+    predictions.push(`⏱️ <b>Tổng thời gian đã học:</b> ${h}h ${m}m – ${h>=10?'🏆 Xuất sắc!':h>=5?'👍 Tốt!':'💪 Cố lên!'}`);
+    pred.innerHTML=predictions.map(p=>`<div style="margin-bottom:8px;padding:8px 12px;background:#f8faff;border-radius:8px">• ${p}</div>`).join('')||'Thêm môn học và hoàn thành buổi học để AI phân tích!';
+  }
+
+  // XP Card
+  const xpCard=document.getElementById('analytics-xp');
+  if(xpCard&&d){
+    const xp=d.xp||0;const lv=XP_LEVELS.find(l=>xp>=l.min&&xp<l.max)||XP_LEVELS[XP_LEVELS.length-1];
+    const next=XP_LEVELS.find(l=>l.lvl===lv.lvl+1);
+    const pct=next?Math.min(100,((xp-lv.min)/(lv.max-lv.min))*100):100;
+    const needed=next?next.min-xp:0;
+    xpCard.innerHTML=`
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
+        <div style="font-size:36px">${['🌱','📖','🎓','🧠','🏆'][lv.lvl-1]}</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#f59e0b">Level ${lv.lvl} – ${lv.name}</div>
+          <div style="font-size:13px;color:#888">${xp} XP tích lũy${next?` · Cần thêm ${needed} XP để lên Level ${lv.lvl+1}`:' · Đã đạt cấp độ tối đa!'}</div>
+        </div>
+      </div>
+      <div style="height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#ffd700,#ff8c00);border-radius:5px;transition:width .5s"></div>
+      </div>
+      <div style="font-size:12px;color:#aaa;margin-top:8px">💡 +20 XP mỗi buổi học hoàn thành · +5 XP mỗi lần dùng AI chat · +30 XP dùng AI Tư Vấn</div>`;
+  }
 }
 function renderPC(done,undone){
   const ctx=document.getElementById('chart-progress');if(!ctx)return;
@@ -834,18 +1066,245 @@ function renderWC(){
 }
 function renderDT(){
   const d=D();const body=document.getElementById('an-tbody');
-  if(!d||!d.subjects.length){body.innerHTML='<tr><td colspan="6" style="text-align:center;color:#999;padding:20px">Chưa có dữ liệu</td></tr>';return;}
+  if(!d||!d.subjects.length){body.innerHTML='<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">Chưa có dữ liệu</td></tr>';return;}
   body.innerHTML=d.subjects.map(s=>{
     let t=0,c=0,m=0;
     Object.keys(d.schedule[s.id]||{}).forEach(k=>{t++;if(d.schedule[s.id][k].completed){c++;m+=d.schedule[s.id][k].duration||0;}});
     const r=t?((c/t)*100).toFixed(1):0;
-    return`<tr><td><strong>${s.name}</strong></td><td>${s.score.toFixed(1)}</td><td>${t}</td><td>${c}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${r}%"></div></div><span style="font-weight:600;min-width:40px">${r}%</span></div></td><td>${Math.floor(m/60)}h ${m%60}m</td></tr>`;
+    const sr=s.selfRating||50;const srLabel=sr<=25?'😰 Yếu':sr<=50?'😐 TB':sr<=75?'😊 Khá':'💪 Giỏi';
+    const srColor=sr<=25?'#ef4444':sr<=50?'#f59e0b':sr<=75?'#10b981':'#667eea';
+    return`<tr><td><strong>${s.name}</strong></td><td>${s.score.toFixed(1)}</td><td style="color:${srColor};font-weight:700">${srLabel}</td><td>${t}</td><td>${c}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${r}%"></div></div><span style="font-weight:600;min-width:40px">${r}%</span></div></td></tr>`;
   }).join('');
 }
 
 // ============================================================
-// CHATBOT
+// API KEY MANAGEMENT
 // ============================================================
+function getApiKey(){ return localStorage.getItem('smartstudy_apikey')||''; }
+function saveApiKey(){
+  const val=document.getElementById('api-key-input').value.trim();
+  if(!val){showApiKeyStatus('❌ Vui lòng nhập API Key!','#ef4444');return;}
+  if(!val.startsWith('sk-ant-')){showApiKeyStatus('⚠️ Key không hợp lệ! Phải bắt đầu bằng sk-ant-','#f59e0b');return;}
+  localStorage.setItem('smartstudy_apikey',val);
+  showApiKeyStatus('✅ Đã lưu thành công! AI đã sẵn sàng.','#10b981');
+  document.getElementById('api-key-input').value='sk-ant-••••••••••••••••••••';
+}
+function clearApiKey(){
+  localStorage.removeItem('smartstudy_apikey');
+  document.getElementById('api-key-input').value='';
+  showApiKeyStatus('🗑️ Đã xóa API Key.','#888');
+}
+function toggleApiKeyVis(){
+  const inp=document.getElementById('api-key-input');
+  inp.type=inp.type==='password'?'text':'password';
+  document.getElementById('api-key-eye').textContent=inp.type==='password'?'👁️':'🙈';
+}
+function showApiKeyStatus(msg,color){
+  const el=document.getElementById('api-key-status');
+  el.style.display='block';el.style.color=color;el.textContent=msg;
+  setTimeout(()=>el.style.display='none',4000);
+}
+// Load saved key indicator on setup section open
+function loadApiKeyStatus(){
+  const k=getApiKey();
+  const inp=document.getElementById('api-key-input');
+  if(inp&&k){inp.value='sk-ant-••••••••••••••••••••';showApiKeyStatus('✅ API Key đã được cấu hình.','#10b981');}
+}
+
+// ============================================================
+// AI STRATEGY – Gọi Claude API phân tích chiến lược học
+// ============================================================
+async function getAIStrategy(){
+  const key=getApiKey();
+  const btn=document.getElementById('ai-strategy-btn');
+  const result=document.getElementById('ai-strategy-result');
+  if(!key){
+    result.style.display='block';
+    result.innerHTML='<div style="color:#f59e0b;font-weight:600">⚠️ Bạn chưa cấu hình API Key!<br><span style="font-weight:400;color:#888">Vào <b>Thiết lập AI → Kết nối Claude AI Thật</b> để nhập API Key.</span></div>';
+    return;
+  }
+  const d=D();
+  if(!d||!d.subjects.length){
+    result.style.display='block';
+    result.innerHTML='<div style="color:#888">📚 Chưa có dữ liệu môn học. Hãy thêm môn học trước nhé!</div>';
+    return;
+  }
+  btn.disabled=true;btn.textContent='⏳ Đang phân tích...';
+  result.style.display='block';
+  result.innerHTML='<div style="color:#888;text-align:center;padding:20px">🤖 Claude AI đang phân tích dữ liệu của bạn...<br><span style="font-size:20px;letter-spacing:4px">···</span></div>';
+
+  let total=0,done=0,mins=0;
+  d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed){done++;mins+=d.schedule[s.id][k].duration||0;}});});
+  const rate=total?((done/total)*100).toFixed(1):0;
+  const upcoming=d.exams.filter(e=>new Date(e.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const weak=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25);
+  const neglected=d.subjects.filter(s=>{const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);if(!keys.length)return false;const doneCount=keys.filter(k=>sch[k].completed).length;return keys.length>0&&(doneCount/keys.length)<0.3;});
+
+  const ctx=`THÔNG TIN HỌC SINH:
+Tên: ${CU?.fullname||'Học sinh'}
+Môn học: ${d.subjects.map(s=>`${s.name} (điểm: ${s.score}/10, tự đánh giá: ${s.selfRating||50}%)`).join(', ')}
+Môn yếu (<5đ hoặc tự đánh giá thấp): ${weak.map(s=>s.name).join(', ')||'không có'}
+Môn bị bỏ bê (hoàn thành <30%): ${neglected.map(s=>s.name).join(', ')||'không có'}
+Tiến độ tổng: ${done}/${total} buổi (${rate}%)
+Tổng giờ đã học: ${Math.floor(mins/60)}h ${mins%60}m
+Chuỗi học hiện tại: ${d.streak.cur} ngày, dài nhất: ${d.streak.longest} ngày
+Phong cách học: ${d.studyStyle||'cân bằng'}
+Giờ tập trung tốt nhất: ${d.peakHour||18}:00
+Kỳ thi sắp tới: ${upcoming.slice(0,3).map(e=>`${e.name} còn ${Math.ceil((new Date(e.date)-new Date())/864e5)} ngày`).join(', ')||'chưa có'}`;
+
+  const prompt=`Bạn là chuyên gia tư vấn học tập cho học sinh THCS-THPT Việt Nam. Hãy phân tích dữ liệu và đưa ra tư vấn chiến lược học tập CỤ THỂ, THỰC TẾ.
+
+${ctx}
+
+Hãy trả lời theo đúng format này (dùng emoji, tiếng Việt, thân thiện):
+
+📊 **ĐÁNH GIÁ TỔNG QUAN**
+[2-3 câu nhận xét về tình trạng học tập hiện tại]
+
+🎯 **ƯU TIÊN NGAY TUẦN NÀY**
+[Liệt kê 3 việc cần làm ngay, cụ thể theo môn học của học sinh]
+
+⏰ **GỢI Ý LỊCH HỌC MỖI NGÀY**
+[Đề xuất phân bổ thời gian cụ thể dựa trên giờ tập trung tốt nhất và phong cách học]
+
+💪 **CHIẾN LƯỢC TỪNG MÔN YẾU**
+[Với mỗi môn yếu: phương pháp cụ thể để cải thiện]
+
+🔥 **LỜI KHUYÊN ĐỂ DUY TRÌ ĐỘNG LỰC**
+[1-2 lời khuyên thiết thực]
+
+Trả lời ngắn gọn, súc tích, không hơn 300 từ.`;
+
+  try {
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await r.json();
+    if(data.error){throw new Error(data.error.message);}
+    const text=data.content?.[0]?.text||'';
+    // Format markdown-like to HTML
+    const html=text
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/^(📊|🎯|⏰|💪|🔥).+$/gm,s=>`<div style="margin-top:14px;margin-bottom:4px;font-weight:700;color:#667eea;font-size:14px">${s}</div>`)
+      .replace(/\n/g,'<br>');
+    result.innerHTML=`<div style="line-height:1.9">${html}</div><div style="margin-top:14px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:11px;color:#bbb">✨ Phân tích bởi Claude AI · ${new Date().toLocaleTimeString('vi-VN')}</div>`;
+    addXP(30,'ai-strategy');
+  } catch(e){
+    result.innerHTML=`<div style="color:#ef4444;font-weight:600">❌ Lỗi kết nối: ${e.message}<br><span style="font-weight:400;color:#888;font-size:12px">Kiểm tra lại API Key và kết nối internet.</span></div>`;
+  }
+  btn.disabled=false;btn.textContent='✨ Nhận Tư Vấn AI Ngay';
+}
+
+// ============================================================
+// AUTO-RESCHEDULE – Tự động điều chỉnh lịch khi bỏ lỡ buổi
+// ============================================================
+function checkRescheduleNeeded(){
+  const d=D();if(!d)return;
+  const dkMap=['sun','mon','tue','wed','thu','fri','sat'];
+  const todayIdx=new Date().getDay();
+  // Find missed sessions (past days this week, not completed)
+  let missedSubjects=[];
+  d.subjects.forEach(s=>{
+    const sch=d.schedule[s.id]||{};
+    let missedCount=0;
+    dkMap.forEach((dk,i)=>{
+      if(i<todayIdx&&sch[dk]&&!sch[dk].completed)missedCount++;
+    });
+    if(missedCount>0)missedSubjects.push({subject:s,missed:missedCount});
+  });
+  const card=document.getElementById('reschedule-card');
+  const desc=document.getElementById('reschedule-desc');
+  if(card&&missedSubjects.length>0){
+    card.style.display='block';
+    desc.textContent=`Phát hiện ${missedSubjects.length} môn có buổi học bị bỏ lỡ tuần này: ${missedSubjects.map(ms=>`${ms.subject.name} (${ms.missed} buổi)`).join(', ')}. AI có thể tự động tăng cường các buổi còn lại để bù đắp.`;
+  } else if(card){
+    card.style.display='none';
+  }
+}
+
+function autoReschedule(){
+  const d=D();if(!d)return;
+  const dkMap=['sun','mon','tue','wed','thu','fri','sat'];
+  const todayIdx=new Date().getDay();
+  const remainingDays=dkMap.filter((_,i)=>i>=todayIdx);
+  let adjusted=0;
+
+  d.subjects.forEach(s=>{
+    const sch=d.schedule[s.id]||{};
+    let missedCount=0;
+    dkMap.forEach((dk,i)=>{if(i<todayIdx&&sch[dk]&&!sch[dk].completed)missedCount++;});
+    if(missedCount>0&&remainingDays.length>0){
+      // Distribute missed sessions across remaining days by increasing duration
+      const extraPerDay=Math.ceil((missedCount*20)/remainingDays.length);
+      remainingDays.forEach(dk=>{
+        if(sch[dk]){
+          sch[dk].duration=(sch[dk].duration||45)+extraPerDay;
+          sch[dk].rescheduled=true;
+          adjusted++;
+        } else {
+          // Add session if slot available
+          const peakH=d.peakHour||18;
+          sch[dk]={time:`${peakH}:00`,duration:45+extraPerDay,completed:false,rescheduled:true};
+          adjusted++;
+        }
+      });
+      d.schedule[s.id]=sch;
+    }
+  });
+
+  if(adjusted>0){
+    d.messages.unshift({type:'info',icon:'🔄',title:`🔄 AI đã điều chỉnh lịch tự động`,content:`Đã tăng cường ${adjusted} buổi học còn lại trong tuần để bù đắp các buổi bị bỏ lỡ. Kiểm tra lịch học để xem chi tiết!`,date:new Date().toDateString()});
+    if(!CU.isDemo)saveStore();
+    document.getElementById('reschedule-card').style.display='none';
+    renderSchedule&&renderSchedule();
+    renderMessages();
+    alert(`✅ AI đã điều chỉnh ${adjusted} buổi học!\nThời gian các buổi học còn lại đã được tăng lên để bù đắp. Xem trong Lịch Học.`);
+  }
+}
+
+// ============================================================
+// DEADLINE PREDICTION CHART
+// ============================================================
+function renderDeadlineChart(){
+  const ctx=document.getElementById('chart-deadline');if(!ctx)return;
+  const d=D();if(!d||!d.subjects.length){if(dChart)dChart.destroy();return;}
+  const labels=[];const current=[];const needed=[];const colors=[];
+  d.subjects.forEach(s=>{
+    const sch=d.schedule[s.id]||{};const keys=Object.keys(sch);
+    if(!keys.length)return;
+    const doneCount=keys.filter(k=>sch[k].completed).length;
+    const rate=keys.length?(doneCount/keys.length*100):0;
+    const target=100;
+    labels.push(s.name);
+    current.push(Math.round(rate));
+    needed.push(target);
+    colors.push(rate>=70?'rgba(34,197,94,.8)':rate>=40?'rgba(251,191,36,.8)':'rgba(239,68,68,.8)');
+  });
+  if(dChart)dChart.destroy();
+  dChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Thực tế (%)',data:current,backgroundColor:colors,borderRadius:6,borderWidth:0},
+        {label:'Mục tiêu (100%)',data:needed.map(()=>100),backgroundColor:'rgba(200,200,200,.15)',borderRadius:6,borderWidth:1,borderColor:'rgba(200,200,200,.5)'}
+      ]
+    },
+    options:{
+      responsive:true,
+      scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},
+      plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}}
+    }
+  });
+}
+window.getAIStrategy=getAIStrategy;
+window.saveApiKey=saveApiKey;
+window.clearApiKey=clearApiKey;
+window.toggleApiKeyVis=toggleApiKeyVis;
+window.autoReschedule=autoReschedule;
+window.loadApiKeyStatus=loadApiKeyStatus;
 let fabInited=false;
 function toggleFab(){
   const w=document.getElementById('fab-win');const isOpen=w.classList.toggle('open');
@@ -853,7 +1312,12 @@ function toggleFab(){
   if(isOpen&&!fabInited){initChat('fab');fabInited=true;}
 }
 function initChat(t){
-  botMsg(t,`Chào ${CU?CU.fullname:'bạn'}! 😊\n\nHỏi mình bất cứ điều gì về học tập nhé!`,['Lịch hôm nay','Tiến độ','Mẹo học','Động viên']);
+  const d=D();
+  const weak=d?d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).map(s=>s.name):[];
+  let greeting=`Xin chào ${CU?CU.fullname:'bạn'}! 👋 Mình là **Smart Study AI** – được tích hợp Claude AI thực sự!\n\n`;
+  if(weak.length) greeting+=`⚠️ Mình thấy bạn cần ưu tiên: **${weak.join(', ')}**\n\n`;
+  greeting+=`Hỏi mình bất cứ điều gì – chiến lược ôn thi, phân tích điểm yếu, hay lời khuyên cá nhân hóa nhé!`;
+  botMsg(t,greeting,['Chiến lược ôn thi','Môn nào yếu?','Lịch hôm nay','Động viên mình']);
 }
 function sendChat(t){const inp=document.getElementById('chat-in-'+t);const msg=inp.value.trim();if(!msg)return;userMsg(t,msg);inp.value='';setTimeout(()=>handleChat(msg,t),500);}
 function userMsg(t,text){const el=document.getElementById('chat-msgs-'+t);const d=document.createElement('div');d.className='msg-bubble-wrap user';d.innerHTML=`<div class="bubble">${text}</div>`;el.appendChild(d);el.scrollTop=el.scrollHeight;}
@@ -865,63 +1329,73 @@ function botMsg(t,text,qrs=[]){
 }
 function handleQR(q,t){userMsg(t,q);setTimeout(()=>handleChat(q,t),400);}
 function handleChat(msg,t){
-  const m=msg.toLowerCase();const d=D();
-  if(/chào|hi|hello|hey/.test(m)){botMsg(t,'Chào bạn! 👋',['Lịch hôm nay','Tiến độ','Mẹo học']);return;}
-  if(/cảm ơn|thanks/.test(m)){botMsg(t,'Không có gì! 😊 Cố lên nhé!');return;}
-  if(/lịch|hôm nay/.test(m)){
-    const dk=['sun','mon','tue','wed','thu','fri','sat'][new Date().getDay()];const ln=['CN','T2','T3','T4','T5','T6','T7'];
-    let tasks=[];if(d)d.subjects.forEach(s=>{if(d.schedule[s.id]&&d.schedule[s.id][dk]){const t2=d.schedule[s.id][dk];tasks.push(`• ${s.name}: ${t2.time} (${t2.duration}p) ${t2.completed?'✅':'⏳'}`);}});
-    botMsg(t,tasks.length?`📅 Hôm nay (${ln[new Date().getDay()]}):\n\n${tasks.join('\n')}\n\nCố lên! 💪`:`Hôm nay không có lịch! Nghỉ ngơi đi nào! 😊`);return;
+  const d=D();
+  // Build context about the user
+  let ctx='';
+  if(d){
+    const weak=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).map(s=>s.name).join(', ');
+    const upcoming=d.exams.filter(e=>new Date(e.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
+    let total=0,done=0;
+    d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;});});
+    ctx=`Học sinh: ${CU?CU.fullname:''}. Môn học: ${d.subjects.map(s=>`${s.name}(${s.score}đ,tự đánh giá ${s.selfRating||50}%)`).join(', ')||'chưa có'}. Môn yếu: ${weak||'không có'}. Tiến độ: ${done}/${total} buổi. Chuỗi học: ${d.streak.cur} ngày. Kỳ thi sắp tới: ${upcoming.slice(0,2).map(e=>`${e.name} còn ${Math.ceil((new Date(e.date)-new Date())/864e5)} ngày`).join(', ')||'không có'}. Phong cách học: ${d.studyStyle||'cân bằng'}. Giờ học tốt nhất: ${d.peakHour||18}:00.`;
   }
-  if(/tiến độ|progress/.test(m)){
-    let total=0,done=0;if(d)d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;});});
-    const r=total?((done/total)*100).toFixed(1):0;
-    botMsg(t,`📊 Tiến độ:\n• ${done}/${total} buổi (${r}%)\n• Chuỗi: ${d?d.streak.cur:0}🔥\n\n${r>=70?'🌟 Xuất sắc!':r>=40?'💪 Tốt!':'🎯 Cố thêm nữa!'}`);return;
-  }
-  if(/mẹo|tip|cách học/.test(m)){
-    const tips=['📚 Pomodoro: 25p học, 5p nghỉ!','🧠 Đọc to khi học - nhớ hơn 30%!','✍️ Viết tay thay đánh máy!','🎯 Giải thích như đang dạy người khác!','🔄 Ôn lại sau 1, 3, 7, 14 ngày!'];
-    botMsg(t,'💡 '+tips[Math.floor(Math.random()*tips.length)],['Mẹo khác']);return;
-  }
-  if(/động viên|chán|buồn|mệt|stress/.test(m)){
-    const q=['💪 Không ai giỏi ngay từ đầu!','⭐ Mỗi ngày học là đầu tư cho tương lai!','🚀 Thành công không đến với người chờ đợi!','🌟 Hôm nay khó, mai sẽ dễ hơn!'];
-    botMsg(t,q[Math.floor(Math.random()*q.length)]+'\n\nBạn đang làm rất tốt! 🎉',['Cảm ơn!','Xem tiến độ']);return;
-  }
-  if(/yếu|kém|môn nào/.test(m)){
-    const weak=d?d.subjects.filter(s=>s.score<5):[];
-    botMsg(t,weak.length?'📉 Môn cần cải thiện:\n'+weak.map(s=>`• ${s.name}(${s.score}đ) → 90p/ngày`).join('\n'):'🎉 Không có môn nào dưới 5 điểm!');return;
-  }
-  if(/thi|exam/.test(m)){
-    const up=d?d.exams.filter(e=>new Date(e.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date)):[];
-    botMsg(t,up.length?'📝 Kỳ thi:\n'+up.slice(0,3).map(e=>`• ${e.name}: còn ${Math.ceil((new Date(e.date)-new Date())/864e5)} ngày`).join('\n'):'Không có kỳ thi sắp tới!');return;
-  }
-  botMsg(t,'Mình chưa hiểu 🤔 Thử hỏi về lịch học, tiến độ, hay mẹo học nhé!',['Lịch hôm nay','Tiến độ','Mẹo học','Động viên']);
+  
+  const systemPrompt=`Bạn là Smart Study AI – trợ lý học tập thông minh cho học sinh THCS-THPT Việt Nam. Bạn trả lời bằng tiếng Việt, thân thiện, ngắn gọn (tối đa 120 từ), dùng emoji phù hợp. Dữ liệu học sinh: ${ctx} Nhiệm vụ của bạn: phân tích dữ liệu cá nhân, đưa ra lời khuyên học tập cụ thể, động viên học sinh, và trả lời câu hỏi về học tập. Khi học sinh hỏi về chiến lược học, hãy đề xuất dựa trên điểm số và tự đánh giá của họ. Đây là AI thật dùng Claude API – không phải chatbot đơn giản.`;
+
+  // Show typing indicator
+  const el=document.getElementById('chat-msgs-'+t);
+  const typingId='typing-'+Date.now();
+  const typingDiv=document.createElement('div');
+  typingDiv.className='msg-bubble-wrap bot';typingDiv.id=typingId;
+  typingDiv.innerHTML='<div class="bubble" style="opacity:.6">🤖 <span style="letter-spacing:3px">···</span></div>';
+  el.appendChild(typingDiv);el.scrollTop=el.scrollHeight;
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:200,
+      system:systemPrompt,
+      messages:[{role:'user',content:msg}]
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    const reply=data.content?.[0]?.text||'Xin lỗi, mình gặp lỗi rồi! Thử lại nhé 😅';
+    document.getElementById(typingId)?.remove();
+    botMsg(t,reply);
+    // Award XP for using AI chat
+    addXP(5,'chat');
+  })
+  .catch(()=>{
+    document.getElementById(typingId)?.remove();
+    // Fallback rule-based
+    const m=msg.toLowerCase();
+    if(/chào|hi|hello/.test(m)) botMsg(t,'Chào bạn! 👋 Mình là AI trợ lý học tập. Hỏi mình về lịch học, tiến độ, hay chiến lược ôn thi nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
+    else if(/lịch|hôm nay/.test(m)){
+      const dk=['sun','mon','tue','wed','thu','fri','sat'][new Date().getDay()];
+      let tasks=[];if(d)d.subjects.forEach(s=>{if(d.schedule[s.id]&&d.schedule[s.id][dk])tasks.push(`• ${s.name}: ${d.schedule[s.id][dk].time} ${d.schedule[s.id][dk].completed?'✅':'⏳'}`)});
+      botMsg(t,tasks.length?`📅 Hôm nay:\n${tasks.join('\n')}`:'Hôm nay không có lịch! 😊');
+    }
+    else if(/tiến độ|progress/.test(m)){
+      let total=0,done=0;if(d)d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;})});
+      botMsg(t,`📊 Tiến độ: ${done}/${total} buổi (${total?((done/total)*100).toFixed(0):0}%) · Chuỗi: ${d?d.streak.cur:0}🔥`);
+    }
+    else if(/yếu|kém/.test(m)){
+      const weak=d?d.subjects.filter(s=>s.score<5||s.selfRating<=25):[];
+      botMsg(t,weak.length?'📉 Môn cần ưu tiên:\n'+weak.map(s=>`• ${s.name} → Tăng cường học!`).join('\n'):'🎉 Không có môn yếu!');
+    }
+    else botMsg(t,'Mình đang gặp lỗi kết nối 😅 Thử hỏi lại nhé!',['Lịch hôm nay','Tiến độ','Môn yếu']);
+  });
 }
 
 // ============================================================
 // PROFILE
 // ============================================================
-function handleAvatarUpload(e){
-  const file=e.target.files[0];if(!file)return;
-  if(file.size>2*1024*1024){alert('⚠️ Ảnh quá lớn! Tối đa 2MB.');return;}
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const data=ev.target.result;
-    if(!CU)return;
-    CU.avatar=data;
-    if(!CU.isDemo)saveStore();
-    document.getElementById('avatar-img').src=data;
-    document.getElementById('pm-avatar').src=data;
-    document.getElementById('pm-avatar-preview').src=data;
-    renderAvatarPicker();
-  };
-  reader.readAsDataURL(file);
-  e.target.value='';
-}
-
 function openProfile(){
   if(!CU)return;const d=CU.data;
   document.getElementById('pm-avatar').src=CU.avatar;
-  document.getElementById('pm-avatar-preview').src=CU.avatar;
   document.getElementById('pm-name').textContent=CU.fullname;
   document.getElementById('pm-email').textContent=CU.email;
   document.getElementById('pm-streak').textContent=d.streak.cur;
@@ -942,7 +1416,8 @@ function renderAvatarPicker(){
   AVATARS.forEach((av,i)=>{
     const img=document.createElement('img');
     img.className='av-opt'+(CU.avatar===av?' selected':'');
-    img.src=av;img.alt='Avatar '+(i+1);
+    const animalNames=['🐼 Gấu Trúc','🦊 Cáo','🐰 Thỏ','🐻 Gấu','🐱 Mèo','🐘 Voi','🐶 Chó','🐧 Chim Cánh Cụt'];
+    img.src=av;img.alt=animalNames[i]||'Avatar '+(i+1);img.title=animalNames[i]||'Avatar '+(i+1);
     img.onclick=()=>selectAvatar(i);
     grid.appendChild(img);
   });
@@ -950,8 +1425,675 @@ function renderAvatarPicker(){
 function selectAvatar(i){
   if(!CU)return;
   CU.avatar=AVATARS[i];
-  if(!CU.isDemo)saveStore();
+  saveStore();
   document.getElementById('avatar-img').src=CU.avatar;
   document.getElementById('pm-avatar').src=CU.avatar;
   renderAvatarPicker();
 }
+
+// Expose all global functions
+// ============================================================
+// SECURITY MODAL (standalone)
+// ============================================================
+function openSecurity(){
+  if(!CU)return;
+  document.getElementById('avatar-menu').classList.remove('open');
+  // reset fields
+  ['sm-cur','sm-new','sm-conf'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('input-err');}});
+  ['sm-cur-err','sm-conf-err'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
+  const f=document.getElementById('sm-str-fill');if(f){f.style.width='0';}
+  const l=document.getElementById('sm-str-label');if(l)l.textContent='';
+  ['sm-r1','sm-r2','sm-r3'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('pass');});
+  const t=document.getElementById('sm-toast');if(t)t.classList.remove('show');
+  // set device info
+  const di=document.getElementById('sm-device-info');
+  const lt=document.getElementById('sm-login-time');
+  if(di)di.textContent=(navigator.userAgent.includes('Chrome')?'Chrome':navigator.userAgent.includes('Firefox')?'Firefox':'Trình duyệt')+' · '+(navigator.platform||'Không rõ');
+  if(lt&&CU)lt.textContent='🕐 Đăng nhập: '+new Date(parseInt(CU.id)).toLocaleString('vi-VN');
+  // reset to first tab
+  switchSecModal('pw', document.querySelector('.sec-modal-tab'));
+  document.getElementById('security-modal').classList.add('open');
+}
+function closeSecurity(){document.getElementById('security-modal').classList.remove('open');}
+function switchSecModal(tab,el){
+  document.querySelectorAll('.sec-modal-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sec-modal-panel').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById('sec-panel-'+tab).classList.add('active');
+}
+function smToggle(id,icon){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  icon.textContent=inp.type==='password'?'👁️':'🙈';
+}
+function smStrength(val){
+  const fill=document.getElementById('sm-str-fill');
+  const label=document.getElementById('sm-str-label');
+  const r1=document.getElementById('sm-r1');
+  const r2=document.getElementById('sm-r2');
+  const r3=document.getElementById('sm-r3');
+  const hasLen=val.length>=6, hasUp=/[A-Z]/.test(val), hasNum=/[0-9]/.test(val), hasSp=/[!@#$%^&*]/.test(val);
+  r1&&r1.classList.toggle('pass',hasLen);
+  r2&&r2.classList.toggle('pass',hasUp);
+  r3&&r3.classList.toggle('pass',hasNum);
+  if(!val.length){fill.style.width='0';label.textContent='';return;}
+  const score=[hasLen,hasUp,hasNum,hasSp,val.length>=10].filter(Boolean).length;
+  const lv=[
+    {w:'20%',c:'#ef4444',t:'😟 Rất yếu'},
+    {w:'40%',c:'#f97316',t:'😐 Yếu'},
+    {w:'60%',c:'#eab308',t:'🙂 Trung bình'},
+    {w:'80%',c:'#22c55e',t:'😊 Mạnh'},
+    {w:'100%',c:'#10b981',t:'🔥 Rất mạnh!'}
+  ][Math.min(score,4)];
+  fill.style.width=lv.w;fill.style.background=lv.c;
+  label.textContent=lv.t;label.style.color=lv.c;
+}
+function smSubmit(){
+  if(!CU)return;
+  const cur=document.getElementById('sm-cur').value.trim();
+  const nw=document.getElementById('sm-new').value.trim();
+  const conf=document.getElementById('sm-conf').value.trim();
+  const curErr=document.getElementById('sm-cur-err');
+  const confErr=document.getElementById('sm-conf-err');
+  const btn=document.getElementById('sm-btn');
+  // reset
+  [document.getElementById('sm-cur'),document.getElementById('sm-new'),document.getElementById('sm-conf')].forEach(el=>el&&el.classList.remove('input-err'));
+  curErr.classList.remove('show'); confErr.classList.remove('show');
+  document.getElementById('sm-toast').classList.remove('show');
+  if(CU.isDemo){curErr.textContent='⚠️ Tài khoản demo không thể đổi mật khẩu!';curErr.classList.add('show');document.getElementById('sm-cur').classList.add('input-err');return;}
+  if(!cur||cur!==CU.password){curErr.textContent='❌ Mật khẩu hiện tại không đúng!';curErr.classList.add('show');document.getElementById('sm-cur').classList.add('input-err');return;}
+  if(nw.length<6){confErr.textContent='❌ Mật khẩu mới phải có ít nhất 6 ký tự!';confErr.classList.add('show');document.getElementById('sm-new').classList.add('input-err');return;}
+  if(nw===cur){confErr.textContent='⚠️ Mật khẩu mới phải khác mật khẩu cũ!';confErr.classList.add('show');document.getElementById('sm-new').classList.add('input-err');return;}
+  if(nw!==conf){confErr.textContent='❌ Mật khẩu xác nhận không khớp!';confErr.classList.add('show');document.getElementById('sm-conf').classList.add('input-err');return;}
+  btn.disabled=true;btn.textContent='⏳ Đang cập nhật...';
+  setTimeout(()=>{
+    CU.password=nw; saveStore();
+    ['sm-cur','sm-new','sm-conf'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('sm-str-fill').style.width='0';
+    document.getElementById('sm-str-label').textContent='';
+    ['sm-r1','sm-r2','sm-r3'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('pass');});
+    btn.disabled=false; btn.textContent='🔐 Cập nhật mật khẩu';
+    document.getElementById('sm-toast').classList.add('show');
+    setTimeout(()=>document.getElementById('sm-toast').classList.remove('show'),4000);
+  },800);
+}
+function smLogoutAll(){
+  if(confirm('Bạn có chắc muốn đăng xuất khỏi tất cả thiết bị?')){
+    closeSecurity(); setTimeout(()=>doLogout(),200);
+  }
+}
+window.openSecurity=openSecurity;
+window.calPrev=calPrev;
+window.calNext=calNext;
+window.switchSchView=switchSchView;
+window.filterMsgs=filterMsgs;
+window.clearMessages=clearMessages;
+
+// ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const overlay=document.getElementById('sidebar-overlay');
+  const btn=document.getElementById('sidebar-toggle');
+  const icon=document.getElementById('sidebar-toggle-icon');
+  const isMobile=window.innerWidth<=768;
+  const isCollapsed=sb.classList.contains('collapsed');
+  sb.classList.toggle('collapsed');
+  if(isMobile){
+    overlay.classList.toggle('show',isCollapsed);
+  }
+  const nowCollapsed=sb.classList.contains('collapsed');
+  if(icon) icon.textContent=nowCollapsed?'▶':'◀';
+  if(btn){
+    btn.style.left=nowCollapsed?'0px':'260px';
+  }
+}
+
+// Update toggle button position on init and resize
+function syncToggleBtn(){
+  const sb=document.getElementById('sidebar');
+  const btn=document.getElementById('sidebar-toggle');
+  if(!sb||!btn)return;
+  const nowCollapsed=sb.classList.contains('collapsed');
+  btn.style.left=nowCollapsed?'0px':'260px';
+  const icon=document.getElementById('sidebar-toggle-icon');
+  if(icon) icon.textContent=nowCollapsed?'▶':'◀';
+}
+window.addEventListener('resize',syncToggleBtn);
+
+// Auto-collapse on mobile on init
+(function initSidebar(){
+  if(window.innerWidth<=768){
+    const sb=document.getElementById('sidebar');
+    if(sb)sb.classList.add('collapsed');
+  }
+  setTimeout(syncToggleBtn,50);
+})();
+
+window.toggleSidebar=toggleSidebar;
+window.closeSecurity=closeSecurity;
+window.switchSecModal=switchSecModal;
+window.smToggle=smToggle;
+window.smStrength=smStrength;
+window.smSubmit=smSubmit;
+window.smLogoutAll=smLogoutAll;
+
+
+// ============================================================
+// MUSIC PLAYER - Web Audio API Lo-fi Generator (real sounding)
+// ============================================================
+(function(){
+  // ================================================================
+  // 8 bài lo-fi chill khác nhau – mỗi bài có mood/scale/BPM riêng
+  // ================================================================
+  const TRACKS = [
+    {name:'Café Sáng Sớm',      artist:'Lo-fi Chill',    mood:'☕ Cozy Morning',   emoji:'☕', grad:'linear-gradient(135deg,#f6d365,#fda085)', bpm:72, key:0,  style:'lofi'},
+    {name:'Mưa Nhẹ Buổi Chiều', artist:'Rain Vibes',     mood:'🌧️ Rainy Afternoon',emoji:'🌧️', grad:'linear-gradient(135deg,#4facfe,#00f2fe)', bpm:63, key:5,  style:'ambient'},
+    {name:'Thư Viện Yên Tĩnh',  artist:'Study Beats',    mood:'📚 Deep Focus',     emoji:'📚', grad:'linear-gradient(135deg,#43e97b,#38f9d7)', bpm:68, key:2,  style:'minimal'},
+    {name:'Hoàng Hôn Tím',      artist:'Sunset Lofi',    mood:'🌅 Sunset Glow',    emoji:'🌅', grad:'linear-gradient(135deg,#fa709a,#fee140)', bpm:70, key:7,  style:'dreamy'},
+    {name:'Không Gian Tĩnh',    artist:'Space Ambient',  mood:'🌌 Space Float',    emoji:'🌌', grad:'linear-gradient(135deg,#a18cd1,#fbc2eb)', bpm:58, key:9,  style:'space'},
+    {name:'Rừng Xanh Sớm Mai',  artist:'Nature Lo-fi',   mood:'🌿 Forest Calm',    emoji:'🌿', grad:'linear-gradient(135deg,#d4fc79,#96e6a1)', bpm:66, key:3,  style:'nature'},
+    {name:'Jazz Đêm Khuya',     artist:'Chill Jazz',     mood:'🎷 Midnight Jazz',  emoji:'🎷', grad:'linear-gradient(135deg,#f093fb,#f5576c)', bpm:80, key:4,  style:'jazz'},
+    {name:'Biển Lúc Bình Minh',  artist:'Ocean Chill',   mood:'🌊 Ocean Breeze',   emoji:'🌊', grad:'linear-gradient(135deg,#4facfe,#764ba2)', bpm:60, key:1,  style:'ocean'},
+  ];
+
+  let AC = null, masterGain, compressor;
+  let scheduledNodes = [];
+  let isPlaying = false, curIdx = 0, muted = false, vol = 0.7, looping = false;
+  let startedAt = 0, fakeDur = 0;
+  let rafId = null;
+
+  function getAC() {
+    if (!AC) {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      compressor = AC.createDynamicsCompressor();
+      compressor.threshold.value = -24;
+      compressor.knee.value = 10;
+      compressor.ratio.value = 3;
+      compressor.attack.value = 0.003;
+      compressor.release.value = 0.25;
+      masterGain = AC.createGain();
+      masterGain.gain.value = vol;
+      masterGain.connect(compressor);
+      compressor.connect(AC.destination);
+    }
+    if (AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+
+  // ── Scales ────────────────────────────────────────────────────────
+  const SCALES = {
+    minor:     [0,2,3,5,7,8,10],   // natural minor – buồn nhẹ
+    major:     [0,2,4,5,7,9,11],   // major – tươi sáng
+    penta:     [0,2,4,7,9],        // major pentatonic – nhẹ nhàng, không gây cấn
+    dorianPen: [0,3,5,7,10],       // dorian pentatonic – jazz chill
+    lydian:    [0,2,4,6,7,9,11],   // lydian – dreamy, nổi
+  };
+  const STYLE_SCALES = {
+    lofi:    SCALES.penta,
+    ambient: SCALES.minor,
+    minimal: SCALES.penta,
+    dreamy:  SCALES.lydian,
+    space:   SCALES.minor,
+    nature:  SCALES.major,
+    jazz:    SCALES.dorianPen,
+    ocean:   SCALES.lydian,
+  };
+
+  function noteFreq(root, scaleNotes, degree, octave) {
+    const n = scaleNotes[((degree % scaleNotes.length) + scaleNotes.length) % scaleNotes.length];
+    const extra = Math.floor(degree / scaleNotes.length) * 12;
+    const semi = root + n + extra;
+    return 440 * Math.pow(2, (semi - 69 + octave * 12) / 12);
+  }
+
+  // ── Safe time (prevent negative AudioParam times) ────────────────
+  function st(t) { return Math.max(AC.currentTime + 0.001, t); }
+
+  // ── Reverb – dài, ấm, không harsh ────────────────────────────────
+  function makeReverb(ac, dur, decay) {
+    const len = Math.floor(ac.sampleRate * dur);
+    const buf = ac.createBuffer(2, len, ac.sampleRate);
+    for (let c = 0; c < 2; c++) {
+      const d = buf.getChannelData(c);
+      for (let i = 0; i < len; i++) {
+        // Smooth exponential decay, no sharp transients
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+    }
+    const conv = ac.createConvolver();
+    conv.buffer = buf;
+    return conv;
+  }
+
+  // ── Lo-fi filter chain – ấm, không rè ───────────────────────────
+  // Lowpass thấp hơn nhiều (2000Hz), boost bass nhẹ, cut treble mạnh
+  function makeLofiChain(ac) {
+    const lp = ac.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 2200; lp.Q.value = 0.5;
+
+    const mid = ac.createBiquadFilter();
+    mid.type = 'peaking'; mid.frequency.value = 800; mid.gain.value = 2; mid.Q.value = 1;
+
+    const ls = ac.createBiquadFilter();
+    ls.type = 'lowshelf'; ls.frequency.value = 180; ls.gain.value = 4;
+
+    const hs = ac.createBiquadFilter();
+    hs.type = 'highshelf'; hs.frequency.value = 3000; hs.gain.value = -12;
+
+    lp.connect(mid); mid.connect(ls); ls.connect(hs);
+    return { input: lp, output: hs };
+  }
+
+  // ── Vinyl crackle – cực nhẹ, không ồn ──────────────────────────
+  function makeVinyl(ac, dest) {
+    const len = ac.sampleRate * 4;
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+      // Rất thưa, chỉ 0.1% chance pop, nền noise cực nhỏ
+      d[i] = (Math.random() * 2 - 1) * (Math.random() < 0.001 ? 0.4 : 0.006);
+    }
+    const src = ac.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1200;
+    const g = ac.createGain(); g.gain.value = 0.018;
+    src.connect(lp); lp.connect(g); g.connect(dest);
+    src.start();
+    return src;
+  }
+
+  // ── Pad chord – sine pha nhau, rất mượt ─────────────────────────
+  function makePad(ac, dest, freq, startT, durT, gainVal) {
+    const g = ac.createGain();
+    const fadeIn = 0.12, fadeOut = 0.18;
+    g.gain.setValueAtTime(0, st(startT));
+    g.gain.linearRampToValueAtTime(gainVal, st(startT + fadeIn));
+    g.gain.setValueAtTime(gainVal, st(startT + durT - fadeOut));
+    g.gain.linearRampToValueAtTime(0, st(startT + durT));
+
+    // Stack 2 sines slightly detuned for warmth
+    [0, 5].forEach(detune => {
+      const osc = ac.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      osc.detune.value = detune;
+      osc.connect(g);
+      osc.start(st(startT));
+      osc.stop(st(startT + durT + 0.05));
+      scheduledNodes.push(osc);
+    });
+    g.connect(dest);
+    scheduledNodes.push(g);
+  }
+
+  // ── Soft bass – sine, ngắn, không boom ──────────────────────────
+  function makeBass(ac, dest, freq, startT, durT) {
+    const osc = ac.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0, st(startT));
+    g.gain.linearRampToValueAtTime(0.14, st(startT + 0.02));
+    g.gain.exponentialRampToValueAtTime(0.001, st(startT + durT));
+    osc.connect(g); g.connect(dest);
+    osc.start(st(startT)); osc.stop(st(startT + durT + 0.05));
+    scheduledNodes.push(osc, g);
+  }
+
+  // ── Soft kick – rất nhẹ, frequency drop ─────────────────────────
+  function makeKick(ac, dest, startT, vol) {
+    const osc = ac.createOscillator(); osc.type = 'sine';
+    const g = ac.createGain();
+    osc.frequency.setValueAtTime(90, st(startT));
+    osc.frequency.exponentialRampToValueAtTime(30, st(startT + 0.12));
+    g.gain.setValueAtTime(vol * 0.5, st(startT));
+    g.gain.exponentialRampToValueAtTime(0.001, st(startT + 0.18));
+    osc.connect(g); g.connect(dest);
+    osc.start(st(startT)); osc.stop(st(startT + 0.22));
+    scheduledNodes.push(osc, g);
+  }
+
+  // ── Soft snare – noise rất nhẹ ─────────────────────────────────
+  function makeSnare(ac, dest, startT, vol) {
+    const len = Math.floor(ac.sampleRate * 0.12);
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i/len, 2);
+    const src = ac.createBufferSource(); src.buffer = buf;
+    const bpf = ac.createBiquadFilter(); bpf.type = 'bandpass'; bpf.frequency.value = 2500; bpf.Q.value = 0.8;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(vol * 0.22, st(startT));
+    g.gain.exponentialRampToValueAtTime(0.001, st(startT + 0.11));
+    src.connect(bpf); bpf.connect(g); g.connect(dest);
+    src.start(st(startT));
+    scheduledNodes.push(src, g);
+  }
+
+  // ── Hi-hat – rất nhẹ, thưa thớt ────────────────────────────────
+  function makeHat(ac, dest, startT, vol, isOpen) {
+    const len = Math.floor(ac.sampleRate * (isOpen ? 0.08 : 0.025));
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1);
+    const src = ac.createBufferSource(); src.buffer = buf;
+    const hpf = ac.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 9000;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(vol * (isOpen ? 0.04 : 0.025), st(startT));
+    g.gain.exponentialRampToValueAtTime(0.001, st(startT + len/ac.sampleRate));
+    src.connect(hpf); hpf.connect(g); g.connect(dest);
+    src.start(st(startT));
+    scheduledNodes.push(src, g);
+  }
+
+  // ── Melody note – sine nhẹ, sparse ──────────────────────────────
+  function makeMelody(ac, dest, freq, startT, durT, gainVal) {
+    const osc = ac.createOscillator(); osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0, st(startT));
+    g.gain.linearRampToValueAtTime(gainVal, st(startT + 0.04));
+    g.gain.setValueAtTime(gainVal, st(startT + durT * 0.7));
+    g.gain.linearRampToValueAtTime(0, st(startT + durT));
+    osc.connect(g); g.connect(dest);
+    osc.start(st(startT)); osc.stop(st(startT + durT + 0.05));
+    scheduledNodes.push(osc, g);
+  }
+
+  // ── Main schedule function ────────────────────────────────────────
+  function scheduleTrack(track) {
+    const ac = getAC();
+    const now = ac.currentTime;
+    const scale = STYLE_SCALES[track.style] || SCALES.penta;
+    const root = track.key;
+    const bps = track.bpm / 60;
+    const beat = 1 / bps;          // 1 beat duration
+    const bar  = beat * 4;         // 1 bar = 4 beats
+    const bars = 48;               // total bars
+    fakeDur = bars * bar;
+
+    // Signal chain
+    const reverb  = makeReverb(ac, 3.5, 2.5);
+    const lofi    = makeLofiChain(ac);
+    const dryGain = ac.createGain(); dryGain.gain.value = 0.72;
+    const wetGain = ac.createGain(); wetGain.gain.value = 0.28;
+    lofi.output.connect(dryGain); dryGain.connect(masterGain);
+    lofi.output.connect(reverb);  reverb.connect(wetGain); wetGain.connect(masterGain);
+
+    // Chord progressions per style
+    const PROGS = {
+      lofi:    [[0,2,4],[5,0,2],[3,5,0],[2,4,6]],
+      ambient: [[0,2,4],[2,4,6],[5,0,2],[3,5,0]],
+      minimal: [[0,2,4],[4,6,1],[2,4,6],[0,2,4]],
+      dreamy:  [[0,2,4],[3,5,0],[1,3,5],[4,6,1]],
+      space:   [[0,2,4],[2,4,6],[4,6,1],[5,0,2]],
+      nature:  [[0,2,4],[5,0,2],[3,5,0],[1,3,5]],
+      jazz:    [[0,2,4],[2,4,6],[1,3,5],[3,5,0]],
+      ocean:   [[0,2,4],[4,6,1],[2,4,6],[5,0,2]],
+    };
+    const prog = PROGS[track.style] || PROGS.lofi;
+
+    // Beat patterns per style (1=kick, 2=snare, 3=hat, 4=open hat)
+    // Each bar = 16 steps (16th notes)
+    const PATTERNS = {
+      lofi:    [1,0,3,0, 2,0,3,0, 1,0,3,3, 2,0,3,0],
+      ambient: [1,0,0,0, 0,0,2,0, 0,0,0,0, 2,0,0,0],
+      minimal: [1,0,0,3, 2,0,3,0, 1,0,0,0, 2,0,0,3],
+      dreamy:  [1,0,3,0, 0,0,2,0, 1,0,0,3, 2,0,3,0],
+      space:   [1,0,0,0, 0,0,0,0, 2,0,0,0, 0,0,0,0],
+      nature:  [1,0,3,0, 2,0,3,0, 1,3,0,3, 2,0,3,0],
+      jazz:    [1,0,3,3, 2,0,3,0, 1,3,0,3, 2,3,3,0],
+      ocean:   [1,0,0,0, 2,0,0,3, 1,0,3,0, 2,0,0,0],
+    };
+    const pattern = PATTERNS[track.style] || PATTERNS.lofi;
+    const stepDur = beat / 4; // 16th note
+
+    // Drum volume per style (ambient/space = very quiet drums)
+    const drumVol = {lofi:1, ambient:0.3, minimal:0.6, dreamy:0.55, space:0.2, nature:0.75, jazz:0.85, ocean:0.4};
+    const dv = drumVol[track.style] || 0.7;
+
+    for (let b = 0; b < bars; b++) {
+      const barT = now + b * bar;
+      const chord = prog[b % prog.length];
+      const isBreak = (b % 8 === 7); // every 8th bar: empty/half bar for breathing
+
+      // ── Pads (slow attack, full bar) ─────────────────────────────
+      if (!isBreak) {
+        chord.forEach((deg, ci) => {
+          const freq = noteFreq(root, scale, deg, ci === 0 ? 3 : 4);
+          makePad(ac, lofi.input, freq, barT, bar * 0.98, 0.06 - ci * 0.01);
+        });
+      }
+
+      // ── Bass (root, every bar, soft) ─────────────────────────────
+      if (!isBreak && b % 2 === 0) {
+        const bassFreq = noteFreq(root, scale, chord[0], 2);
+        makeBass(ac, masterGain, bassFreq, barT, beat * 0.8);
+        // sometimes add passing bass on beat 3
+        if (Math.random() < 0.4) {
+          makeBass(ac, masterGain, noteFreq(root, scale, chord[1], 2), barT + beat * 2, beat * 0.6);
+        }
+      }
+
+      // ── Drums (16th note grid) ────────────────────────────────────
+      for (let s = 0; s < 16; s++) {
+        const sT = barT + s * stepDur;
+        const hit = pattern[s];
+        if (hit === 1) makeKick(ac, masterGain, sT, dv);
+        if (hit === 2) makeSnare(ac, masterGain, sT, dv);
+        if (hit === 3) makeHat(ac, masterGain, sT, dv, false);
+        if (hit === 4) makeHat(ac, masterGain, sT, dv, true);
+        // Random ghost snare (very quiet)
+        if (hit === 0 && Math.random() < 0.04) makeHat(ac, masterGain, sT, dv * 0.3, false);
+      }
+
+      // ── Melody (sparse, only on even bars, skip breaks) ──────────
+      if (!isBreak && b % 2 === 0 && Math.random() < 0.65) {
+        const melBar = b % 4;
+        const melDegs = [chord[2], chord[0], chord[1], chord[2]];
+        const positions = [0, beat, beat*2.5, beat*3.2];
+        const numNotes = track.style === 'ambient' || track.style === 'space' ? 2 : 3;
+        for (let n = 0; n < numNotes; n++) {
+          if (Math.random() < 0.7) {
+            const melFreq = noteFreq(root, scale, melDegs[n % melDegs.length] + (melBar > 1 ? 1 : 0), 5);
+            const noteLen = beat * (0.4 + Math.random() * 0.5);
+            makeMelody(ac, lofi.input, melFreq, barT + positions[n], noteLen, 0.045);
+          }
+        }
+      }
+    }
+
+    // Vinyl noise (very quiet)
+    const vinyl = makeVinyl(ac, masterGain);
+    scheduledNodes.push(vinyl);
+
+    startedAt = now;
+
+    // Auto next
+    const autoTimer = looping
+      ? setTimeout(() => { if (isPlaying) _restart(); }, fakeDur * 1000 - 400)
+      : setTimeout(() => { if (isPlaying) window.mpNext(); }, fakeDur * 1000 - 300);
+    scheduledNodes._timer = autoTimer;
+  }
+
+  function _restart() { stopAll(); scheduleTrack(TRACKS[curIdx]); startRAF(); }
+
+  function stopAll() {
+    if (scheduledNodes._timer) clearTimeout(scheduledNodes._timer);
+    scheduledNodes.forEach(n => { try { n.stop && n.stop(0); n.disconnect && n.disconnect(); } catch(e){} });
+    scheduledNodes = [];
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  function startRAF() {
+    if (rafId) cancelAnimationFrame(rafId);
+    function tick() {
+      if (!isPlaying || !AC) return;
+      const cur = Math.max(0, AC.currentTime - startedAt);
+      const pct = fakeDur > 0 ? Math.min((cur / fakeDur) * 100, 100) : 0;
+      const fill = document.getElementById('mp-prog-fill');
+      if (fill) fill.style.width = pct + '%';
+      const curEl = document.getElementById('mp-cur-time');
+      if (curEl) curEl.textContent = fmtTime(cur);
+      const durEl = document.getElementById('mp-dur-time');
+      if (durEl) durEl.textContent = fmtTime(fakeDur);
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function fmtTime(s) {
+    s = Math.max(0, s);
+    const m = Math.floor(s / 60);
+    return m + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  }
+
+  // ── UI helpers ───────────────────────────────────────────────────
+  window.mpToggle = function() {
+    if (isPlaying) {
+      stopAll(); isPlaying = false; updateUI(); setVisualizerActive(false);
+    } else {
+      getAC(); isPlaying = true;
+      scheduleTrack(TRACKS[curIdx]); startRAF(); updateUI(); setVisualizerActive(true);
+    }
+  };
+
+  window.mpNext = function() {
+    const was = isPlaying;
+    stopAll(); isPlaying = false;
+    curIdx = (curIdx + 1) % TRACKS.length;
+    setTrackUI(); updateUI();
+    if (was) { isPlaying = true; scheduleTrack(TRACKS[curIdx]); startRAF(); setVisualizerActive(true); }
+  };
+
+  window.mpPrev = function() {
+    const was = isPlaying;
+    stopAll(); isPlaying = false;
+    curIdx = (curIdx - 1 + TRACKS.length) % TRACKS.length;
+    setTrackUI(); updateUI();
+    if (was) { isPlaying = true; scheduleTrack(TRACKS[curIdx]); startRAF(); setVisualizerActive(true); }
+  };
+
+  window.mpSelectTrack = function(i) {
+    stopAll(); isPlaying = true;
+    curIdx = i; setTrackUI(); updateUI();
+    getAC(); scheduleTrack(TRACKS[curIdx]); startRAF(); setVisualizerActive(true);
+  };
+
+  window.mpToggleLoop = function() {
+    looping = !looping;
+    const btn = document.getElementById('mp-loop-btn');
+    if (btn) btn.style.color = looping ? '#a78bfa' : '#9ca3af';
+  };
+
+  window.mpSetVolume = function(val) {
+    vol = val / 100;
+    if (masterGain) masterGain.gain.value = muted ? 0 : vol;
+    const fill = document.getElementById('mp-vol-fill');
+    if (fill) fill.style.width = val + '%';
+    const icon = document.getElementById('mp-vol-icon');
+    if (icon) icon.textContent = val == 0 ? '🔇' : val < 40 ? '🔈' : '🔊';
+  };
+
+  window.mpToggleMute = function() {
+    muted = !muted;
+    if (masterGain) masterGain.gain.value = muted ? 0 : vol;
+    const icon = document.getElementById('mp-vol-icon');
+    if (icon) icon.textContent = muted ? '🔇' : '🔊';
+  };
+
+  window.mpSeek = function(e) {
+    if (!isPlaying || !AC || !fakeDur) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    stopAll();
+    startedAt = AC.currentTime - pct * fakeDur;
+    scheduleTrack(TRACKS[curIdx]);
+    startRAF();
+  };
+
+  function setVisualizerActive(active) {
+    document.querySelectorAll('.mp-bar').forEach(b => b.classList.toggle('active', active));
+    const cover = document.getElementById('mp-cover');
+    if (cover) cover.style.animation = active ? 'coverSpin 8s linear infinite' : 'none';
+  }
+
+  function setTrackUI() {
+    const t = TRACKS[curIdx];
+    const s = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
+    s('mp-track-name', t.name); s('mp-track-artist', t.artist); s('mp-track-mood', t.mood);
+    s('mp-cover-emoji', t.emoji);
+    const cover = document.getElementById('mp-cover');
+    if (cover) cover.style.background = t.grad;
+    const fill = document.getElementById('mp-prog-fill');
+    if (fill) fill.style.width = '0%';
+    const bps = t.bpm / 60, bar = 1/bps*4;
+    fakeDur = 48 * bar;
+    s('mp-dur-time', fmtTime(fakeDur));
+    document.querySelectorAll('.mp-track-item').forEach((el,i) => el.classList.toggle('active', i===curIdx));
+  }
+
+  function updateUI() {
+    setTrackUI();
+    const icon = document.getElementById('mp-play-icon');
+    if (icon) icon.innerHTML = isPlaying
+      ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+      : '<path d="M8 5v14l11-7z"/>';
+  }
+
+  function buildPlaylist() {
+    const list = document.getElementById('mp-track-list');
+    if (!list) return;
+    list.innerHTML = TRACKS.map((t, i) => `
+      <div class="mp-track-item${i===curIdx?' active':''}" onclick="mpSelectTrack(${i})">
+        <div class="mp-track-thumb" style="background:${t.grad}">${t.emoji}</div>
+        <div class="mp-track-meta">
+          <div class="mp-track-meta-name">${t.name}</div>
+          <div class="mp-track-meta-sub">${t.artist} • ${t.bpm} BPM</div>
+        </div>
+        <div class="mp-eq-icon"><span></span><span></span><span></span></div>
+        <div class="mp-track-dur">${fmtTime(48*4/(t.bpm/60))}</div>
+      </div>`).join('');
+  }
+
+  setTimeout(() => { buildPlaylist(); setTrackUI(); updateUI(); }, 300);
+})();
+window.enterLogin=enterLogin;
+window.toggleTheme=toggleTheme;
+window.showLogin=showLogin;
+window.showReg=showReg;
+window.showForgot=showForgot;
+window.togglePw=togglePw;
+window.loginDemo=loginDemo;
+window.doLogin=doLogin;
+window.doRegister=doRegister;
+window.doLogout=doLogout;
+window.moveNext=moveNext;
+window.movePrev=movePrev;
+window.sendOTP=sendOTP;
+window.verifyOTP=verifyOTP;
+window.resetPw=resetPw;
+window.enterApp=enterApp;
+window.gotoSection=gotoSection;
+window.buildSlotGrid=buildSlotGrid;
+window.toggleBusy=toggleBusy;
+window.saveSlots=saveSlots;
+window.addSubject=addSubject;
+window.deleteSubject=deleteSubject;
+window.generateSchedule=generateSchedule;
+window.toggleTask=toggleTask;
+window.openProfile=openProfile;
+window.closeProfile=closeProfile;
+window.selectAvatar=selectAvatar;
+window.toggleFab=toggleFab;
+window.sendChat=sendChat;
+window.handleQR=handleQR;
+window.addExam=addExam;
+window.deleteExam=deleteExam;
+window.startTimer=startTimer;
+window.pauseTimer=pauseTimer;
+window.addXP=addXP;
+window.updateXPBar=updateXPBar;
+window.updateAIProfileBadge=updateAIProfileBadge;
+window.resetTimer=resetTimer;
