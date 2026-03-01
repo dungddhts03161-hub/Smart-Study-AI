@@ -1092,6 +1092,7 @@ function toggleFab(){
   document.getElementById('fab-btn').textContent=isOpen?'✕':'💬';
   if(isOpen&&!fabInited){initChat('fab');fabInited=true;}
 }
+
 function initChat(t){
   const d=D();
   const weak=d?d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).map(s=>s.name):[];
@@ -1111,7 +1112,6 @@ function botMsg(t,text,qrs=[]){
 function handleQR(q,t){userMsg(t,q);setTimeout(()=>handleChat(q,t),400);}
 function handleChat(msg,t){
   const d=D();
-  // Build context about the user
   let ctx='';
   if(d){
     const weak=d.subjects.filter(s=>s.score<5||(s.selfRating||50)<=25).map(s=>s.name).join(', ');
@@ -1120,10 +1120,8 @@ function handleChat(msg,t){
     d.subjects.forEach(s=>{Object.keys(d.schedule[s.id]||{}).forEach(k=>{total++;if(d.schedule[s.id][k].completed)done++;});});
     ctx=`Học sinh: ${CU?CU.fullname:''}. Môn học: ${d.subjects.map(s=>`${s.name}(${s.score}đ,tự đánh giá ${s.selfRating||50}%)`).join(', ')||'chưa có'}. Môn yếu: ${weak||'không có'}. Tiến độ: ${done}/${total} buổi. Chuỗi học: ${d.streak.cur} ngày. Kỳ thi sắp tới: ${upcoming.slice(0,2).map(e=>`${e.name} còn ${Math.ceil((new Date(e.date)-new Date())/864e5)} ngày`).join(', ')||'không có'}. Phong cách học: ${d.studyStyle||'cân bằng'}. Giờ học tốt nhất: ${d.peakHour||18}:00.`;
   }
-  
-  const systemPrompt=`Bạn là Smart Study AI – trợ lý học tập thông minh cho học sinh THCS-THPT Việt Nam. Bạn trả lời bằng tiếng Việt, thân thiện, ngắn gọn (tối đa 120 từ), dùng emoji phù hợp. Dữ liệu học sinh: ${ctx} Nhiệm vụ của bạn: phân tích dữ liệu cá nhân, đưa ra lời khuyên học tập cụ thể, động viên học sinh, và trả lời câu hỏi về học tập. Khi học sinh hỏi về chiến lược học, hãy đề xuất dựa trên điểm số và tự đánh giá của họ. Đây là AI thật dùng Claude API – không phải chatbot đơn giản.`;
+  const systemPrompt=`Bạn là Smart Study AI – trợ lý học tập thông minh cho học sinh THCS-THPT Việt Nam. Trả lời bằng tiếng Việt, thân thiện, đầy đủ (tối đa 300 từ), dùng emoji phù hợp. Dữ liệu học sinh: ${ctx} Trả lời mọi câu hỏi của học sinh – học tập, lịch sử, khoa học, toán, văn, hay bất cứ chủ đề gì. Khi hỏi về học tập thì phân tích dữ liệu cá nhân và đưa lời khuyên cụ thể.`;
 
-  // Show typing indicator
   const el=document.getElementById('chat-msgs-'+t);
   const typingId='typing-'+Date.now();
   const typingDiv=document.createElement('div');
@@ -1132,7 +1130,6 @@ function handleChat(msg,t){
   el.appendChild(typingDiv);el.scrollTop=el.scrollHeight;
 }
   
-
 // ============================================================
 // PROFILE
 // ============================================================
@@ -1843,6 +1840,9 @@ window.resetTimer=resetTimer;
 
 
 
+
+
+
 // ══ BRIDGE ══
 function showLanding(){
   ['app','topbar','login-screen','reg-screen','forgot-screen'].forEach(function(id){
@@ -1892,6 +1892,8 @@ window.scrollToSection = function(href){
   var layerRect=layer.getBoundingClientRect();
   layer.scrollTo({top: layer.scrollTop+rect.top-layerRect.top-80, behavior:'smooth'});
 };
+
+
 
 
 
@@ -2011,6 +2013,9 @@ createBubbles();
 })();
 
 
+
+
+
 (function(){
   var cv = document.getElementById('auth-stars');
   if(!cv) return;
@@ -2055,4 +2060,3 @@ createBubbles();
   window.showLanding=function(){ _authStarsOff(); if(oLanding) oLanding.apply(this,arguments); };
   window.showAppLogin=function(){ if(oAppLogin) oAppLogin.apply(this,arguments); setTimeout(_authStarsOn, 500); };
 })();
-
